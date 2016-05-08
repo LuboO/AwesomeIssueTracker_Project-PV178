@@ -2,7 +2,7 @@
 
 namespace BussinesLayer
 {
-    class AITFacadeBase
+    public class AITBaseFacade
     {
         public IUnitOfWorkProvider UnitOfWorkProvider { get; set; }
     }

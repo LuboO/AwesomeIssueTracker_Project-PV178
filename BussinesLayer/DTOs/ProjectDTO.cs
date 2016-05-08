@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
 {
-    class ProjectDTO
+    public class ProjectDTO
     {
         public int Id { get; set; }
 
