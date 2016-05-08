@@ -29,12 +29,12 @@ namespace DataAccessLayer
                 SafeRemoveIssues(ctx, childIssues);
 
                 var childEmployees = ctx.Employees
-                    .Where(e => e.PersonId == person.Id)
+                    .Where(e => e.Id == person.Id)
                     .ToList();
                 SafeRemoveEmployees(ctx, childEmployees);
 
                 var childCustomers = ctx.Customers
-                    .Where(c => c.PersonId == person.Id)
+                    .Where(c => c.Id == person.Id)
                     .ToList();
                 SafeRemoveCustomers(ctx, childCustomers);
             }
@@ -46,7 +46,7 @@ namespace DataAccessLayer
             foreach(var employee in employees)
             {
                 var childIssues = ctx.Issues
-                    .Where(i => i.AssignedEmployeeId == employee.PersonId)
+                    .Where(i => i.AssignedEmployeeId == employee.Id)
                     .ToList();
                 SafeRemoveIssues(ctx, childIssues);
             }
@@ -58,7 +58,7 @@ namespace DataAccessLayer
             foreach(var customer in customers)
             {
                 var childProjects = ctx.Projects
-                    .Where(p => p.CustomerId == customer.PersonId)
+                    .Where(p => p.CustomerId == customer.Id)
                     .ToList();
                 SafeRemoveProjects(ctx, childProjects);
             }

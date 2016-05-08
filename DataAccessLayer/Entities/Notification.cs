@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
@@ -8,7 +9,7 @@ namespace DataAccessLayer.Entities
     /// notification and person that should be notified. Email is sent
     /// if NotifyByEmail is set to true.
     /// </summary>
-    public class Notification
+    public class Notification : IEntity<int>
     {
         /// <summary>
         /// Unique Id of the Notification

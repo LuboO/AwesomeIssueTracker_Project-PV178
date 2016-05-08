@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
@@ -9,7 +10,7 @@ namespace DataAccessLayer.Entities
     /// and Employee are derived from this table. Holds issues created,
     /// comments authored and notifications requested.
     /// </summary>
-    public class Person
+    public class Person : IEntity<int>
     {
         /// <summary>
         /// Unique Person Id acts as primary key in Customer and Employee

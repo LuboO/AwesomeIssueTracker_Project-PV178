@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
@@ -8,7 +9,7 @@ namespace DataAccessLayer.Entities
     /// Represents project, is linked to its Customer and has 
     /// associated Issues. Also holds name and description.
     /// </summary>
-    public class Project
+    public class Project : IEntity<int>
     {
         /// <summary>
         /// Unique Project Id

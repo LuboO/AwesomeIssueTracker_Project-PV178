@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
@@ -8,13 +8,13 @@ namespace DataAccessLayer.Entities
     /// Represents employee in the system, stores issues
     /// assigned to employee.
     /// </summary>
-    public class Employee
+    public class Employee : IEntity<int>
     {
         /// <summary>
         /// Key as well as foreign key to Person
         /// </summary>
-        [Key,ForeignKey("Person")]
-        public int PersonId { get; set; }
+        [ForeignKey("Person")]
+        public int Id { get; set; }
         /// <summary>
         /// Navigational property to Person
         /// </summary>
@@ -32,7 +32,7 @@ namespace DataAccessLayer.Entities
 
         public override string ToString()
         {
-            return $"Employee {PersonId}: {Person.Name}";
+            return $"Employee {Id}: {Person.Name}";
         }
     }
 }

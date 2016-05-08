@@ -1,31 +1,19 @@
-﻿using System;
+﻿using DataAccessLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
-    public enum IssueType
-    {
-        Error       = 1,
-        Requirement = 2
-    }
-
-    public enum IssueStatus
-    {
-        New      = 1,
-        Accepted = 2,
-        Rejected = 3,
-        Closed   = 4
-    }
-
     /// <summary>
     /// Represents issue in the system. Holds information about issue
     /// author, project and assigned employee. Moreover it holds comments
     /// and notifications linked to issue and title, description, time of creation
     /// and closure, status and type of issue.
     /// </summary>
-    public class Issue
+    public class Issue : IEntity<int>
     {
         /// <summary>
         /// Unique Id of the issue

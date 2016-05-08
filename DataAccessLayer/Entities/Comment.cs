@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
@@ -9,7 +10,7 @@ namespace DataAccessLayer.Entities
     /// author, issue, subject and message of comment and time of 
     /// creation.
     /// </summary>
-    public class Comment
+    public class Comment : IEntity<int>
     {
         /// <summary>
         /// Unique Id of the comment

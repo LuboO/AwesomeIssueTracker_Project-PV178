@@ -41,12 +41,12 @@ namespace DataAccessLayer.Migrations
                 "dbo.Customers",
                 c => new
                     {
-                        PersonId = c.Int(nullable: false),
+                        Id = c.Int(nullable: false),
                         Type = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.PersonId)
-                .ForeignKey("dbo.People", t => t.PersonId)
-                .Index(t => t.PersonId);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.People", t => t.Id)
+                .Index(t => t.Id);
             
             CreateTable(
                 "dbo.Projects",
@@ -88,11 +88,11 @@ namespace DataAccessLayer.Migrations
                 "dbo.Employees",
                 c => new
                     {
-                        PersonId = c.Int(nullable: false),
+                        Id = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.PersonId)
-                .ForeignKey("dbo.People", t => t.PersonId)
-                .Index(t => t.PersonId);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.People", t => t.Id)
+                .Index(t => t.Id);
             
             CreateTable(
                 "dbo.Notifications",
@@ -120,17 +120,17 @@ namespace DataAccessLayer.Migrations
             DropForeignKey("dbo.Notifications", "IssueId", "dbo.Issues");
             DropForeignKey("dbo.Issues", "CreatorId", "dbo.People");
             DropForeignKey("dbo.Issues", "AssignedEmployeeId", "dbo.Employees");
-            DropForeignKey("dbo.Employees", "PersonId", "dbo.People");
+            DropForeignKey("dbo.Employees", "Id", "dbo.People");
             DropForeignKey("dbo.Projects", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.Customers", "PersonId", "dbo.People");
+            DropForeignKey("dbo.Customers", "Id", "dbo.People");
             DropIndex("dbo.Notifications", new[] { "PersonId" });
             DropIndex("dbo.Notifications", new[] { "IssueId" });
-            DropIndex("dbo.Employees", new[] { "PersonId" });
+            DropIndex("dbo.Employees", new[] { "Id" });
             DropIndex("dbo.Issues", new[] { "CreatorId" });
             DropIndex("dbo.Issues", new[] { "AssignedEmployeeId" });
             DropIndex("dbo.Issues", new[] { "ProjectId" });
             DropIndex("dbo.Projects", new[] { "CustomerId" });
-            DropIndex("dbo.Customers", new[] { "PersonId" });
+            DropIndex("dbo.Customers", new[] { "Id" });
             DropIndex("dbo.Comments", new[] { "AuthorId" });
             DropIndex("dbo.Comments", new[] { "IssueId" });
             DropTable("dbo.Notifications");

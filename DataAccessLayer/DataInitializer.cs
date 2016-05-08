@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Enums;
 
 namespace DataAccessLayer
 {

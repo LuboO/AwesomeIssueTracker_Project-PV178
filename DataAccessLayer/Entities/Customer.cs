@@ -1,27 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using DataAccessLayer.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
 {
-    public enum CustomerType
-    {
-        NaturalPerson = 1,
-        LegalEntity   = 2
-    }
-
     /// <summary>
     /// Represents customer in the system, holds information
     /// about projects created by customer and type of of customer.
     /// Type can be NaturalPerson or LegalEntity.
     /// </summary>
-    public class Customer
+    public class Customer : IEntity<int>
     {
         /// <summary>
         /// Key as well as foreign key to Person
         /// </summary>
-        [Key, ForeignKey("Person")]
-        public int PersonId { get; set; }
+        [ForeignKey("Person")]
+        public int Id { get; set; }
         /// <summary>
         /// Navigational property to linked Person
         /// </summary>
@@ -45,7 +41,7 @@ namespace DataAccessLayer.Entities
 
         public override string ToString()
         {
-            return $"Customer {PersonId}: {Person.Name}";
+            return $"Customer {Id}: {Person.Name}";
         }
     }
 }
