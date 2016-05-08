@@ -98,6 +98,7 @@ namespace DataAccessLayer.Entities
         public Issue()
         {
             Notifications = new List<Notification>();
+            Comments = new List<Comment>();
         }
 
         public override string ToString()

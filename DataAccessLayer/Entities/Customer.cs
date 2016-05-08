@@ -18,6 +18,7 @@ namespace DataAccessLayer.Entities
         /// </summary>
         [ForeignKey("Person")]
         public int Id { get; set; }
+
         /// <summary>
         /// Navigational property to linked Person
         /// </summary>

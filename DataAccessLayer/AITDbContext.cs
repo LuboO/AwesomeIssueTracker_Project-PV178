@@ -4,9 +4,9 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DataAccessLayer
 {
-    public class AwesomeIssueTrackerDbContext : DbContext
+    public class AITDbContext : DbContext
     {
-        public AwesomeIssueTrackerDbContext() : base("AITAppDB")
+        public AITDbContext() : base("AITAppDB")
         {
             Database.SetInitializer(new DataInitializer());
         }

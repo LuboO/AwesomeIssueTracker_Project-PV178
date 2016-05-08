@@ -9,7 +9,7 @@ namespace DataAccessLayer
     {
         // This is just a demo code for safe removal of objects from database, later it will be probably somewhere entirely else.
         // This exist because cascade delete doesn't work with my glorious model.
-        static void SafeRemovePeople(AwesomeIssueTrackerDbContext ctx , List<Person> people)
+        static void SafeRemovePeople(AITDbContext ctx , List<Person> people)
         {
             foreach (var person in people)
             {
@@ -41,7 +41,7 @@ namespace DataAccessLayer
             ctx.People.RemoveRange(people);
         }
 
-        static void SafeRemoveEmployees(AwesomeIssueTrackerDbContext ctx , List<Employee> employees)
+        static void SafeRemoveEmployees(AITDbContext ctx , List<Employee> employees)
         {
             foreach(var employee in employees)
             {
@@ -53,7 +53,7 @@ namespace DataAccessLayer
             ctx.Employees.RemoveRange(employees);
         }
 
-        static void SafeRemoveCustomers(AwesomeIssueTrackerDbContext ctx , List<Customer> customers)
+        static void SafeRemoveCustomers(AITDbContext ctx , List<Customer> customers)
         {
             foreach(var customer in customers)
             {
@@ -65,7 +65,7 @@ namespace DataAccessLayer
             ctx.Customers.RemoveRange(customers);
         }
 
-        static void SafeRemoveProjects(AwesomeIssueTrackerDbContext ctx , List<Project> projects)
+        static void SafeRemoveProjects(AITDbContext ctx , List<Project> projects)
         {
             foreach(var project in projects)
             {
@@ -77,7 +77,7 @@ namespace DataAccessLayer
             ctx.Projects.RemoveRange(projects);
         }
 
-        static void SafeRemoveIssues(AwesomeIssueTrackerDbContext ctx , List<Issue> issues)
+        static void SafeRemoveIssues(AITDbContext ctx , List<Issue> issues)
         {
             foreach(var issue in issues)
             {
@@ -94,19 +94,19 @@ namespace DataAccessLayer
             ctx.Issues.RemoveRange(issues);
         }
 
-        static void SafeRemoveNotifications(AwesomeIssueTrackerDbContext ctx , List<Notification> notifications)
+        static void SafeRemoveNotifications(AITDbContext ctx , List<Notification> notifications)
         {
             ctx.Notifications.RemoveRange(notifications);
         }
 
-        static void SafeRemoveComments(AwesomeIssueTrackerDbContext ctx, List<Comment> comments)
+        static void SafeRemoveComments(AITDbContext ctx, List<Comment> comments)
         {
             ctx.Comments.RemoveRange(comments);
         }
 
         static void Main(string[] args)
         {
-            using (var ctx = new AwesomeIssueTrackerDbContext())
+            using (var ctx = new AITDbContext())
             {
                 try
                 {

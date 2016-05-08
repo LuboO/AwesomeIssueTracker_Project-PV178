@@ -5,9 +5,9 @@ using DataAccessLayer.Enums;
 
 namespace DataAccessLayer
 {
-    public class DataInitializer : DropCreateDatabaseAlways<AwesomeIssueTrackerDbContext>
+    public class DataInitializer : DropCreateDatabaseAlways<AITDbContext>
     {
-        protected override void Seed(AwesomeIssueTrackerDbContext context)
+        protected override void Seed(AITDbContext context)
         {
             // Created some sample data for debugging.
             var persNightWatch = new Person
