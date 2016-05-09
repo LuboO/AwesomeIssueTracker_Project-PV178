@@ -1,9 +1,6 @@
 ﻿using Castle.Windsor;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BussinesLayer.Facades;
 using BussinesLayer.DTOs;
 
@@ -17,7 +14,6 @@ namespace BussinesLayer
             IWindsorContainer container = new WindsorContainer();
             container.Install(new Installer());
             PersonFacade personFacade = container.Resolve<PersonFacade>();
-            IssueFacade issueFacade = container.Resolve<IssueFacade>();
 
             // Demonstration of CRUD operations
             // List everyone
@@ -40,7 +36,7 @@ namespace BussinesLayer
             Console.WriteLine();
 
             // Retrieve person
-            person = personFacade.GetPersonById(6);
+            person = personFacade.GetPeopleByName("John Doe").FirstOrDefault();
 
             // Update person
             person.Email = "thisemailisbetter@mail.com";
@@ -52,15 +48,8 @@ namespace BussinesLayer
             Console.WriteLine();
 
             // Delete person
-            //personFacade.DeletePerson(person);
-            //IssueDTO issue = issueFacade.GetIssueById(1);
-            //personFacade.DeletePerson(js);
-            //issueFacade.DeleteIssue(issue);
-
-            // Delete Everyone
-            foreach (var p in issueFacade.GetAllIssues())
-                issueFacade.DeleteIssue(p);
-
+            personFacade.DeletePerson(person);
+            
             // List everyone
             foreach (var p in personFacade.GetAllPeople())
                 Console.WriteLine(p);

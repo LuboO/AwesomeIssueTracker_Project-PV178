@@ -1,4 +1,4 @@
-﻿namespace BussinesLayer.DTOs
+﻿namespace BussinesLayer.Filters
 {
     public class IssueFilter
     {

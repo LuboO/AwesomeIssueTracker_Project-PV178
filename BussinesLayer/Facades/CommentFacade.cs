@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -63,11 +64,44 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public void DeleteComment(IEnumerable<CommentDTO> comments)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                foreach (var c in comments)
+                {
+                    var deleted = CommentRepository.GetById(c.Id);
+                    CommentRepository.Delete(deleted);
+                }
+                uow.Commit();
+            }
+        }
+
         public List<CommentDTO> GetAllComments()
         {
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new CommentFilter())
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<CommentDTO> GetCommentsByAuthor(int authorId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new CommentFilter() { AuthorId = authorId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<CommentDTO> GetCommentsByIssue(int issueId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new CommentFilter() { IssueId = issueId })
                     .Execute()
                     .ToList();
             }

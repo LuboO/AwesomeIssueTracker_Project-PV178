@@ -1,5 +1,4 @@
-﻿using DataAccessLayer.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
 {

@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -63,11 +64,44 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public void DeleteNotification(IEnumerable<NotificationDTO> notifications)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                foreach (var n in notifications)
+                {
+                    var deleted = NotificationRepository.GetById(n.Id);
+                    NotificationRepository.Delete(deleted);
+                }
+                uow.Commit();
+            }
+        }
+
         public List<NotificationDTO> GetAllNotifications()
         {
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new NotificationFilter())
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<NotificationDTO> GetNotificationsByIssue(int issueId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new NotificationFilter() { IssueId = issueId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<NotificationDTO> GetNotificationsByPerson(int personId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new NotificationFilter() { PersonId = personId })
                     .Execute()
                     .ToList();
             }

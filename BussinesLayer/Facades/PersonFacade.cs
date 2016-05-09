@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -63,11 +64,44 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public void DeletePerson(IEnumerable<PersonDTO> people)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                foreach(var p in people)
+                {
+                    var deleted = PersonRepository.GetById(p.Id);
+                    PersonRepository.Delete(deleted);
+                }
+                uow.Commit();
+            }
+        }
+
         public List<PersonDTO> GetAllPeople()
         {
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new PersonFilter())
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<PersonDTO> GetPeopleByName(string name)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new PersonFilter() { Name = name })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<PersonDTO> GetPeopleByEmail(string email)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new PersonFilter() { Email = email })
                     .Execute()
                     .ToList();
             }

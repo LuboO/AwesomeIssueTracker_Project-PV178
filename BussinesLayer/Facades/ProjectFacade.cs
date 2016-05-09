@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -63,11 +64,43 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public void DeleteProject(IEnumerable<ProjectDTO> projects)
+        {
+            using(var uow = UnitOfWorkProvider.Create())
+            {
+                foreach (var p in projects) {
+                    var deleted = ProjectRepository.GetById(p.Id);
+                    ProjectRepository.Delete(deleted);
+                }
+                uow.Commit();
+            }
+        }
+
         public List<ProjectDTO> GetAllProjects()
         {
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new ProjectFilter())
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<ProjectDTO> GetProjectsByCustomer(int customerId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new ProjectFilter() { CustomerId = customerId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<ProjectDTO> GetProjectsByName(string name)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new ProjectFilter() { Name = name })
                     .Execute()
                     .ToList();
             }

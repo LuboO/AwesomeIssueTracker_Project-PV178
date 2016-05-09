@@ -4,6 +4,7 @@ using DataAccessLayer.Entities;
 using Riganti.Utils.Infrastructure.Core;
 using AutoMapper;
 using System.Collections.Generic;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Queries
 {

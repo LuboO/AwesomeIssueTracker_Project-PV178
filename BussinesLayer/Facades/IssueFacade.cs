@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -67,11 +68,54 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public void DeleteIssue(IEnumerable<IssueDTO> issues)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                foreach (var i in issues)
+                {
+                    var deleted = IssueRepository.GetById(i.Id);
+                    IssueRepository.Delete(deleted);
+                }
+                uow.Commit();
+            }
+        }
+
         public List<IssueDTO> GetAllIssues()
         {
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new IssueFilter())
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByProject(int projectId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { ProjectId = projectId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByAssignedEmployee(int assignedEmployeeId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { AssignedEmployeeId = assignedEmployeeId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByTitle(string title)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { Title = title })
                     .Execute()
                     .ToList();
             }

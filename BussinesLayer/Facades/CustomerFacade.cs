@@ -6,6 +6,7 @@ using BussinesLayer.Repositories;
 using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Facades
 {
@@ -59,6 +60,19 @@ namespace BussinesLayer.Facades
             {
                 var deleted = CustomerRepository.GetById(Customer.Id);
                 CustomerRepository.Delete(deleted);
+                uow.Commit();
+            }
+        }
+
+        public void DeleteCustomer(IEnumerable<CustomerDTO> customers)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                foreach (var c in customers)
+                {
+                    var deleted = CustomerRepository.GetById(c.Id);
+                    CustomerRepository.Delete(deleted);
+                }
                 uow.Commit();
             }
         }

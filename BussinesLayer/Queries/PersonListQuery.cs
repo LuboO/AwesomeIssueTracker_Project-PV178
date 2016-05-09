@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using AutoMapper.QueryableExtensions;
 using BussinesLayer.DTOs;
 using DataAccessLayer.Entities;
 using Riganti.Utils.Infrastructure.Core;
 using System.Collections.Generic;
 using AutoMapper;
+using BussinesLayer.Filters;
 
 namespace BussinesLayer.Queries
 {
