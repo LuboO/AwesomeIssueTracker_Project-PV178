@@ -34,7 +34,6 @@ namespace BussinesLayer.DTOs
         [Required]
         public virtual PersonDTO Creator { get; set; }
     
-        [Required]
         public virtual List<NotificationDTO> Notifications { get; set; }
 
         public virtual List<CommentDTO> Comments { get; set; }

@@ -22,42 +22,42 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateProject(ProjectDTO Project)
+        public void CreateProject(ProjectDTO project)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Project>(Project);
+                var created = Mapper.Map<Project>(project);
                 ProjectRepository.Insert(created);
                 uow.Commit();
             }
         }
 
-        public ProjectDTO GetProjectById(int ProjectId)
+        public ProjectDTO GetProjectById(int projectId)
         {
             using (UnitOfWorkProvider.Create())
             {
                 var Project = ProjectRepository
-                    .GetById(ProjectId);
+                    .GetById(projectId);
                 return Mapper.Map<ProjectDTO>(Project);
             }
         }
 
-        public void UpdateProject(ProjectDTO Project)
+        public void UpdateProject(ProjectDTO project)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = ProjectRepository.GetById(Project.Id);
-                Mapper.Map(Project, retrieved);
+                var retrieved = ProjectRepository.GetById(project.Id);
+                Mapper.Map(project, retrieved);
                 ProjectRepository.Update(retrieved);
                 uow.Commit();
             }
         }
 
-        public void DeleteProject(ProjectDTO Project)
+        public void DeleteProject(ProjectDTO project)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var deleted = ProjectRepository.GetById(Project.Id);
+                var deleted = ProjectRepository.GetById(project.Id);
                 ProjectRepository.Delete(deleted);
                 uow.Commit();
             }

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Enums;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
 {
@@ -7,6 +8,7 @@ namespace BussinesLayer.DTOs
     {
         public int Id { get; set; }
 
+        [Required]
         public virtual PersonDTO Person { get; set; }
 
         public CustomerType Type { get; set; }

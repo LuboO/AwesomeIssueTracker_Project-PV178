@@ -22,48 +22,48 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreatePerson(PersonDTO Person)
+        public void CreatePerson(PersonDTO person)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Person>(Person);
+                var created = Mapper.Map<Person>(person);
                 PersonRepository.Insert(created);
                 uow.Commit();
             }
         }
 
-        public PersonDTO GetPersonById(int PersonId)
+        public PersonDTO GetPersonById(int personId)
         {
             using (UnitOfWorkProvider.Create())
             {
-                var Person = PersonRepository
-                    .GetById(PersonId);
-                return Mapper.Map<PersonDTO>(Person);
+                var person = PersonRepository
+                    .GetById(personId);
+                return Mapper.Map<PersonDTO>(person);
             }
         }
 
-        public void UpdatePerson(PersonDTO Person)
+        public void UpdatePerson(PersonDTO person)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = PersonRepository.GetById(Person.Id);
-                Mapper.Map(Person, retrieved);
+                var retrieved = PersonRepository.GetById(person.Id);
+                Mapper.Map(person, retrieved);
                 PersonRepository.Update(retrieved);
                 uow.Commit();
             }
         }
 
-        public void DeletePerson(PersonDTO Person)
+        public void DeletePerson(PersonDTO person)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var deleted = PersonRepository.GetById(Person.Id);
+                var deleted = PersonRepository.GetById(person.Id);
                 PersonRepository.Delete(deleted);
                 uow.Commit();
             }
         }
 
-        public List<PersonDTO> GetAllPersons()
+        public List<PersonDTO> GetAllPeople()
         {
             using (UnitOfWorkProvider.Create())
             {

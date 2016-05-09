@@ -22,42 +22,42 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateNotification(NotificationDTO Notification)
+        public void CreateNotification(NotificationDTO notification)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Notification>(Notification);
+                var created = Mapper.Map<Notification>(notification);
                 NotificationRepository.Insert(created);
                 uow.Commit();
             }
         }
 
-        public NotificationDTO GetNotificationById(int NotificationId)
+        public NotificationDTO GetNotificationById(int notificationId)
         {
             using (UnitOfWorkProvider.Create())
             {
                 var Notification = NotificationRepository
-                    .GetById(NotificationId);
+                    .GetById(notificationId);
                 return Mapper.Map<NotificationDTO>(Notification);
             }
         }
 
-        public void UpdateNotification(NotificationDTO Notification)
+        public void UpdateNotification(NotificationDTO notification)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = NotificationRepository.GetById(Notification.Id);
-                Mapper.Map(Notification, retrieved);
+                var retrieved = NotificationRepository.GetById(notification.Id);
+                Mapper.Map(notification, retrieved);
                 NotificationRepository.Update(retrieved);
                 uow.Commit();
             }
         }
 
-        public void DeleteNotification(NotificationDTO Notification)
+        public void DeleteNotification(NotificationDTO notification)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var deleted = NotificationRepository.GetById(Notification.Id);
+                var deleted = NotificationRepository.GetById(notification.Id);
                 NotificationRepository.Delete(deleted);
                 uow.Commit();
             }

@@ -22,42 +22,42 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateEmployee(EmployeeDTO Employee)
+        public void CreateEmployee(EmployeeDTO employee)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Employee>(Employee);
+                var created = Mapper.Map<Employee>(employee);
                 EmployeeRepository.Insert(created);
                 uow.Commit();
             }
         }
 
-        public EmployeeDTO GetEmployeeById(int EmployeeId)
+        public EmployeeDTO GetEmployeeById(int employeeId)
         {
             using (UnitOfWorkProvider.Create())
             {
-                var Employee = EmployeeRepository
-                    .GetById(EmployeeId);
-                return Mapper.Map<EmployeeDTO>(Employee);
+                var employee = EmployeeRepository
+                    .GetById(employeeId);
+                return Mapper.Map<EmployeeDTO>(employee);
             }
         }
 
-        public void UpdateEmployee(EmployeeDTO Employee)
+        public void UpdateEmployee(EmployeeDTO employee)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = EmployeeRepository.GetById(Employee.Id);
-                Mapper.Map(Employee, retrieved);
+                var retrieved = EmployeeRepository.GetById(employee.Id);
+                Mapper.Map(employee, retrieved);
                 EmployeeRepository.Update(retrieved);
                 uow.Commit();
             }
         }
 
-        public void DeleteEmployee(EmployeeDTO Employee)
+        public void DeleteEmployee(EmployeeDTO employee)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var deleted = EmployeeRepository.GetById(Employee.Id);
+                var deleted = EmployeeRepository.GetById(employee.Id);
                 EmployeeRepository.Delete(deleted);
                 uow.Commit();
             }

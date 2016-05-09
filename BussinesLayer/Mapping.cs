@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BussinesLayer.DTOs;
 using DataAccessLayer.Entities;
 
@@ -13,7 +8,6 @@ namespace BussinesLayer
     {
         public static void Create()
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             Mapper.CreateMap<Comment, CommentDTO>();
             Mapper.CreateMap<CommentDTO, Comment>();
 
@@ -34,7 +28,6 @@ namespace BussinesLayer
 
             Mapper.CreateMap<ProjectDTO, Project>();
             Mapper.CreateMap<Project, ProjectDTO>();
-#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

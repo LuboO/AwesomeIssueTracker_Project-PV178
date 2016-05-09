@@ -1,8 +1,9 @@
 ﻿using System.Linq;
-using AutoMapper.QueryableExtensions;
 using BussinesLayer.DTOs;
 using DataAccessLayer.Entities;
 using Riganti.Utils.Infrastructure.Core;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace BussinesLayer.Queries
 {
@@ -22,7 +23,7 @@ namespace BussinesLayer.Queries
                 query = query
                     .Where(c => c.Id == Filter.CustomerId);
             }
-            return query.ProjectTo<CustomerDTO>();
+            return (Mapper.Map<List<CustomerDTO>>(query)).AsQueryable();
         }
     }
 }

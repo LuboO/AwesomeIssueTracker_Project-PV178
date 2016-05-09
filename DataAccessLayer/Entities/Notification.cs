@@ -31,7 +31,7 @@ namespace DataAccessLayer.Entities
         /// Navigation property to Issue
         /// </summary>
         [Required,ForeignKey("IssueId")]
-        public Issue Issue { get; set; }
+        public virtual Issue Issue { get; set; }
 
         /// <summary>
         /// Required Id of linked Person
@@ -41,7 +41,7 @@ namespace DataAccessLayer.Entities
         /// Navigation property to Person
         /// </summary>
         [Required,ForeignKey("PersonId")]
-        public Person Person { get; set; }
+        public virtual Person Person { get; set; }
 
         public override string ToString()
         {

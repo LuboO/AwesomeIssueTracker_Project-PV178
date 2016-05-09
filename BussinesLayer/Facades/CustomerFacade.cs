@@ -22,32 +22,32 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateCustomer(CustomerDTO Customer)
+        public void CreateCustomer(CustomerDTO customer)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Customer>(Customer);
+                var created = Mapper.Map<Customer>(customer);
                 CustomerRepository.Insert(created);
                 uow.Commit();
             }
         }
 
-        public CustomerDTO GetCustomerById(int CustomerId)
+        public CustomerDTO GetCustomerById(int customerId)
         {
             using (UnitOfWorkProvider.Create())
             {
-                var Customer = CustomerRepository
-                    .GetById(CustomerId);
-                return Mapper.Map<CustomerDTO>(Customer);
+                var customer = CustomerRepository
+                    .GetById(customerId);
+                return Mapper.Map<CustomerDTO>(customer);
             }
         }
 
-        public void UpdateCustomer(CustomerDTO Customer)
+        public void UpdateCustomer(CustomerDTO customer)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = CustomerRepository.GetById(Customer.Id);
-                Mapper.Map(Customer, retrieved);
+                var retrieved = CustomerRepository.GetById(customer.Id);
+                Mapper.Map(customer, retrieved);
                 CustomerRepository.Update(retrieved);
                 uow.Commit();
             }
