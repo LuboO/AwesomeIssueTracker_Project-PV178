@@ -18,11 +18,17 @@ namespace BussinesLayer.Queries
         protected override IQueryable<CommentDTO> GetQueryable()
         {
             IQueryable<Comment> query = Context.Comments;
-            if(Filter.CommentId > 0)
-            {
+
+            if(Filter.CommentId != null)
                 query = query
                     .Where(c => c.Id == Filter.CommentId);
-            }
+            if (Filter.AuthorId != null)
+                query = query
+                    .Where(c => c.AuthorId == Filter.AuthorId);
+            if (Filter.IssueId != null)
+                query = query
+                    .Where(c => c.IssueId == Filter.IssueId);
+
             return (Mapper.Map<List<CommentDTO>>(query)).AsQueryable();
         }
     }

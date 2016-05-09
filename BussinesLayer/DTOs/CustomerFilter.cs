@@ -2,6 +2,6 @@
 {
     public class CustomerFilter
     {
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
     }
 }

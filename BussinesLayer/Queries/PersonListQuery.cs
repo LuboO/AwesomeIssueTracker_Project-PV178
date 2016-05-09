@@ -19,11 +19,17 @@ namespace BussinesLayer.Queries
         protected override IQueryable<PersonDTO> GetQueryable()
         {
             IQueryable<Person> query = Context.People;
-            if (Filter.PersonId > 0)
-            {
+
+            if (Filter.PersonId != null)
                 query = query
-                    .Where(c => c.Id == Filter.PersonId);
-            }
+                    .Where(p => p.Id == Filter.PersonId);
+            if (!string.IsNullOrEmpty(Filter.Name))
+                query = query
+                    .Where(p => p.Name.Equals(Filter.Name));
+            if (!string.IsNullOrEmpty(Filter.Email))
+                query = query
+                    .Where(p => p.Email.Equals(Filter.Email));
+
             return (Mapper.Map<List<PersonDTO>>(query)).AsQueryable();
         }
     }

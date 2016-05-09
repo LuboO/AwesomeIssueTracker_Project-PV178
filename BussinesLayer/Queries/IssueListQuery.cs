@@ -18,11 +18,20 @@ namespace BussinesLayer.Queries
         protected override IQueryable<IssueDTO> GetQueryable()
         {
             IQueryable<Issue> query = Context.Issues;
-            if (Filter.IssueId > 0)
-            {
+
+            if (Filter.IssueId != null)
                 query = query
-                    .Where(c => c.Id == Filter.IssueId);
-            }
+                    .Where(i => i.Id == Filter.IssueId);
+            if (Filter.ProjectId != null)
+                query = query
+                    .Where(i => i.ProjectId == Filter.ProjectId);
+            if (Filter.AssignedEmployeeId != null)
+                query = query
+                    .Where(i => i.AssignedEmployeeId == Filter.AssignedEmployeeId);
+            if (!string.IsNullOrEmpty(Filter.Title))
+                query = query
+                    .Where(i => i.Title.Equals(Filter.Title));
+
             return (Mapper.Map<List<IssueDTO>>(query)).AsQueryable();
         }
     }

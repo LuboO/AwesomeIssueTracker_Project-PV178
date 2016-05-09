@@ -18,11 +18,17 @@ namespace BussinesLayer.Queries
         protected override IQueryable<NotificationDTO> GetQueryable()
         {
             IQueryable<Notification> query = Context.Notifications;
-            if (Filter.NotificationId > 0)
-            {
+
+            if (Filter.NotificationId != null)
                 query = query
-                    .Where(c => c.Id == Filter.NotificationId);
-            }
+                    .Where(n => n.Id == Filter.NotificationId);
+            if (Filter.IssueId != null)
+                query = query
+                    .Where(n => n.IssueId == Filter.IssueId);
+            if (Filter.PersonId != null)
+                query = query
+                    .Where(n => n.PersonId == Filter.PersonId);
+
             return (Mapper.Map<List<NotificationDTO>>(query)).AsQueryable();
         }
     }

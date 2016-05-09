@@ -18,11 +18,11 @@ namespace BussinesLayer.Queries
         protected override IQueryable<EmployeeDTO> GetQueryable()
         {
             IQueryable<Employee> query = Context.Employees;
-            if (Filter.EmployeeId > 0)
-            {
+
+            if (Filter.EmployeeId != null)
                 query = query
-                    .Where(c => c.Id == Filter.EmployeeId);
-            }
+                    .Where(e => e.Id == Filter.EmployeeId);
+
             return (Mapper.Map<List<EmployeeDTO>>(query)).AsQueryable();
         }
     }

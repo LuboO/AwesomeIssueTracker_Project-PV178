@@ -2,6 +2,6 @@
 {
     public class EmployeeFilter
     {
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
     }
 }

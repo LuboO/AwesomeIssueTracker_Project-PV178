@@ -18,11 +18,11 @@ namespace BussinesLayer.Queries
         protected override IQueryable<CustomerDTO> GetQueryable()
         {
             IQueryable<Customer> query = Context.Customers;
-            if (Filter.CustomerId > 0)
-            {
+
+            if (Filter.CustomerId != null)
                 query = query
                     .Where(c => c.Id == Filter.CustomerId);
-            }
+
             return (Mapper.Map<List<CustomerDTO>>(query)).AsQueryable();
         }
     }
