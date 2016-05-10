@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace BussinesLayer
 {
-    class Installer : IWindsorInstaller
+    public class Installer : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
