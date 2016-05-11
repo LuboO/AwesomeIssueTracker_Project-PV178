@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
@@ -19,23 +18,6 @@ namespace BussinesLayer.DTOs
         public string Phone { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
-
-        public virtual CustomerDTO Customer { get; set; }
-
-        public virtual EmployeeDTO Employee { get; set; }
-
-        public virtual List<IssueDTO> Issues { get; set; }
-
-        public virtual List<CommentDTO> Comments { get; set; }
-
-        public virtual List<NotificationDTO> Notifications { get; set; }
-
-        public PersonDTO()
-        {
-            Issues = new List<IssueDTO>();
-            Comments = new List<CommentDTO>();
-            Notifications = new List<NotificationDTO>();
-        }
 
         public override string ToString()
         {

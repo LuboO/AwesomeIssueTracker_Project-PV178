@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
 {
@@ -13,14 +12,7 @@ namespace BussinesLayer.DTOs
         public string Description { get; set; }
 
         [Required]
-        public virtual CustomerDTO Customer { get; set; }
-
-        public virtual List<IssueDTO> Issues { get; set; }
-
-        public ProjectDTO()
-        {
-            Issues = new List<IssueDTO>();
-        }
+        public CustomerDTO Customer { get; set; }
 
         public override string ToString()
         {

@@ -10,10 +10,10 @@ namespace BussinesLayer.DTOs
         public bool NotifyByEmail { get; set; }
 
         [Required]
-        public virtual IssueDTO Issue { get; set; }
+        public IssueDTO Issue { get; set; }
 
         [Required]
-        public virtual PersonDTO Person { get; set; }
+        public PersonDTO Person { get; set; }
 
         public override string ToString()
         {

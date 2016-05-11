@@ -1,0 +1,30 @@
+﻿@model PresentationLayer.Models.Person.ListPeopleModel
+
+@{
+    ViewBag.Title = "People";
+}
+
+<h2>Registered people</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>E-mail</th>
+    </tr>
+
+    @foreach (var person in Model.People) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => person.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => person.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => person.Email)
+        </td>
+    </tr>
+    }
+
+</table>

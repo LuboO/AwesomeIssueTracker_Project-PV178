@@ -16,10 +16,10 @@ namespace BussinesLayer.DTOs
         public DateTime Created { get; set; }
 
         [Required]
-        public virtual IssueDTO Issue { get; set; }
+        public IssueDTO Issue { get; set; }
 
         [Required]
-        public virtual PersonDTO Author { get; set; }
+        public PersonDTO Author { get; set; }
 
         public override string ToString()
         {

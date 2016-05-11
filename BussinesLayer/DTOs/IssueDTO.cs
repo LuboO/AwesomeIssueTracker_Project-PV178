@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BussinesLayer.DTOs
@@ -26,23 +25,13 @@ namespace BussinesLayer.DTOs
         public DateTime? Finished { get; set; }
 
         [Required]
-        public virtual ProjectDTO Project { get; set; }
+        public ProjectDTO Project { get; set; }
 
         [Required]
-        public virtual EmployeeDTO AssignedEmployee { get; set; }
+        public EmployeeDTO AssignedEmployee { get; set; }
 
         [Required]
-        public virtual PersonDTO Creator { get; set; }
-    
-        public virtual List<NotificationDTO> Notifications { get; set; }
-
-        public virtual List<CommentDTO> Comments { get; set; }
-
-        public IssueDTO()
-        {
-            Notifications = new List<NotificationDTO>();
-            Comments = new List<CommentDTO>();
-        }
+        public PersonDTO Creator { get; set; }
 
         public override string ToString()
         {

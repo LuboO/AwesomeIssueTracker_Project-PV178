@@ -1,16 +1,13 @@
 ﻿using BussinesLayer.DTOs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace PresentationLayer.Models
+namespace PresentationLayer.Models.Person
 {
-    public class PersonViewModel
+    public class ListPeopleModel
     {
         public List<PersonDTO> People { get; set; }
 
-        public PersonViewModel()
+        public ListPeopleModel()
         {
             People = new List<PersonDTO>();
         }

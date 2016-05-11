@@ -2,8 +2,7 @@
 using BussinesLayer.DTOs;
 using DataAccessLayer.Entities;
 using Riganti.Utils.Infrastructure.Core;
-using System.Collections.Generic;
-using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BussinesLayer.Filters;
 
 namespace BussinesLayer.Queries
@@ -29,8 +28,8 @@ namespace BussinesLayer.Queries
             if (!string.IsNullOrEmpty(Filter.Email))
                 query = query
                     .Where(p => p.Email.Equals(Filter.Email));
-
-            return (Mapper.Map<List<PersonDTO>>(query)).AsQueryable();
+            
+            return query.Project().To<PersonDTO>();
         }
     }
 }

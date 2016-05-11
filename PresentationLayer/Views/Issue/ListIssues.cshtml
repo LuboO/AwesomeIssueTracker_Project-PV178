@@ -1,0 +1,38 @@
+﻿@model PresentationLayer.Models.Issue.ListIssuesModel
+
+@{
+    ViewBag.Title = "Issues";
+}
+
+<h2>Issues</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Project</th>
+        <th>Author</th>
+        <th>Solver</th>
+    </tr>
+
+    @foreach (var issue in Model.Issues) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => issue.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => issue.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => issue.Project.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => issue.Creator.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => issue.AssignedEmployee.Person.Name)
+        </td>
+    </tr>
+    }
+
+</table>

@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Awesome Issue Tracker</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Home", "Index" , "Home")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("People", "ListPeople" , "Person")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Customers", "ListCustomers" , "Customer")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Employees", "ListEmployees" , "Employee")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Projects", "ListProjects" , "Project")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Issues", "ListIssues" , "Issue")</li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("About", "About" , "Home")</li>
+        </ul>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Awesome Issue Tracker</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

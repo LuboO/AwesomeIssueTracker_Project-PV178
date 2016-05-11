@@ -7,7 +7,7 @@ using Castle.Windsor;
 
 namespace PresentationLayer
 {
-    public class MvcApplication : HttpApplication
+    public class Global : HttpApplication
     {
         private static IWindsorContainer container;
 

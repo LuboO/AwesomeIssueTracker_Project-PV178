@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BussinesLayer.Facades;
-using PresentationLayer.Models;
+using PresentationLayer.Models.Person;
 
 namespace PresentationLayer.Controllers
 {
@@ -16,13 +13,13 @@ namespace PresentationLayer.Controllers
             this.personFacade = personFacade;
         }
 
-        public ActionResult People()
+        public ActionResult ListPeople()
         {
-            var personViewModel = new PersonViewModel()
+            var listPeopleModel = new ListPeopleModel()
             {
                 People = personFacade.GetAllPeople()
             };
-            return View("People", personViewModel);
+            return View("ListPeople", listPeopleModel);
         }
     }
 }

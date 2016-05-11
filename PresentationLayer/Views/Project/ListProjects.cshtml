@@ -1,0 +1,29 @@
+﻿@model PresentationLayer.Models.Project.ListProjectsModel
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>Projects</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Customer</th>
+    </tr>
+
+    @foreach (var project in Model.Projects) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => project.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => project.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => project.Customer.Person.Name)
+        </td>
+    </tr>
+    }
+
+</table>

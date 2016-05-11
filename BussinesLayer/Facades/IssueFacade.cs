@@ -12,10 +12,8 @@ namespace BussinesLayer.Facades
 {
     public class IssueFacade : AITBaseFacade
     {
-        public NotificationFacade NotificationFacade { get; set; }
-
-        public CommentFacade CommentFacade { get; set; }
-
+        // Facades removed as they should be, I forgot to do that before
+        // turning in BussinesLayer.
         public IssueRepository IssueRepository { get; set; }
 
         public IssueListQuery IssueListQuery { get; set; }
