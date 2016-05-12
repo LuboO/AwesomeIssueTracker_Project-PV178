@@ -11,10 +11,12 @@ namespace PresentationLayer.Controllers
     public class CustomerController : Controller
     {
         private readonly CustomerFacade customerFacade;
+        private readonly ProjectFacade projectFacade;
 
-        public CustomerController(CustomerFacade customerFacade)
+        public CustomerController(CustomerFacade customerFacade, ProjectFacade projectFacade)
         {
             this.customerFacade = customerFacade;
+            this.projectFacade = projectFacade;
         }
 
         public ActionResult ListCustomers()
@@ -24,6 +26,16 @@ namespace PresentationLayer.Controllers
                 Customers = customerFacade.GetAllCustomers()
             };
             return View("ListCustomers", listCustomersModel);
+        }
+
+        public ActionResult CustomerDetail(int customerId)
+        {
+            var customerDetailModel = new CustomerDetailModel()
+            {
+                Customer = customerFacade.GetCustomerById(customerId),
+                Projects = projectFacade.GetProjectsByCustomer(customerId)
+            };
+            return View("CustomerDetail", customerDetailModel);
         }
     }
 }

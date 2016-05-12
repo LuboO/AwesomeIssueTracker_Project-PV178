@@ -135,6 +135,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
@@ -152,6 +153,7 @@
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="Views\Employee\EmployeeDetail.cshtml" />
     <None Include="Views\Issue\ListIssues.cshtml" />
     <Content Include="Views\Person\ListPeople.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -164,6 +166,7 @@
     <Content Include="Views\Customer\ListCustomers.cshtml" />
     <Content Include="Views\Employee\ListEmployees.cshtml" />
     <Content Include="Views\Project\ListProjects.cshtml" />
+    <Content Include="Views\Person\PersonDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -197,13 +200,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Customer\CustomerDetailModel.cs" />
     <Compile Include="Models\Customer\ListCustomersModel.cs" />
+    <Compile Include="Models\Employee\EmployeeDetailModel.cs" />
     <Compile Include="Models\Employee\ListEmployeesModel.cs" />
     <Compile Include="Models\Issue\ListIssuesModel.cs" />
     <Compile Include="Models\Person\ListPeopleModel.cs" />
+    <Compile Include="Models\Person\PersonDetailModel.cs" />
     <Compile Include="Models\Project\ListProjectsModel.cs" />
     <Compile Include="MvcInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Views\Customer\CustomerDetail.cshtml" />
     <Compile Include="WindsorControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup />

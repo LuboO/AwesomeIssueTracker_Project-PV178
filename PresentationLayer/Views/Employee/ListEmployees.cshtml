@@ -11,18 +11,22 @@
         <th>Id</th>
         <th>Name</th>
         <th>E-mail</th>
+        <th></th>
     </tr>
 
     @foreach (var employee in Model.Employees) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => employee.Person.Id)
+            @employee.Person.Id
         </td>
         <td>
-            @Html.DisplayFor(modelItem => employee.Person.Name)
+            @employee.Person.Name
         </td>
         <td>
-            @Html.DisplayFor(modelItem => employee.Person.Email)
+            @employee.Person.Email
+        </td>
+        <td>
+            @Html.ActionLink("Employee details", "EmployeeDetail" , "Employee" , new { employeeId = employee.Person.Id }, new { @class = "btn btn-primary"})
         </td>
     </tr>
     }

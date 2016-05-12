@@ -1,0 +1,70 @@
+﻿@model PresentationLayer.Models.Employee.EmployeeDetailModel
+
+@{
+    ViewBag.Title = Model.Employee.Person.Name;
+}
+
+<h2>Personal details</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <td>@Model.Employee.Person.Id</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Employee.Person.Name</td>
+    </tr>
+    <tr>
+        <th>E-Mail</th>
+        <td>@Model.Employee.Person.Email</td>
+    </tr>
+    <tr>
+        <th>Date of birth</th>
+        @if(Model.Employee.Person.DateOfBirth == null) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Employee.Person.DateOfBirth</td>
+        }
+    </tr>
+    <tr>
+        <th>Adress</th>
+        @if(String.IsNullOrEmpty(Model.Employee.Person.Adress)) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Employee.Person.Adress</td>
+        }
+    </tr>
+    <tr>
+        <th>Phone</th>
+        @if(String.IsNullOrEmpty(Model.Employee.Person.Phone)) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Employee.Person.Phone</td>
+        }
+    </tr>
+</table>
+
+<h2>Assigned issues</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Issued by</th>
+    </tr>
+
+    @foreach (var issue in Model.AssignedIssues) {
+        <tr>
+            <td>
+                @issue.Id
+            </td>
+            <td>
+                @issue.Title
+            </td>
+            <td>
+                @issue.Creator.Name
+            </td>
+        </tr>
+    }
+</table>

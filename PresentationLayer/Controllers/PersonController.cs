@@ -21,5 +21,14 @@ namespace PresentationLayer.Controllers
             };
             return View("ListPeople", listPeopleModel);
         }
+
+        public ActionResult PersonDetail(int personId)
+        {
+            var personDetailModel = new PersonDetailModel()
+            {
+                Person = personFacade.GetPersonById(personId)
+            };
+            return View("PersonDetail", personDetailModel);
+        }
     }
 }

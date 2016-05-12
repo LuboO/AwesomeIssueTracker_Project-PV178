@@ -1,0 +1,66 @@
+﻿@model PresentationLayer.Models.Customer.CustomerDetailModel
+
+@{
+    ViewBag.Title = Model.Customer.Person.Name;
+}
+
+<h2>Personal details</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <td>@Model.Customer.Person.Id</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Customer.Person.Name</td>
+    </tr>
+    <tr>
+        <th>E-Mail</th>
+        <td>@Model.Customer.Person.Email</td>
+    </tr>
+    <tr>
+        <th>Date of birth</th>
+        @if(Model.Customer.Person.DateOfBirth == null) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Customer.Person.DateOfBirth</td>
+        }
+    </tr>
+    <tr>
+        <th>Adress</th>
+        @if(String.IsNullOrEmpty(Model.Customer.Person.Adress)) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Customer.Person.Adress</td>
+        }
+    </tr>
+    <tr>
+        <th>Phone</th>
+        @if(String.IsNullOrEmpty(Model.Customer.Person.Phone)) {
+            <td>Unknown</td>
+        } else {
+            <td>@Model.Customer.Person.Phone</td>
+        }
+    </tr>
+</table>
+
+<h2>Projects</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+    </tr>
+
+    @foreach (var project in Model.Projects) {
+    <tr>
+        <td>
+            @project.Id
+        </td>
+        <td>
+            @project.Name
+        </td>
+    </tr>
+    }
+</table>
