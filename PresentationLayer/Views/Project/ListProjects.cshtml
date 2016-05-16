@@ -1,29 +1,22 @@
 ﻿@model PresentationLayer.Models.Project.ListProjectsModel
-@{
-    ViewBag.Title = "Projects";
-}
 
-<h2>Projects</h2>
-
+@if(Model.Projects.Count != 0) {
 <table class="table">
     <tr>
-        <th>Id</th>
         <th>Name</th>
         <th>Customer</th>
+        <th></th>
     </tr>
 
     @foreach (var project in Model.Projects) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => project.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => project.Customer.Person.Name)
-        </td>
+        <td>@project.Name</td>
+        <td>@Html.ActionLink(project.Customer.Person.Name, "PersonDetail", "Person", new { personId = project.Customer.Person.Id }, new { @class = "btn-link"} )</td>
+        <td>@Html.ActionLink("Detail", "ProjectDetail", "Project", new {projectId = project.Id}, new {@class = "btn btn-primary"})</td>
     </tr>
     }
 
 </table>
+} else {
+    <h5>No projects found.</h5>
+}

@@ -1,5 +1,8 @@
-﻿using BussinesLayer.Facades;
+﻿using BussinesLayer.DTOs;
+using BussinesLayer.Facades;
 using PresentationLayer.Models.Employee;
+using PresentationLayer.Models.Person;
+using System;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -15,23 +18,52 @@ namespace PresentationLayer.Controllers
             this.issueFacade = issueFacade;
         }
 
-        public ActionResult ListEmployees()
+        public ActionResult ViewAllEmployees()
         {
-            var listEmployeesModel = new ListEmployeesModel()
+            var viewAllEmployeesModel = new ViewAllEmployeesModel()
             {
                 Employees = employeeFacade.GetAllEmployees()
             };
-            return View("ListEmployees", listEmployeesModel);
+            return View("ViewAllEmployees", viewAllEmployeesModel);
         }
 
-        public ActionResult EmployeeDetail(int employeeId)
+        public ActionResult CreateEmployee()
         {
-            var employeeDetailModel = new EmployeeDetailModel()
+            var editEmployeeModel = new EditEmployeeModel()
             {
-                Employee = employeeFacade.GetEmployeeById(employeeId),
-                AssignedIssues = issueFacade.GetIssuesByAssignedEmployee(employeeId)
+                Employee = new EmployeeDTO()
             };
-            return View("EmployeeDetail", employeeDetailModel);
+            return View("CreateEmployee", editEmployeeModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateEmployee(EditEmployeeModel editEmployeeModel)
+        {
+            employeeFacade.CreateEmployee(editEmployeeModel.Employee);
+            return RedirectToAction("ViewAllEmployees");
+        }
+
+        public ActionResult EditEmployee(int employeeId)
+        {
+            var editEmployeeModel = new EditEmployeeModel
+            {
+                Employee = employeeFacade.GetEmployeeById(employeeId)
+            };
+            return View("EditEmployee", editEmployeeModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditEmployee(EditEmployeeModel editEmployeeModel)
+        {
+            employeeFacade.UpdateEmployee(editEmployeeModel.Employee);
+            return RedirectToAction("ViewAllEmployees");
+        }
+
+        public ActionResult DeleteEmployee(int employeeId)
+        {
+            var employee = employeeFacade.GetEmployeeById(employeeId);
+            employeeFacade.DeleteEmployee(employee);
+            return RedirectToAction("ViewAllEmployees");
         }
     }
 }

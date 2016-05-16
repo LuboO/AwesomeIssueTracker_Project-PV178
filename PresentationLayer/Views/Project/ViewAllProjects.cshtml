@@ -1,0 +1,9 @@
+﻿@model PresentationLayer.Models.Project.ViewAllProjectsModel
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>Projects</h2>
+
+@{ Html.RenderPartial("~/Views/Project/ListProjects.cshtml", Model.ListProjectsModel); }

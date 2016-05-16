@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace PresentationLayer.Models.Person
 {
-    public class ListPeopleModel
+    public class ViewAllPeopleModel
     {
         public List<PersonDTO> People { get; set; }
 
-        public ListPeopleModel()
+        public ViewAllPeopleModel()
         {
             People = new List<PersonDTO>();
         }

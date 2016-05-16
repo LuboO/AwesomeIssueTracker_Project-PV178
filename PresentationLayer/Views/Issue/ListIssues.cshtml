@@ -1,38 +1,30 @@
 ﻿@model PresentationLayer.Models.Issue.ListIssuesModel
 
-@{
-    ViewBag.Title = "Issues";
-}
-
-<h2>Issues</h2>
-
+@if(Model.Issues.Count != 0) {
 <table class="table">
     <tr>
-        <th>Id</th>
         <th>Title</th>
         <th>Project</th>
         <th>Author</th>
-        <th>Solver</th>
+        <th>Assigned employee</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th></th>
     </tr>
 
     @foreach (var issue in Model.Issues) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => issue.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => issue.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => issue.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => issue.Creator.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => issue.AssignedEmployee.Person.Name)
-        </td>
+        <td>@issue.Title</td>
+        <td>@Html.ActionLink(issue.Project.Name, "ProjectDetail", "Project", new {projectId = issue.Project.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(issue.Creator.Name, "PersonDetail", "Person", new {personId = issue.Creator.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(issue.AssignedEmployee.Person.Name, "PersonDetail", "Person", new { personId = issue.AssignedEmployee.Id}, new { @class = "btn-link"} )</td>
+        <td>@issue.Type</td>
+        <td>@issue.Status</td>
+        <td>@Html.ActionLink("Detail", "IssueDetail", "Issue", new {issueId = issue.Id}, new {@class = "btn btn-primary"})</td>
     </tr>
     }
 
 </table>
+} else {
+    <h5>No issues found.</h5>
+}

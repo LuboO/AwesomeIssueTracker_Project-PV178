@@ -99,6 +99,16 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public List<IssueDTO> GetIssuesByCreator(int creatorId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { CreatorId = creatorId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
         public List<IssueDTO> GetIssuesByAssignedEmployee(int assignedEmployeeId)
         {
             using (UnitOfWorkProvider.Create())

@@ -1,4 +1,5 @@
 ﻿using BussinesLayer.DTOs;
+using PresentationLayer.Models.Project;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,7 @@ namespace PresentationLayer.Models.Customer
 {
     public class CustomerDetailModel
     {
+        public ListProjectsModel ListProjectsModel { get; set; }
         public CustomerDTO Customer { get; set; }
-
-        public List<ProjectDTO> Projects { get; set; }
-
-        public CustomerDetailModel()
-        {
-            Projects = new List<ProjectDTO>();
-        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using BussinesLayer.Facades;
+﻿using BussinesLayer.DTOs;
+using BussinesLayer.Facades;
 using PresentationLayer.Models.Customer;
+using PresentationLayer.Models.Person;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,32 +12,63 @@ namespace PresentationLayer.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly PersonFacade personFacade;
         private readonly CustomerFacade customerFacade;
         private readonly ProjectFacade projectFacade;
 
-        public CustomerController(CustomerFacade customerFacade, ProjectFacade projectFacade)
+        public CustomerController(PersonFacade personFacade, CustomerFacade customerFacade, ProjectFacade projectFacade)
         {
+            this.personFacade = personFacade;
             this.customerFacade = customerFacade;
             this.projectFacade = projectFacade;
         }
 
-        public ActionResult ListCustomers()
+        public ActionResult ViewAllCustomers()
         {
-            var listCustomersModel = new ListCustomersModel()
+            var viewAllCustomersModel = new ViewAllCustomersModel()
             {
                 Customers = customerFacade.GetAllCustomers()
             };
-            return View("ListCustomers", listCustomersModel);
+            return View("ViewAllCustomers", viewAllCustomersModel);
         }
 
-        public ActionResult CustomerDetail(int customerId)
+        public ActionResult CreateCustomer()
         {
-            var customerDetailModel = new CustomerDetailModel()
+            var editCustomerModel = new EditCustomerModel()
             {
-                Customer = customerFacade.GetCustomerById(customerId),
-                Projects = projectFacade.GetProjectsByCustomer(customerId)
+                Customer = new CustomerDTO()
             };
-            return View("CustomerDetail", customerDetailModel);
+            return View("CreateCustomer", editCustomerModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateCustomer(EditCustomerModel editCustomerModel)
+        {
+            customerFacade.CreateCustomer(editCustomerModel.Customer);
+            return RedirectToAction("ViewAllCustomers");
+        }
+
+        public ActionResult EditCustomer(int customerId)
+        {
+            var editCustomerModel = new EditCustomerModel()
+            {
+                Customer = customerFacade.GetCustomerById(customerId)
+            };
+            return View("EditCustomer", editCustomerModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditCustomer(EditCustomerModel editCustomerModel)
+        {
+            customerFacade.UpdateCustomer(editCustomerModel.Customer);
+            return RedirectToAction("ViewAllCustomers");
+        }
+
+        public ActionResult DeleteCustomer(int customerId)
+        {
+            var customer = customerFacade.GetCustomerById(customerId);
+            customerFacade.DeleteCustomer(customer);
+            return RedirectToAction("ViewAllCustomers");
         }
     }
 }

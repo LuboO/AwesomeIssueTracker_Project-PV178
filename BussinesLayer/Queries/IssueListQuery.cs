@@ -25,6 +25,9 @@ namespace BussinesLayer.Queries
             if (Filter.ProjectId != null)
                 query = query
                     .Where(i => i.ProjectId == Filter.ProjectId);
+            if (Filter.CreatorId != null)
+                query = query
+                    .Where(i => i.CreatorId == Filter.CreatorId);
             if (Filter.AssignedEmployeeId != null)
                 query = query
                     .Where(i => i.AssignedEmployeeId == Filter.AssignedEmployeeId);

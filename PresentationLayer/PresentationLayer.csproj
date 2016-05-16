@@ -153,9 +153,18 @@
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="Views\Comment\DiscussionView.cshtml" />
+    <None Include="Views\Comment\ListComments.cshtml" />
     <Content Include="Views\Employee\EmployeeDetail.cshtml" />
+    <Content Include="Views\Issue\IssueDetail.cshtml" />
+    <Content Include="Views\Customer\CreateCustomer.cshtml" />
+    <Content Include="Views\Customer\EditCustomer.cshtml" />
+    <Content Include="Views\Employee\CreateEmployee.cshtml" />
+    <Content Include="Views\Employee\EditEmployee.cshtml" />
     <None Include="Views\Issue\ListIssues.cshtml" />
-    <Content Include="Views\Person\ListPeople.cshtml" />
+    <None Include="Views\Issue\ViewAllIssues.cshtml" />
+    <None Include="Views\Person\CreatePerson.cshtml" />
+    <Content Include="Views\Person\ViewAllPeople.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
@@ -163,10 +172,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Customer\ListCustomers.cshtml" />
-    <Content Include="Views\Employee\ListEmployees.cshtml" />
+    <Content Include="Views\Customer\ViewAllCustomers.cshtml" />
+    <Content Include="Views\Employee\ViewAllEmployees.cshtml" />
     <Content Include="Views\Project\ListProjects.cshtml" />
     <Content Include="Views\Person\PersonDetail.cshtml" />
+    <Content Include="Views\Project\ViewAllProjects.cshtml" />
+    <Content Include="Views\Project\ProjectDetail.cshtml" />
+    <Content Include="Views\Person\EditPerson.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -191,6 +203,7 @@
     <Compile Include="App_Start\BudleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -200,14 +213,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Comment\ListCommentsModel.cs" />
+    <Compile Include="Models\Customer\EditCustomerModel.cs" />
     <Compile Include="Models\Customer\CustomerDetailModel.cs" />
-    <Compile Include="Models\Customer\ListCustomersModel.cs" />
+    <Compile Include="Models\Customer\ViewAllCustomersModel.cs" />
+    <Compile Include="Models\Employee\EditEmployeeModel.cs" />
     <Compile Include="Models\Employee\EmployeeDetailModel.cs" />
-    <Compile Include="Models\Employee\ListEmployeesModel.cs" />
+    <Compile Include="Models\Employee\ViewAllEmployeesModel.cs" />
+    <Compile Include="Models\Issue\IssueDetailModel.cs" />
     <Compile Include="Models\Issue\ListIssuesModel.cs" />
-    <Compile Include="Models\Person\ListPeopleModel.cs" />
+    <Compile Include="Models\Issue\ViewAllIssuesModel.cs" />
+    <Compile Include="Models\Person\EditPersonModel.cs" />
+    <Compile Include="Models\Person\ViewAllPeopleModel.cs" />
     <Compile Include="Models\Person\PersonDetailModel.cs" />
     <Compile Include="Models\Project\ListProjectsModel.cs" />
+    <Compile Include="Models\Project\ProjectDetailModel.cs" />
+    <Compile Include="Models\Project\ViewAllProjectsModel.cs" />
     <Compile Include="MvcInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Views\Customer\CustomerDetail.cshtml" />

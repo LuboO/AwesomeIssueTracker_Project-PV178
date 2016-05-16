@@ -59,7 +59,7 @@ namespace DataAccessLayer
 
             var projCastleBlackDef = new Project
             {
-                Name = "Castle Black defense.",
+                Name = "Castle Black defense",
                 Description = "Wildlings are about to attack Castle Black. We have to do our best to protect it.",
                 Customer = custNightWatch
             };
@@ -119,13 +119,22 @@ namespace DataAccessLayer
                 Author = persStannis
             };
 
-            var commJohn = new Comment
+            var commJon = new Comment
             {
                 Subject = "RE: I am coming.",
                 Message = "Thank you very much, I look forward to meet your priestress.",
                 Created = DateTime.Now,
                 Issue = issueNotEnoughMen,
                 Author = persJonSnow
+            };
+
+            var commStannis2 = new Comment
+            {
+                Subject = "RE: RE: I am coming.",
+                Message = "Okay great, have dinner ready.",
+                Created = DateTime.Now,
+                Issue = issueNotEnoughMen,
+                Author = persStannis
             };
 
             var commAlliser = new Comment
@@ -152,7 +161,8 @@ namespace DataAccessLayer
             context.Notifications.Add(notifJonSnow);
             context.Notifications.Add(notifAlliser);
             context.Comments.Add(commStannis);
-            context.Comments.Add(commJohn);
+            context.Comments.Add(commJon);
+            context.Comments.Add(commStannis2);
             context.Comments.Add(commAlliser);
             
             context.SaveChanges();

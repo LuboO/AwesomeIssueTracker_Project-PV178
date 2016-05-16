@@ -1,0 +1,10 @@
+﻿@model PresentationLayer.Models.Comment.ListCommentsModel
+
+@foreach(var comment in Model.Comments) {
+<p>
+    @Html.ActionLink(comment.Author.Name, "PersonDetail", "Person", new {personId = comment.Author.Id}, new {@class = "btn-link"})
+    <b> on @comment.Created:</b><br/>
+    <b><i>Subject: </i></b> @comment.Subject<br/>
+    @comment.Message<br/><br/>
+</p>        
+}

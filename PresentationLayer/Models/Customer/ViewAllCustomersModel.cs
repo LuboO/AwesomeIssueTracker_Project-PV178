@@ -1,16 +1,13 @@
 ﻿using BussinesLayer.DTOs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace PresentationLayer.Models.Customer
 {
-    public class ListCustomersModel
+    public class ViewAllCustomersModel
     {
         public List<CustomerDTO> Customers { get; set; }
 
-        public ListCustomersModel()
+        public ViewAllCustomersModel()
         {
             Customers = new List<CustomerDTO>();
         }

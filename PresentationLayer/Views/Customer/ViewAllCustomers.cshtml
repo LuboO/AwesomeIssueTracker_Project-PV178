@@ -1,4 +1,4 @@
-﻿@model PresentationLayer.Models.Customer.ListCustomersModel
+﻿@model PresentationLayer.Models.Customer.ViewAllCustomersModel
 
 @{
     ViewBag.Title = "Customers";
@@ -8,7 +8,6 @@
 
 <table class="table">
     <tr>
-        <th>Id</th>
         <th>Name</th>
         <th>E-mail</th>
         <th></th>
@@ -17,16 +16,13 @@
     @foreach (var customer in Model.Customers) {
     <tr>
         <td>
-            @customer.Person.Id
-        </td>
-        <td>
             @customer.Person.Name
         </td>
         <td>
             @customer.Person.Email
         </td>
         <td>
-            @Html.ActionLink("Customer details", "CustomerDetail" , "Customer" , new { customerId = customer.Person.Id }, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Details", "PersonDetail" , "Person" , new { personId = customer.Id }, new { @class = "btn btn-primary"})
         </td>
     </tr>
     }

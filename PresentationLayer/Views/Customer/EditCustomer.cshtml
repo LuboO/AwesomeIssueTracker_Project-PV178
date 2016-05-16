@@ -1,0 +1,34 @@
+﻿@model PresentationLayer.Models.Customer.EditCustomerModel
+@{
+    ViewBag.Title = "Edit " + Model.Customer.Person.Name;
+}
+
+<h2>Edit @Model.Customer.Person.Name</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Customer.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Customer.Type, "Type of customer", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Customer.Type)
+                @Html.ValidationMessageFor(model => model.Customer.Type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save changes" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

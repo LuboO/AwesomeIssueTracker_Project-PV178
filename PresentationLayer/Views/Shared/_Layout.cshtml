@@ -26,9 +26,8 @@
                             People <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all people", "ListPeople" , "Person")</li>
-                            <li><a href="#">Edit person</a></li>
-                            <li><a href="#">Add new person</a></li>
+                            <li>@Html.ActionLink("View all people", "ViewAllPeople" , "Person")</li>
+                            <li>@Html.ActionLink("Add new person", "CreatePerson", "Person")</li>
                         </ul>
                     </li>
                 </ul>
@@ -38,9 +37,8 @@
                             Customers <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all customers", "ListCustomers" , "Customer")</li>
-                            <li><a href="#">Edit customer</a></li>
-                            <li><a href="#">Add new customer</a></li>
+                            <li>@Html.ActionLink("View all customers", "ViewAllCustomers" , "Customer")</li>
+                            <li>@Html.ActionLink("Add new customer", "CreateCustomer", "Customer")</li>
                         </ul>
                     </li>
                 </ul>
@@ -50,9 +48,8 @@
                             Employees <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all employees", "ListEmployees" , "Employee")</li>
-                            <li><a href="#">Edit employee</a></li>
-                            <li><a href="#">Add new employee</a></li>
+                            <li>@Html.ActionLink("View all employees", "ViewAllEmployees" , "Employee")</li>
+                            <li>@Html.ActionLink("Add new employee", "CreateEmployee" , "Employee")</li>
                         </ul>
                     </li>
                 </ul>
@@ -62,8 +59,7 @@
                             Projects <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all projects", "ListProjects" , "Project")</li>
-                            <li><a href="#">Edit project</a></li>
+                            <li>@Html.ActionLink("View all projects", "ViewAllProjects" , "Project")</li>
                             <li><a href="#">Add new project</a></li>
                         </ul>
                     </li>
@@ -74,14 +70,10 @@
                             Issues <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all issues", "ListIssues" , "Issue")</li>
-                            <li><a href="#">Edit issue</a></li>
+                            <li>@Html.ActionLink("View all issues", "ViewAllIssues" , "Issue")</li>
                             <li><a href="#">Add new issue</a></li>
                         </ul>
                     </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("About", "About" , "Home")</li>
                 </ul>
             </div>
         </div>
@@ -91,19 +83,14 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Awesome Issue Tracker</p>
+            <p style="text-align:left">
+                &copy; @DateTime.Now.Year - Awesome Issue Tracker
+                <span style="float:right">
+                    @Html.ActionLink("About", "About" , "Home")
+                </span>
+            </p>
         </footer>
     </div>
-
-    <!--
-    <li>@Html.ActionLink("Home" , "Index" , "Home")</li>
-    <li>@Html.ActionLink("People", "ListPeople" , "Person")</li>
-    <li>@Html.ActionLink("Customers", "ListCustomers" , "Customer")</li>
-    <li>@Html.ActionLink("Employees", "ListEmployees" , "Employee")</li>
-    <li>@Html.ActionLink("Projects", "ListProjects" , "Project")</li>
-    <li>@Html.ActionLink("Issues", "ListIssues" , "Issue")</li>
-    <li>@Html.ActionLink("About", "About" , "Home")</li>
-    -->
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

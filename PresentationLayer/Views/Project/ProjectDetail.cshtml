@@ -1,0 +1,30 @@
+﻿@model PresentationLayer.Models.Project.ProjectDetailModel
+
+@{
+    ViewBag.Title = Model.Project.Name;
+}
+
+<h2>Project</h2>
+
+<h4>General</h4>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <td>@Model.Project.Id</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Project.Name</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>@Model.Project.Description</td>
+    </tr>
+    <tr>
+        <th>Created by</th>
+        <td>@Html.ActionLink(Model.Project.Customer.Person.Name, "PersonDetail", "Person", new {personId = Model.Project.Customer.Id}, new {@class = "btn-link"})</td>
+    </tr>
+</table>
+
+<h4>Related issues</h4>
+@{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }

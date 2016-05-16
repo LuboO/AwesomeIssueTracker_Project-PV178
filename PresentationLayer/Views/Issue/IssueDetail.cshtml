@@ -1,0 +1,62 @@
+﻿@model PresentationLayer.Models.Issue.IssueDetailModel
+
+@{
+    ViewBag.Title = Model.Issue.Title;
+}
+
+<h2>Issue</h2>
+<h4>General</h4>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <td>@Model.Issue.Id</td>
+    </tr>
+    <tr>
+        <th>Title</th>
+        <td>@Model.Issue.Title</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        @if(!String.IsNullOrEmpty(Model.Issue.Description)) {
+            <td>@Model.Issue.Description</td>
+        } else {
+            <td></td>
+        }
+    </tr>
+    <tr>
+        <th>Issue type</th>
+        <td>@Model.Issue.Type</td>
+    </tr>
+    <tr>
+        <th>Issue status</th>
+        <td>@Model.Issue.Status</td>
+    </tr>
+    <tr>
+        <th>Time of creation</th>
+        <td>@Model.Issue.Created</td>
+    </tr>
+    <tr>
+        <th>Time of closure</th>
+        @if(Model.Issue.Finished != null) {
+            <td>@Model.Issue.Finished</td>
+        } else {
+            <td></td>
+        }
+    </tr>
+    <tr>
+        <th>Related to project</th>
+        <td>@Html.ActionLink(Model.Issue.Project.Name, "ProjectDetail" , "Project", new {projectId = Model.Issue.Project.Id}, new {@class = "btn-link"})</td>
+    </tr>
+    <tr>
+        <th>Assigned to</th>
+        <td>@Html.ActionLink(Model.Issue.AssignedEmployee.Person.Name, "PersonDetail" , "Person", new {personId = Model.Issue.AssignedEmployee.Id}, new {@class = "btn-link"})</td>
+    </tr>
+    <tr>
+        <th>Created by</th>
+        <td>@Html.ActionLink(Model.Issue.Creator.Name, "PersonDetail" , "Person", new {personId = Model.Issue.Creator.Id}, new {@class = "btn-link"})</td>
+    </tr>
+</table>
+
+<h4>Discussion</h4>
+@{ Html.RenderPartial("~/Views/Comment/DiscussionView.cshtml", Model.ListCommentsModel); }

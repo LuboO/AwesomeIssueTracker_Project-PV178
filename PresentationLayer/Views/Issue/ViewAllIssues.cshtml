@@ -1,0 +1,9 @@
+﻿@model PresentationLayer.Models.Issue.ViewAllIssuesModel
+
+@{
+    ViewBag.Title = "Issues";
+}
+
+<h2>Issues</h2>
+
+@{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }
