@@ -106,7 +106,6 @@
     <Compile Include="Facades\ProjectFacade.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Mapping.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\CommentListQuery.cs" />
     <Compile Include="Queries\CustomerListQuery.cs" />
