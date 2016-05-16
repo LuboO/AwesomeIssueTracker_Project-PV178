@@ -12,6 +12,8 @@ namespace BussinesLayer.Facades
 {
     public class ProjectFacade : AITBaseFacade
     {
+        public CustomerRepository CustomerRepository { get; set; }
+
         public ProjectRepository ProjectRepository { get; set; }
 
         public ProjectListQuery ProjectListQuery { get; set; }
@@ -23,11 +25,12 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateProject(ProjectDTO project)
+        public void CreateProject(ProjectDTO project, int customerId)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Project>(project);
+                created.Customer = CustomerRepository.GetById(customerId);
                 ProjectRepository.Insert(created);
                 uow.Commit();
             }
@@ -43,12 +46,13 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public void UpdateProject(ProjectDTO project)
+        public void UpdateProject(ProjectDTO project, int customerId)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = ProjectRepository.GetById(project.Id);
                 Mapper.Map(project, retrieved);
+                retrieved.Customer = CustomerRepository.GetById(customerId);
                 ProjectRepository.Update(retrieved);
                 uow.Commit();
             }

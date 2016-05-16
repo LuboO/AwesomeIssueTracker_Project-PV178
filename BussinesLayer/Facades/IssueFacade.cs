@@ -16,6 +16,12 @@ namespace BussinesLayer.Facades
         // turning in BussinesLayer.
         public IssueRepository IssueRepository { get; set; }
 
+        public ProjectRepository ProjectRepository { get; set; }
+
+        public PersonRepository PersonRepository { get; set; }
+
+        public EmployeeRepository EmployeeRepository { get; set; }
+
         public IssueListQuery IssueListQuery { get; set; }
 
         protected IQuery<IssueDTO> CreateQuery(IssueFilter filter)
@@ -25,11 +31,14 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateIssue(IssueDTO issue)
+        public void CreateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Issue>(issue);
+                created.Project = ProjectRepository.GetById(projectId);
+                created.Creator = PersonRepository.GetById(creatorId);
+                created.AssignedEmployee = EmployeeRepository.GetById(employeeId);
                 IssueRepository.Insert(created);
                 uow.Commit();
             }
@@ -45,12 +54,15 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public void UpdateIssue(IssueDTO issue)
+        public void UpdateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = IssueRepository.GetById(issue.Id);
                 Mapper.Map(issue, retrieved);
+                retrieved.Project = ProjectRepository.GetById(projectId);
+                retrieved.Creator = PersonRepository.GetById(creatorId);
+                retrieved.AssignedEmployee = EmployeeRepository.GetById(employeeId);
                 IssueRepository.Update(retrieved);
                 uow.Commit();
             }

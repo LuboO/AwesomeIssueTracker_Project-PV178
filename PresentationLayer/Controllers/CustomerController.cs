@@ -25,42 +25,42 @@ namespace PresentationLayer.Controllers
 
         public ActionResult ViewAllCustomers()
         {
-            var viewAllCustomersModel = new ViewAllCustomersModel()
+            var model = new ViewAllCustomersModel()
             {
                 Customers = customerFacade.GetAllCustomers()
             };
-            return View("ViewAllCustomers", viewAllCustomersModel);
+            return View("ViewAllCustomers", model);
         }
 
         public ActionResult CreateCustomer()
         {
-            var editCustomerModel = new EditCustomerModel()
+            var model = new EditCustomerModel()
             {
                 Customer = new CustomerDTO()
             };
-            return View("CreateCustomer", editCustomerModel);
+            return View("CreateCustomer", model);
         }
 
         [HttpPost]
-        public ActionResult CreateCustomer(EditCustomerModel editCustomerModel)
+        public ActionResult CreateCustomer(EditCustomerModel model)
         {
-            customerFacade.CreateCustomer(editCustomerModel.Customer);
+            customerFacade.CreateCustomer(model.Customer);
             return RedirectToAction("ViewAllCustomers");
         }
 
         public ActionResult EditCustomer(int customerId)
         {
-            var editCustomerModel = new EditCustomerModel()
+            var model = new EditCustomerModel()
             {
                 Customer = customerFacade.GetCustomerById(customerId)
             };
-            return View("EditCustomer", editCustomerModel);
+            return View("EditCustomer", model);
         }
 
         [HttpPost]
-        public ActionResult EditCustomer(EditCustomerModel editCustomerModel)
+        public ActionResult EditCustomer(EditCustomerModel model)
         {
-            customerFacade.UpdateCustomer(editCustomerModel.Customer);
+            customerFacade.UpdateCustomer(model.Customer);
             return RedirectToAction("ViewAllCustomers");
         }
 

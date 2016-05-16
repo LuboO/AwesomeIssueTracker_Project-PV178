@@ -20,42 +20,42 @@ namespace PresentationLayer.Controllers
 
         public ActionResult ViewAllEmployees()
         {
-            var viewAllEmployeesModel = new ViewAllEmployeesModel()
+            var model = new ViewAllEmployeesModel()
             {
                 Employees = employeeFacade.GetAllEmployees()
             };
-            return View("ViewAllEmployees", viewAllEmployeesModel);
+            return View("ViewAllEmployees", model);
         }
 
         public ActionResult CreateEmployee()
         {
-            var editEmployeeModel = new EditEmployeeModel()
+            var model = new EditEmployeeModel()
             {
                 Employee = new EmployeeDTO()
             };
-            return View("CreateEmployee", editEmployeeModel);
+            return View("CreateEmployee", model);
         }
 
         [HttpPost]
-        public ActionResult CreateEmployee(EditEmployeeModel editEmployeeModel)
+        public ActionResult CreateEmployee(EditEmployeeModel model)
         {
-            employeeFacade.CreateEmployee(editEmployeeModel.Employee);
+            employeeFacade.CreateEmployee(model.Employee);
             return RedirectToAction("ViewAllEmployees");
         }
 
         public ActionResult EditEmployee(int employeeId)
         {
-            var editEmployeeModel = new EditEmployeeModel
+            var model = new EditEmployeeModel
             {
                 Employee = employeeFacade.GetEmployeeById(employeeId)
             };
-            return View("EditEmployee", editEmployeeModel);
+            return View("EditEmployee", model);
         }
 
         [HttpPost]
-        public ActionResult EditEmployee(EditEmployeeModel editEmployeeModel)
+        public ActionResult EditEmployee(EditEmployeeModel model)
         {
-            employeeFacade.UpdateEmployee(editEmployeeModel.Employee);
+            employeeFacade.UpdateEmployee(model.Employee);
             return RedirectToAction("ViewAllEmployees");
         }
 

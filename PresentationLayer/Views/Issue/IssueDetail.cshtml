@@ -4,7 +4,14 @@
     ViewBag.Title = Model.Issue.Title;
 }
 
-<h2>Issue</h2>
+<h2 style="text-align:left">
+    Issue
+    <span style="float:right">
+        @Html.ActionLink("Edit issue", "EditIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-primary"})
+        @Html.ActionLink("Delete issue", "DeleteIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-danger"})
+    </span>
+</h2>
+
 <h4>General</h4>
 
 <table class="table">

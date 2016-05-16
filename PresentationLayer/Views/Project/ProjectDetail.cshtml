@@ -4,7 +4,13 @@
     ViewBag.Title = Model.Project.Name;
 }
 
-<h2>Project</h2>
+<h2 style="text-align:left">
+    Project
+    <span style="float:right">
+        @Html.ActionLink("Edit project", "EditProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-primary"})
+        @Html.ActionLink("Delete project", "DeleteProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-danger"})
+    </span>
+</h2>
 
 <h4>General</h4>
 <table class="table">

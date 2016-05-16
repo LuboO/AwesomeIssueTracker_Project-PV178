@@ -60,7 +60,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("View all projects", "ViewAllProjects" , "Project")</li>
-                            <li><a href="#">Add new project</a></li>
+                            <li>@Html.ActionLink("Add new project", "CreateProject", "Project")</li>
                         </ul>
                     </li>
                 </ul>
@@ -71,7 +71,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("View all issues", "ViewAllIssues" , "Issue")</li>
-                            <li><a href="#">Add new issue</a></li>
+                            <li>@Html.ActionLink("Add new issue", "CreateIssue", "Issue")</li>
                         </ul>
                     </li>
                 </ul>

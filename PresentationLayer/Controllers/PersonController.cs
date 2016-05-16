@@ -43,7 +43,7 @@ namespace PresentationLayer.Controllers
         public ActionResult PersonDetail(int personId)
         {
             /* Get personal data */
-            var personDetailModel = new PersonDetailModel()
+            var model = new PersonDetailModel()
             {
                 Person = personFacade.GetPersonById(personId),
                 ListIssuesModel = new ListIssuesModel()
@@ -59,7 +59,7 @@ namespace PresentationLayer.Controllers
             var employee = employeeFacade.GetEmployeeById(personId);
             if(employee != null)
             {
-                personDetailModel.EmployeeDetailModel = new EmployeeDetailModel()
+                model.EmployeeDetailModel = new EmployeeDetailModel()
                 {
                     Employee = employee,
                     ListIssuesModel = new ListIssuesModel()
@@ -72,7 +72,7 @@ namespace PresentationLayer.Controllers
             var customer = customerFacade.GetCustomerById(personId);
             if(customer != null)
             {
-                personDetailModel.CustomerDetailModel = new CustomerDetailModel()
+                model.CustomerDetailModel = new CustomerDetailModel()
                 {
                     Customer = customer,
                     ListProjectsModel = new ListProjectsModel()
@@ -81,32 +81,32 @@ namespace PresentationLayer.Controllers
                     }
                 };
             }
-            return View("PersonDetail", personDetailModel);
+            return View("PersonDetail", model);
         }
 
         public ActionResult CreatePerson()
         {
-            var editPersonModel = new EditPersonModel()
+            var model = new EditPersonModel()
             {
                 Person = new PersonDTO()
             };
-            return View("CreatePerson", editPersonModel);
+            return View("CreatePerson", model);
         }
 
         [HttpPost]
-        public ActionResult CreatePerson(EditPersonModel editPersonModel)
+        public ActionResult CreatePerson(EditPersonModel model)
         {
-            personFacade.CreatePerson(editPersonModel.Person);
+            personFacade.CreatePerson(model.Person);
             return RedirectToAction("ViewAllPeople");
         }
 
         public ActionResult EditPerson(int personId)
         {
-            var editPersonModel = new EditPersonModel()
+            var model = new EditPersonModel()
             {
                 Person = personFacade.GetPersonById(personId)
             };
-            return View("EditPerson", editPersonModel);
+            return View("EditPerson", model);
         }
 
         [HttpPost]

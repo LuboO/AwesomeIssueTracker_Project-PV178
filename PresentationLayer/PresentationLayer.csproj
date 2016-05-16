@@ -138,6 +138,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Compile Include="Models\Issue\EditIssueModel.cs" />
+    <Compile Include="Models\Project\EditProjectModel.cs" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -161,6 +163,8 @@
     <Content Include="Views\Customer\EditCustomer.cshtml" />
     <Content Include="Views\Employee\CreateEmployee.cshtml" />
     <Content Include="Views\Employee\EditEmployee.cshtml" />
+    <Content Include="Views\Issue\CreateIssue.cshtml" />
+    <Content Include="Views\Issue\EditIssue.cshtml" />
     <None Include="Views\Issue\ListIssues.cshtml" />
     <None Include="Views\Issue\ViewAllIssues.cshtml" />
     <None Include="Views\Person\CreatePerson.cshtml" />
@@ -179,6 +183,8 @@
     <Content Include="Views\Project\ViewAllProjects.cshtml" />
     <Content Include="Views\Project\ProjectDetail.cshtml" />
     <Content Include="Views\Person\EditPerson.cshtml" />
+    <Content Include="Views\Project\CreateProject.cshtml" />
+    <Content Include="Views\Project\EditProject.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
