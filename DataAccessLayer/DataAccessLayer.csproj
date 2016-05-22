@@ -44,6 +44,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Riganti.Utils.Infrastructure.Core, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Riganti.Utils.Infrastructure.Core.1.0.3\lib\net45\Riganti.Utils.Infrastructure.Core.dll</HintPath>
       <Private>True</Private>
@@ -64,7 +72,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AITDbContext.cs" />
-    <Compile Include="DataInitializer.cs" />
+    <Compile Include="Entities\AITRole.cs" />
+    <Compile Include="Entities\AITUser.cs" />
+    <Compile Include="Entities\AITUserClaim.cs" />
+    <Compile Include="Entities\AITUserLogin.cs" />
+    <Compile Include="Entities\AITUserRole.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Employee.cs" />
@@ -79,6 +91,10 @@
     <Compile Include="Migrations\201605081647334_Initial.Designer.cs">
       <DependentUpon>201605081647334_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605220949068_Identity.cs" />
+    <Compile Include="Migrations\201605220949068_Identity.Designer.cs">
+      <DependentUpon>201605220949068_Identity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +105,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201605081647334_Initial.resx">
       <DependentUpon>201605081647334_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605220949068_Identity.resx">
+      <DependentUpon>201605220949068_Identity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

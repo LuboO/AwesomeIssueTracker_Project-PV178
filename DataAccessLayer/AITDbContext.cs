@@ -1,14 +1,14 @@
 ﻿using System.Data.Entity;
 using DataAccessLayer.Entities;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataAccessLayer
 {
-    public class AITDbContext : DbContext
+    public class AITDbContext : IdentityDbContext<AITUser, AITRole, int, AITUserLogin, AITUserRole, AITUserClaim>
     {
         public AITDbContext() : base("AITAppDB")
         {
-            Database.SetInitializer(new DataInitializer());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
