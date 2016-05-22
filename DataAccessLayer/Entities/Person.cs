@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Riganti.Utils.Infrastructure.Core;
 
 namespace DataAccessLayer.Entities
@@ -26,7 +27,7 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Required email of Person
         /// </summary>
-        [Required,MaxLength(64)]
+        [Required,MaxLength(64),Index(IsUnique = true)]
         public string Email { get; set; }
 
         /// <summary>

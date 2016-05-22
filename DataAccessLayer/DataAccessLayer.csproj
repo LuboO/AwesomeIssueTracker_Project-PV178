@@ -87,13 +87,9 @@
     <Compile Include="Enums\CustomerType.cs" />
     <Compile Include="Enums\IssueStatus.cs" />
     <Compile Include="Enums\IssueType.cs" />
-    <Compile Include="Migrations\201605081647334_Initial.cs" />
-    <Compile Include="Migrations\201605081647334_Initial.Designer.cs">
-      <DependentUpon>201605081647334_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605220949068_Identity.cs" />
-    <Compile Include="Migrations\201605220949068_Identity.Designer.cs">
-      <DependentUpon>201605220949068_Identity.cs</DependentUpon>
+    <Compile Include="Migrations\201605221343163_Initial.cs" />
+    <Compile Include="Migrations\201605221343163_Initial.Designer.cs">
+      <DependentUpon>201605221343163_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,11 +99,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605081647334_Initial.resx">
-      <DependentUpon>201605081647334_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605220949068_Identity.resx">
-      <DependentUpon>201605220949068_Identity.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605221343163_Initial.resx">
+      <DependentUpon>201605221343163_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

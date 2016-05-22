@@ -28,6 +28,9 @@ namespace BussinesLayer
 
             Mapper.CreateMap<ProjectDTO, Project>();
             Mapper.CreateMap<Project, ProjectDTO>();
+
+            Mapper.CreateMap<UserDTO, AITUser>();
+            Mapper.CreateMap<AITUser, UserDTO>();
         }
     }
 }

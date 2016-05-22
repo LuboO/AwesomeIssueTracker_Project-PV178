@@ -89,9 +89,15 @@
   <ItemGroup>
     <Compile Include="AITBaseFacade.cs" />
     <Compile Include="AITQuery.cs" />
+    <Compile Include="AITRoleManager.cs" />
+    <Compile Include="AITRoleStore.cs" />
     <Compile Include="AITUnitOfWork.cs" />
     <Compile Include="AITUnitOfWorkProvider.cs" />
+    <Compile Include="AITUserManager.cs" />
+    <Compile Include="AITUserStore.cs" />
     <Compile Include="DTOs\CommentDTO.cs" />
+    <Compile Include="DTOs\UserDTO.cs" />
+    <Compile Include="Facades\UserFacade.cs" />
     <Compile Include="Filters\CommentFilter.cs" />
     <Compile Include="DTOs\CustomerDTO.cs" />
     <Compile Include="Filters\CustomerFilter.cs" />
@@ -112,6 +118,8 @@
     <Compile Include="Facades\NotificationFacade.cs" />
     <Compile Include="Facades\PersonFacade.cs" />
     <Compile Include="Facades\ProjectFacade.cs" />
+    <Compile Include="IAITUnitOfWork.cs" />
+    <Compile Include="IAITUnitOfWorkProvider.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Mapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

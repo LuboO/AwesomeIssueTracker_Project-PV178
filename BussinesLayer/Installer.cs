@@ -48,6 +48,11 @@ namespace BussinesLayer
                 Classes
                     .FromAssemblyContaining<AITBaseFacade>()
                     .BasedOn<AITBaseFacade>()
+                    .LifestyleTransient(),
+
+                Component
+                    .For<Func<AITUserManager>>()
+                    .Instance(() => new AITUserManager(new AITUserStore(new AITDbContext())))
                     .LifestyleTransient()
             );
 
