@@ -45,7 +45,7 @@ namespace DataAccessLayer.Migrations
             {
                 Name = "Stannis Baratheon",
                 Email = "stannisthemannis@dragonstone.we",
-                Adress = "Dragonstone, Blackwater bay"
+                Address = "Dragonstone, Blackwater bay"
             };
 
             var custNightWatch = new Customer

@@ -1,11 +1,13 @@
 ﻿using BussinesLayer.DTOs;
 using BussinesLayer.Facades;
+using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Project;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [CustomAuthorize]
     public class ProjectController : Controller
     {
         private readonly ProjectFacade projectFacade;

@@ -34,7 +34,7 @@ namespace DataAccessLayer.Entities
         /// Optional adress of Person
         /// </summary>
         [MaxLength(256)]
-        public string Adress { get; set; }
+        public string Address { get; set; }
         
         /// <summary>
         /// Optional phone number of Person

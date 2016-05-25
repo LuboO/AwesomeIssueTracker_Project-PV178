@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PresentationLayer.Filters.Authorization;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [CustomAuthorize]
     public class CommentController : Controller
     {
     }

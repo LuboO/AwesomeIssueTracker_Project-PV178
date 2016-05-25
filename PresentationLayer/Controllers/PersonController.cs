@@ -7,9 +7,11 @@ using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Comment;
 using PresentationLayer.Models.Project;
 using BussinesLayer.DTOs;
+using PresentationLayer.Filters.Authorization;
 
 namespace PresentationLayer.Controllers
 {
+    [CustomAuthorize(Roles = "Administrator")]
     public class PersonController : Controller
     {
         private readonly PersonFacade personFacade;
