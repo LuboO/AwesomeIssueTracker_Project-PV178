@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BussinesLayer.DTOs
+namespace PresentationLayer.Models.User
 {
-    public class UserDTO
+    public class EditAccountModel
     {
-        public int Id { get; set; }
-
         [Required]
         [Display(Name = "Username")]
         public string UserName { get; set; }
@@ -14,13 +12,6 @@ namespace BussinesLayer.DTOs
         [Required]
         [Display(Name = "Full name")]
         public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [Display(Name = "E-Mail")]
-        public string Email { get; set; }
-        
-        public string Password { get; set; }
 
         public string Address { get; set; }
 
@@ -31,10 +22,5 @@ namespace BussinesLayer.DTOs
         [Display(Name = "Date of birth")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime? DateOfBirth { get; set; }
-
-        public override string ToString()
-        {
-            return $"User {Id}: {Name}, {Email}";
-        }
     }
 }

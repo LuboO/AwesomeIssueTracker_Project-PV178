@@ -171,6 +171,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\User\ChangeEmailModel.cs" />
+    <Compile Include="Models\User\ChangePasswordModel.cs" />
+    <Compile Include="Models\User\EditAccountModel.cs" />
     <Compile Include="Models\User\LoginModel.cs" />
     <Compile Include="Models\User\RegisterModel.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />
@@ -192,9 +195,9 @@
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
-    <Content Include="Views\Shared\LoginMenu.cshtml" />
     <None Include="Views\User\Register.cshtml" />
     <Content Include="Views\Comment\DiscussionView.cshtml" />
+    <None Include="Views\User\EditAccount.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <None Include="Views\Comment\ListComments.cshtml" />
     <Content Include="Views\Employee\EmployeeDetail.cshtml" />
@@ -226,6 +229,7 @@
     <Content Include="Views\Person\EditPerson.cshtml" />
     <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
+    <Content Include="Views\User\UserDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -276,6 +280,7 @@
     <Compile Include="Models\Project\ListProjectsModel.cs" />
     <Compile Include="Models\Project\ProjectDetailModel.cs" />
     <Compile Include="Models\Project\ViewAllProjectsModel.cs" />
+    <Compile Include="Models\User\UserDetailModel.cs" />
     <Compile Include="MvcInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Views\Customer\CustomerDetail.cshtml" />

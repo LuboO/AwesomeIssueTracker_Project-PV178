@@ -38,7 +38,7 @@ namespace PresentationLayer.App_Start
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationWebDbContext>()));
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
-                AllowOnlyAlphanumericUserNames = true,
+                AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 

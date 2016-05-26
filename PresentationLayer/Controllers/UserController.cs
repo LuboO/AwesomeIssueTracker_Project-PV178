@@ -9,6 +9,11 @@ using Microsoft.Owin.Security;
 using BussinesLayer.DTOs;
 using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
+using PresentationLayer.Models.Issue;
+using PresentationLayer.Models.Comment;
+using PresentationLayer.Models.Employee;
+using PresentationLayer.Models.Customer;
+using PresentationLayer.Models.Project;
 
 namespace PresentationLayer.Controllers
 {
@@ -16,6 +21,11 @@ namespace PresentationLayer.Controllers
     public class UserController : Controller
     {
         private readonly UserFacade userFacade;
+        private readonly EmployeeFacade employeeFacade;
+        private readonly CustomerFacade customerFacade;
+        private readonly ProjectFacade projectFacade;
+        private readonly IssueFacade issueFacade;
+        private readonly CommentFacade commentFacade;
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -51,9 +61,16 @@ namespace PresentationLayer.Controllers
             }
         }
 
-        public UserController(UserFacade userFacade)
+        public UserController(
+            UserFacade userFacade, EmployeeFacade employeeFacade, CustomerFacade customerFacade,
+            ProjectFacade projectFacade, IssueFacade issueFacade, CommentFacade commentFacade)
         {
             this.userFacade = userFacade;
+            this.employeeFacade = employeeFacade;
+            this.customerFacade = customerFacade;
+            this.projectFacade = projectFacade;
+            this.issueFacade = issueFacade;
+            this.commentFacade = commentFacade;
         }
 
         public UserController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -97,6 +114,51 @@ namespace PresentationLayer.Controllers
             }
         }
 
+        public ActionResult UserDetail()
+        {
+            /* Get personal data */
+            int userId = User.Identity.GetUserId<int>();
+            var model = new UserDetailModel()
+            {
+                User = userFacade.GetUserById(userId),
+                ListIssuesModel = new ListIssuesModel()
+                {
+                    Issues = issueFacade.GetIssuesByCreator(userId)
+                },
+                ListCommentsModel = new ListCommentsModel()
+                {
+                    Comments = commentFacade.GetCommentsByAuthor(userId)
+                }
+            };
+            /* Get employee data if any */
+            var employee = employeeFacade.GetEmployeeById(userId);
+            if (employee != null)
+            {
+                model.EmployeeDetailModel = new EmployeeDetailModel()
+                {
+                    Employee = employee,
+                    ListIssuesModel = new ListIssuesModel()
+                    {
+                        Issues = issueFacade.GetIssuesByAssignedEmployee(userId)
+                    }
+                };
+            }
+            /* Get customer data if any */
+            var customer = customerFacade.GetCustomerById(userId);
+            if (customer != null)
+            {
+                model.CustomerDetailModel = new CustomerDetailModel()
+                {
+                    Customer = customer,
+                    ListProjectsModel = new ListProjectsModel()
+                    {
+                        Projects = projectFacade.GetProjectsByCustomer(userId)
+                    }
+                };
+            }
+            return View("UserDetail", model);
+        }
+
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -114,19 +176,12 @@ namespace PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = new UserDTO
-                //{
-                //    UserName = model.UserName,
-                //    Email = model.Email,
-                //    Password = model.Password,
-                //};
                 model.User.Password = model.Password;
-                userFacade.Register(model.User);
+                userFacade.Create(model.User);
 
                 return RedirectToAction("Index", "Home");
             }
-
-            // If we got this far, something failed, redisplay form
+            
             return View(model);
         }
 
@@ -136,6 +191,40 @@ namespace PresentationLayer.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult EditAccount()
+        {
+            int userId = User.Identity.GetUserId<int>();
+            var user = userFacade.GetUserById(userId);
+            var model = new EditAccountModel()
+            {
+                UserName = user.UserName,
+                Name = user.Name,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth
+            };
+            return View("EditAccount", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAccount(EditAccountModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            int userId = User.Identity.GetUserId<int>();
+            var user = userFacade.GetUserById(userId);
+            user.UserName = model.UserName;
+            user.Name = model.Name;
+            user.Address = model.Address;
+            user.PhoneNumber = model.PhoneNumber;
+            user.DateOfBirth = model.DateOfBirth;
+            userFacade.UpdateUser(user);
+            return RedirectToAction("UserDetail");
         }
     }
 }

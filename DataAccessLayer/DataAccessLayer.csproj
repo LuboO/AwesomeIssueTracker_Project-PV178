@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201605251524511_BugFix.Designer.cs">
       <DependentUpon>201605251524511_BugFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605252118521_name.cs" />
+    <Compile Include="Migrations\201605252118521_name.Designer.cs">
+      <DependentUpon>201605252118521_name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -115,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605251524511_BugFix.resx">
       <DependentUpon>201605251524511_BugFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605252118521_name.resx">
+      <DependentUpon>201605252118521_name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

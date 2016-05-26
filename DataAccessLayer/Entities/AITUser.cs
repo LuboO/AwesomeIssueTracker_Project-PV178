@@ -12,7 +12,7 @@ namespace DataAccessLayer.Entities
         /// Required name of Person
         /// </summary>
         [Required, MaxLength(64)]
-        public override string UserName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Required email of Person
@@ -71,7 +71,7 @@ namespace DataAccessLayer.Entities
 
         public override string ToString()
         {
-            return $"User {Id}: {UserName}, {Email}";
+            return $"User {Id}: {Name}, {Email}";
         }
     }
 }

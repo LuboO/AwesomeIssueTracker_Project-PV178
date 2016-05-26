@@ -1,0 +1,97 @@
+﻿@model PresentationLayer.Models.User.UserDetailModel
+
+@{
+    ViewBag.Title = Model.User.UserName;
+}
+
+<h2 style="text-align:left">
+    User
+    <span style="float:right">
+        @Html.ActionLink("Edit User", "EditAccount", "User", new {}, new { @class = "btn btn-primary"})
+        @Html.ActionLink("Delete User", "DeleteAccount", "User", new {}, new { @class = "btn btn-danger"})
+    </span>
+</h2>
+<hr/>
+
+<h4>Personal information</h4>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <td>@Model.User.Id</td>
+    </tr>
+    <tr>
+        <th>Username</th>
+        <td>@Model.User.UserName</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.User.Name</td>
+    </tr>
+    <tr>
+        <th>E-Mail</th>
+        <td>@Model.User.Email</td>
+    </tr>
+    <tr>
+        <th>Date of birth</th>
+        @if(Model.User.DateOfBirth == null) {
+        <td>Unknown</td>
+        } else {
+        <td>@String.Format("{0:dd.MM.yyyy}", Model.User.DateOfBirth)</td>
+        }
+    </tr>
+    <tr>
+        <th>Address</th>
+        @if(String.IsNullOrEmpty(Model.User.Address)) {
+        <td>Unknown</td>
+        } else {
+        <td>@Model.User.Address</td>
+        }
+    </tr>
+    <tr>
+        <th>Phone</th>
+        @if(String.IsNullOrEmpty(Model.User.PhoneNumber)) {
+        <td>Unknown</td>
+        } else {
+        <td>@Model.User.PhoneNumber</td>
+        }
+    </tr>
+</table>
+<hr/>
+<h4>Created issues</h4>
+<a class="btn btn-link" data-toggle="collapse" data-target="#created-issues">Click to toggle</a>
+<div id="created-issues" class="collapse">
+    @{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }
+</div>
+<hr/>
+<h4>Posted comments</h4>
+<a class="btn btn-link" data-toggle="collapse" data-target="#comments">Click to toggle</a>
+<div id="comments" class="collapse">
+    @{ Html.RenderPartial("~/Views/Comment/ListComments.cshtml", Model.ListCommentsModel); }
+</div>
+@{
+    if(Model.EmployeeDetailModel != null) {
+    <hr />
+    <h2 style="text-align:left">
+        Employee
+        <span style="float:right">
+            @Html.ActionLink("Edit employee", "EditEmployee", "Employee", new { employeeId = Model.User.Id }, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Delete employee", "DeleteEmployee", "Employee", new { employeeId = Model.User.Id}, new { @class = "btn btn-danger"})
+        </span>
+    </h2>
+            Html.RenderPartial("~/Views/Employee/EmployeeDetail.cshtml", Model.EmployeeDetailModel);
+    }
+}
+
+@{
+    if(Model.CustomerDetailModel != null) {
+    <hr/>
+    <h2 style="text-align:left">
+        Customer
+        <span style="float:right">
+            @Html.ActionLink("Edit customer", "EditCustomer", "Customer", new { customerId = Model.User.Id }, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Delete customer", "DeleteCustomer", "Customer", new { customerId = Model.User.Id}, new { @class = "btn btn-danger"})
+        </span>
+    </h2>
+            Html.RenderPartial("~/Views/Customer/CustomerDetail.cshtml", Model.CustomerDetailModel);
+        }
+}
