@@ -9,25 +9,25 @@ namespace DataAccessLayer.Entities
     public class AITUser : IdentityUser<int, AITUserLogin, AITUserRole, AITUserClaim>
     {
         /// <summary>
-        /// Required name of Person
+        /// Required name of User
         /// </summary>
         [Required, MaxLength(64)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Required email of Person
+        /// Required email of User
         /// </summary>
         [Required, MaxLength(64), Index(IsUnique = true)]
         public override string Email { get; set; }
 
         /// <summary>
-        /// Optional adress of Person
+        /// Optional adress of User
         /// </summary>
         [MaxLength(256)]
         public string Address { get; set; }
 
         /// <summary>
-        /// Optional phone number of Person
+        /// Optional phone number of User
         /// </summary>
         [MaxLength(64)]
         public override string PhoneNumber { get; set; }

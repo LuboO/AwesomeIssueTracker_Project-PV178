@@ -100,8 +100,8 @@ namespace BussinesLayer.Facades
                 NotificationRepository.Delete(notifications);
 
                 var issues = context.Issues
-                .Where(i => i.CreatorId == user.Id)
-                .ToList();
+                    .Where(i => i.CreatorId == user.Id)
+                    .ToList();
                 IssueRepository.Delete(issues);
 
                 var employees = context.Employees
