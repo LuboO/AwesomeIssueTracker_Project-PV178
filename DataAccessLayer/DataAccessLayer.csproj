@@ -86,6 +86,7 @@
     <Compile Include="Enums\CustomerType.cs" />
     <Compile Include="Enums\IssueStatus.cs" />
     <Compile Include="Enums\IssueType.cs" />
+    <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Migrations\201606051034285_Initial.cs" />
     <Compile Include="Migrations\201606051034285_Initial.Designer.cs">
       <DependentUpon>201606051034285_Initial.cs</DependentUpon>

@@ -23,8 +23,8 @@ namespace BussinesLayer
             Mapper.CreateMap<NotificationDTO, Notification>();
             Mapper.CreateMap<Notification, NotificationDTO>();
 
-            Mapper.CreateMap<PersonDTO, Person>();
-            Mapper.CreateMap<Person, PersonDTO>();
+            //Mapper.CreateMap<PersonDTO, Person>();
+            //Mapper.CreateMap<Person, PersonDTO>();
 
             Mapper.CreateMap<ProjectDTO, Project>();
             Mapper.CreateMap<Project, ProjectDTO>();

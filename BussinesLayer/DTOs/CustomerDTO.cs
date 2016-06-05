@@ -8,13 +8,13 @@ namespace BussinesLayer.DTOs
         public int Id { get; set; }
 
         [Required]
-        public PersonDTO Person { get; set; }
+        public UserDTO User { get; set; }
 
         public CustomerType Type { get; set; }
 
         public override string ToString()
         {
-            return $"Customer {Id}: {Person.Name}";
+            return $"Customer {Id}: {User.Name}";
         }
     }
 }

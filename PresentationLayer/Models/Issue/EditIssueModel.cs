@@ -57,7 +57,7 @@ namespace PresentationLayer.Models.Issue
                     .Select(e => new SelectListItem
                     {
                         Value = e.Id.ToString(),
-                        Text = e.Person.Name
+                        Text = e.User.Name
                     });
                 return rval;
             }

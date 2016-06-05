@@ -31,7 +31,7 @@ namespace BussinesLayer.DTOs
         public EmployeeDTO AssignedEmployee { get; set; }
 
         [Required]
-        public PersonDTO Creator { get; set; }
+        public UserDTO Creator { get; set; }
 
         public override string ToString()
         {

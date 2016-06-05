@@ -7,11 +7,11 @@ namespace BussinesLayer.DTOs
         public int Id { get; set; }
 
         [Required]
-        public PersonDTO Person { get; set; }
+        public UserDTO User { get; set; }
 
         public override string ToString()
         {
-            return $"Employee {Id}: {Person.Name}";
+            return $"Employee {Id}: {User.Name}";
         }
     }
 }

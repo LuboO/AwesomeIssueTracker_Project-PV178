@@ -7,18 +7,18 @@ using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
+using System;
+using Microsoft.AspNet.Identity;
 
 namespace BussinesLayer.Facades
 {
     public class IssueFacade : AITBaseFacade
     {
-        // Facades removed as they should be, I forgot to do that before
-        // turning in BussinesLayer.
         public IssueRepository IssueRepository { get; set; }
 
         public ProjectRepository ProjectRepository { get; set; }
-
-        public PersonRepository PersonRepository { get; set; }
+        
+        public Func<AITUserManager> UserManagerFactory { get; set; }
 
         public EmployeeRepository EmployeeRepository { get; set; }
 
@@ -35,12 +35,15 @@ namespace BussinesLayer.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Issue>(issue);
-                created.Project = ProjectRepository.GetById(projectId);
-                created.Creator = PersonRepository.GetById(creatorId);
-                created.AssignedEmployee = EmployeeRepository.GetById(employeeId);
-                IssueRepository.Insert(created);
-                uow.Commit();
+                using (var userManager = UserManagerFactory.Invoke())
+                {
+                    var created = Mapper.Map<Issue>(issue);
+                    created.Project = ProjectRepository.GetById(projectId);
+                    created.Creator = userManager.FindById(creatorId);
+                    created.AssignedEmployee = EmployeeRepository.GetById(employeeId);
+                    IssueRepository.Insert(created);
+                    uow.Commit();
+                }
             }
         }
 
@@ -58,13 +61,16 @@ namespace BussinesLayer.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var retrieved = IssueRepository.GetById(issue.Id);
-                Mapper.Map(issue, retrieved);
-                retrieved.Project = ProjectRepository.GetById(projectId);
-                retrieved.Creator = PersonRepository.GetById(creatorId);
-                retrieved.AssignedEmployee = EmployeeRepository.GetById(employeeId);
-                IssueRepository.Update(retrieved);
-                uow.Commit();
+                using (var userManager = UserManagerFactory.Invoke())
+                {
+                    var retrieved = IssueRepository.GetById(issue.Id);
+                    Mapper.Map(issue, retrieved);
+                    retrieved.Project = ProjectRepository.GetById(projectId);
+                    retrieved.Creator = userManager.FindById(creatorId);
+                    retrieved.AssignedEmployee = EmployeeRepository.GetById(employeeId);
+                    IssueRepository.Update(retrieved);
+                    uow.Commit();
+                }
             }
         }
 

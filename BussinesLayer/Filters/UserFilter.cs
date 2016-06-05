@@ -1,8 +1,10 @@
 ﻿namespace BussinesLayer.Filters
 {
-    public class PersonFilter
+    public class UserFilter
     {
-        public int? PersonId { get; set; }
+        public int? UserId { get; set; }
+
+        public string UserName { get; set; }
 
         public string Name { get; set; }
 

@@ -19,7 +19,7 @@ namespace BussinesLayer.DTOs
         public IssueDTO Issue { get; set; }
 
         [Required]
-        public PersonDTO Author { get; set; }
+        public UserDTO Author { get; set; }
 
         public override string ToString()
         {

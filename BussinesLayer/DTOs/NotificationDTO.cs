@@ -13,11 +13,11 @@ namespace BussinesLayer.DTOs
         public IssueDTO Issue { get; set; }
 
         [Required]
-        public PersonDTO Person { get; set; }
+        public UserDTO User { get; set; }
 
         public override string ToString()
         {
-            return $"Notification {Id}: {Person.Name}, {Issue.Title}: {NotifyByEmail}";
+            return $"Notification {Id}: {User.Name}, {Issue.Title}: {NotifyByEmail}";
         }
     }
 }

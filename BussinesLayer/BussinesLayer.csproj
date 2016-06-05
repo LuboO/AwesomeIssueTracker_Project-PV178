@@ -107,7 +107,6 @@
     <Compile Include="Filters\IssueFilter.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="Filters\NotificationFilter.cs" />
-    <Compile Include="DTOs\PersonDTO.cs" />
     <Compile Include="Filters\PersonFilter.cs" />
     <Compile Include="DTOs\ProjectDTO.cs" />
     <Compile Include="Filters\ProjectFilter.cs" />
@@ -116,8 +115,8 @@
     <Compile Include="Facades\EmployeeFacade.cs" />
     <Compile Include="Facades\IssueFacade.cs" />
     <Compile Include="Facades\NotificationFacade.cs" />
-    <Compile Include="Facades\PersonFacade.cs" />
     <Compile Include="Facades\ProjectFacade.cs" />
+    <Compile Include="Filters\UserFilter.cs" />
     <Compile Include="IAITUnitOfWork.cs" />
     <Compile Include="IAITUnitOfWorkProvider.cs" />
     <Compile Include="Installer.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Queries\NotificationListQuery.cs" />
     <Compile Include="Queries\PersonListQuery.cs" />
     <Compile Include="Queries\ProjectListQuery.cs" />
+    <Compile Include="Queries\UserListQuery.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />

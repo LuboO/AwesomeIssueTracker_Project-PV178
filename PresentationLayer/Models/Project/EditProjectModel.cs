@@ -21,7 +21,7 @@ namespace PresentationLayer.Models.Project
                     .Select(c => new SelectListItem
                     {
                         Value = c.Id.ToString(),
-                        Text = c.Person.Name
+                        Text = c.User.Name
                     });
                 return rval;
             }
