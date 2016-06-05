@@ -107,7 +107,6 @@
     <Compile Include="Filters\IssueFilter.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="Filters\NotificationFilter.cs" />
-    <Compile Include="Filters\PersonFilter.cs" />
     <Compile Include="DTOs\ProjectDTO.cs" />
     <Compile Include="Filters\ProjectFilter.cs" />
     <Compile Include="Facades\CommentFacade.cs" />
@@ -127,7 +126,6 @@
     <Compile Include="Queries\EmployeeListQuery.cs" />
     <Compile Include="Queries\IssueListQuery.cs" />
     <Compile Include="Queries\NotificationListQuery.cs" />
-    <Compile Include="Queries\PersonListQuery.cs" />
     <Compile Include="Queries\ProjectListQuery.cs" />
     <Compile Include="Queries\UserListQuery.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
@@ -135,7 +133,6 @@
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs" />
     <Compile Include="Repositories\NotificationRepository.cs" />
-    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
   </ItemGroup>
   <ItemGroup>

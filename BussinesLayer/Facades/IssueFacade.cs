@@ -9,6 +9,7 @@ using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
 using System;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity.Core;
 
 namespace BussinesLayer.Facades
 {
@@ -33,14 +34,29 @@ namespace BussinesLayer.Facades
 
         public void CreateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
         {
+            if (issue == null)
+                throw new ArgumentNullException("issue");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 using (var userManager = UserManagerFactory.Invoke())
                 {
                     var created = Mapper.Map<Issue>(issue);
+                    if (created == null)
+                        return;
+
                     created.Project = ProjectRepository.GetById(projectId);
+                    if (created.Project == null)
+                        throw new ObjectNotFoundException("Project hasn't been found");
+
                     created.Creator = userManager.FindById(creatorId);
+                    if (created.Creator == null)
+                        throw new ObjectNotFoundException("Creator hasn't been found");
+
                     created.AssignedEmployee = EmployeeRepository.GetById(employeeId);
+                    if (created.AssignedEmployee == null)
+                        throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
+
                     IssueRepository.Insert(created);
                     uow.Commit();
                 }
@@ -51,23 +67,40 @@ namespace BussinesLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var issue = IssueRepository
-                    .GetById(issueId);
+                var issue = IssueRepository.GetById(issueId);
+                if (issue == null)
+                    return null;
+
                 return Mapper.Map<IssueDTO>(issue);
             }
         }
 
         public void UpdateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
         {
+            if (issue == null)
+                throw new ArgumentNullException("issue");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 using (var userManager = UserManagerFactory.Invoke())
                 {
                     var retrieved = IssueRepository.GetById(issue.Id);
+                    if (retrieved == null)
+                        throw new ObjectNotFoundException("Issue not found");
+
                     Mapper.Map(issue, retrieved);
                     retrieved.Project = ProjectRepository.GetById(projectId);
+                    if (retrieved.Project == null)
+                        throw new ObjectNotFoundException("Project hasn't been found");
+
                     retrieved.Creator = userManager.FindById(creatorId);
+                    if (retrieved.Creator == null)
+                        throw new ObjectNotFoundException("Creator hasn't been found");
+
                     retrieved.AssignedEmployee = EmployeeRepository.GetById(employeeId);
+                    if (retrieved.AssignedEmployee == null)
+                        throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
+
                     IssueRepository.Update(retrieved);
                     uow.Commit();
                 }
@@ -76,23 +109,16 @@ namespace BussinesLayer.Facades
 
         public void DeleteIssue(IssueDTO issue)
         {
+            if (issue == null)
+                throw new ArgumentNullException("issue");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var deleted = IssueRepository.GetById(issue.Id);
-                IssueRepository.Delete(deleted);
-                uow.Commit();
-            }
-        }
+                if (deleted == null)
+                    throw new ObjectNotFoundException("Issue hasn't been found");
 
-        public void DeleteIssue(IEnumerable<IssueDTO> issues)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                foreach (var i in issues)
-                {
-                    var deleted = IssueRepository.GetById(i.Id);
-                    IssueRepository.Delete(deleted);
-                }
+                IssueRepository.Delete(deleted);
                 uow.Commit();
             }
         }

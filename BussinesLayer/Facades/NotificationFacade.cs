@@ -7,6 +7,8 @@ using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
+using System;
+using System.Data.Entity.Core;
 
 namespace BussinesLayer.Facades
 {
@@ -25,9 +27,15 @@ namespace BussinesLayer.Facades
 
         public void CreateNotification(NotificationDTO notification)
         {
+            if (notification == null)
+                throw new ArgumentNullException("notification");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Notification>(notification);
+                if (created == null)
+                    return;
+
                 NotificationRepository.Insert(created);
                 uow.Commit();
             }
@@ -37,17 +45,25 @@ namespace BussinesLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var Notification = NotificationRepository
-                    .GetById(notificationId);
-                return Mapper.Map<NotificationDTO>(Notification);
+                var notification = NotificationRepository.GetById(notificationId);
+                if (notification == null)
+                    return null;
+
+                return Mapper.Map<NotificationDTO>(notification);
             }
         }
 
         public void UpdateNotification(NotificationDTO notification)
         {
+            if (notification == null)
+                throw new ArgumentNullException("notification");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = NotificationRepository.GetById(notification.Id);
+                if (retrieved == null)
+                    throw new ObjectNotFoundException("Notification not found");
+
                 Mapper.Map(notification, retrieved);
                 NotificationRepository.Update(retrieved);
                 uow.Commit();
@@ -56,23 +72,16 @@ namespace BussinesLayer.Facades
 
         public void DeleteNotification(NotificationDTO notification)
         {
+            if (notification == null)
+                throw new ArgumentNullException("notification");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var deleted = NotificationRepository.GetById(notification.Id);
-                NotificationRepository.Delete(deleted);
-                uow.Commit();
-            }
-        }
+                if (deleted == null)
+                    throw new ObjectNotFoundException("Notification not found");
 
-        public void DeleteNotification(IEnumerable<NotificationDTO> notifications)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                foreach (var n in notifications)
-                {
-                    var deleted = NotificationRepository.GetById(n.Id);
-                    NotificationRepository.Delete(deleted);
-                }
+                NotificationRepository.Delete(deleted);
                 uow.Commit();
             }
         }

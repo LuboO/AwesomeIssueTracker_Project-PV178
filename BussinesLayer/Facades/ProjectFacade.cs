@@ -7,6 +7,8 @@ using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
+using System;
+using System.Data.Entity.Core;
 
 namespace BussinesLayer.Facades
 {
@@ -27,10 +29,19 @@ namespace BussinesLayer.Facades
 
         public void CreateProject(ProjectDTO project, int customerId)
         {
+            if (project == null)
+                throw new ArgumentNullException("project");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Project>(project);
+                if (created == null)
+                    return;
+
                 created.Customer = CustomerRepository.GetById(customerId);
+                if (created.Customer == null)
+                    throw new ObjectNotFoundException("Customer not found");
+
                 ProjectRepository.Insert(created);
                 uow.Commit();
             }
@@ -40,19 +51,30 @@ namespace BussinesLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var Project = ProjectRepository
-                    .GetById(projectId);
-                return Mapper.Map<ProjectDTO>(Project);
+                var project = ProjectRepository.GetById(projectId);
+                if (project == null)
+                    return null;
+
+                return Mapper.Map<ProjectDTO>(project);
             }
         }
 
         public void UpdateProject(ProjectDTO project, int customerId)
         {
+            if (project == null)
+                throw new ArgumentNullException("project");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = ProjectRepository.GetById(project.Id);
+                if (retrieved == null)
+                    throw new ObjectNotFoundException("Project not found");
+
                 Mapper.Map(project, retrieved);
                 retrieved.Customer = CustomerRepository.GetById(customerId);
+                if (retrieved.Customer == null)
+                    throw new ObjectNotFoundException("Customer not found");
+
                 ProjectRepository.Update(retrieved);
                 uow.Commit();
             }
@@ -60,22 +82,16 @@ namespace BussinesLayer.Facades
 
         public void DeleteProject(ProjectDTO project)
         {
+            if (project == null)
+                throw new ArgumentNullException("project");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var deleted = ProjectRepository.GetById(project.Id);
-                ProjectRepository.Delete(deleted);
-                uow.Commit();
-            }
-        }
+                if (deleted == null)
+                    throw new ObjectNotFoundException("Project not found");
 
-        public void DeleteProject(IEnumerable<ProjectDTO> projects)
-        {
-            using(var uow = UnitOfWorkProvider.Create())
-            {
-                foreach (var p in projects) {
-                    var deleted = ProjectRepository.GetById(p.Id);
-                    ProjectRepository.Delete(deleted);
-                }
+                ProjectRepository.Delete(deleted);
                 uow.Commit();
             }
         }

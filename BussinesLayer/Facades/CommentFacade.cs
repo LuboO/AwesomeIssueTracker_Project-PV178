@@ -7,6 +7,8 @@ using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
+using System;
+using System.Data.Entity.Core;
 
 namespace BussinesLayer.Facades
 {
@@ -25,6 +27,9 @@ namespace BussinesLayer.Facades
 
         public void CreateComment(CommentDTO comment)
         {
+            if (comment == null)
+                throw new ArgumentNullException("comment");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Comment>(comment);
@@ -37,17 +42,25 @@ namespace BussinesLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var comment = CommentRepository
-                    .GetById(commentId);
+                var comment = CommentRepository.GetById(commentId);
+                if (comment == null)
+                    return null;
+
                 return Mapper.Map<CommentDTO>(comment);
             }
         }
 
         public void UpdateComment(CommentDTO comment)
         {
+            if (comment == null)
+                throw new ArgumentNullException("comment");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = CommentRepository.GetById(comment.Id);
+                if (retrieved == null)
+                    throw new ObjectNotFoundException("Comment hasn't been found");
+
                 Mapper.Map(comment, retrieved);
                 CommentRepository.Update(retrieved);
                 uow.Commit();
@@ -56,23 +69,16 @@ namespace BussinesLayer.Facades
 
         public void DeleteComment(CommentDTO comment)
         {
+            if (comment == null)
+                throw new ArgumentNullException("comment");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var deleted = CommentRepository.GetById(comment.Id);
-                CommentRepository.Delete(deleted);
-                uow.Commit();
-            }
-        }
+                if (deleted == null)
+                    throw new ObjectNotFoundException("Comment hasn't been found");
 
-        public void DeleteComment(IEnumerable<CommentDTO> comments)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                foreach (var c in comments)
-                {
-                    var deleted = CommentRepository.GetById(c.Id);
-                    CommentRepository.Delete(deleted);
-                }
+                CommentRepository.Delete(deleted);
                 uow.Commit();
             }
         }

@@ -7,6 +7,8 @@ using BussinesLayer.Queries;
 using Riganti.Utils.Infrastructure.Core;
 using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
+using System;
+using System.Data.Entity.Core;
 
 namespace BussinesLayer.Facades
 {
@@ -25,9 +27,15 @@ namespace BussinesLayer.Facades
 
         public void CreateEmployee(EmployeeDTO employee)
         {
+            if (employee == null)
+                throw new ArgumentNullException("employee");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Employee>(employee);
+                if (created == null)
+                    return;
+
                 EmployeeRepository.Insert(created);
                 uow.Commit();
             }
@@ -37,17 +45,25 @@ namespace BussinesLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var employee = EmployeeRepository
-                    .GetById(employeeId);
+                var employee = EmployeeRepository.GetById(employeeId);
+                if (employee == null)
+                    return null;
+
                 return Mapper.Map<EmployeeDTO>(employee);
             }
         }
 
         public void UpdateEmployee(EmployeeDTO employee)
         {
+            if (employee == null)
+                throw new ArgumentNullException("employee");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var retrieved = EmployeeRepository.GetById(employee.Id);
+                if (retrieved == null)
+                    throw new ObjectNotFoundException("Employee hasn't been found");
+
                 Mapper.Map(employee, retrieved);
                 EmployeeRepository.Update(retrieved);
                 uow.Commit();
@@ -56,23 +72,16 @@ namespace BussinesLayer.Facades
 
         public void DeleteEmployee(EmployeeDTO employee)
         {
+            if (employee == null)
+                throw new ArgumentNullException("employee");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var deleted = EmployeeRepository.GetById(employee.Id);
-                EmployeeRepository.Delete(deleted);
-                uow.Commit();
-            }
-        }
+                if (deleted == null)
+                    throw new ObjectNotFoundException("Employee hasn't been found");
 
-        public void DeleteEmployee(IEnumerable<EmployeeDTO> employees)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                foreach (var e in employees)
-                {
-                    var deleted = EmployeeRepository.GetById(e.Id);
-                    EmployeeRepository.Delete(deleted);
-                }
+                EmployeeRepository.Delete(deleted);
                 uow.Commit();
             }
         }

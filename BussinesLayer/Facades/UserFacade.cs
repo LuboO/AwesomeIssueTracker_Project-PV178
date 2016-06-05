@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Riganti.Utils.Infrastructure.Core;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Security.Claims;
 
@@ -39,12 +40,18 @@ namespace BussinesLayer.Facades
 
         public void Create(UserDTO user)
         {
+            if (user == null)
+                throw new ArgumentNullException("user");
+
             using (UnitOfWorkProvider.Create())
             {
                 using (var userManager = UserManagerFactory.Invoke())
                 {
-                    var aitUser = Mapper.Map<AITUser>(user);
-                    userManager.Create(aitUser, user.Password);
+                    var created = Mapper.Map<AITUser>(user);
+                    if (created == null)
+                        return;
+
+                    userManager.Create(created, user.Password);
                 }
             }
         }
@@ -66,11 +73,17 @@ namespace BussinesLayer.Facades
 
         public void UpdateUser(UserDTO user)
         {
+            if (user == null)
+                throw new ArgumentNullException("user");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
                 using (var userManager = UserManagerFactory.Invoke())
                 {
                     var retrieved = userManager.FindById(user.Id);
+                    if (retrieved == null)
+                        throw new ObjectNotFoundException("User hasn't been found");
+
                     Mapper.Map(user, retrieved);
                     userManager.Update(retrieved);
                 }
@@ -80,41 +93,47 @@ namespace BussinesLayer.Facades
 
         public void DeleteUser(UserDTO user)
         {
+            if (user == null)
+                throw new ArgumentNullException("user");
+
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var context = ((IAITUnitOfWork)uow).AITDbContext;
-
-                var comments = context.Comments
-                    .Where(c => c.AuthorId == user.Id)
-                    .ToList();
-                CommentRepository.Delete(comments);
-
-                var notifications = context.Notifications
-                    .Where(n => n.PersonId == user.Id)
-                    .ToList();
-                NotificationRepository.Delete(notifications);
-
-                var issues = context.Issues
-                    .Where(i => i.CreatorId == user.Id)
-                    .ToList();
-                IssueRepository.Delete(issues);
-
-                var employees = context.Employees
-                    .Where(e => e.Id == user.Id)
-                    .ToList();
-                EmployeeRepository.Delete(employees);
-
-                var customers = context.Customers
-                    .Where(c => c.Id == user.Id)
-                    .ToList();
-                CustomerRepository.Delete(customers);
-
                 using (var userManager = UserManagerFactory.Invoke())
                 {
                     var deleted = userManager.FindById(user.Id);
+                    if (deleted == null)
+                        throw new ObjectNotFoundException("User hasn't been found");
+
+                    var context = ((IAITUnitOfWork)uow).AITDbContext;
+
+                    var comments = context.Comments
+                        .Where(c => c.AuthorId == user.Id)
+                        .ToList();
+                    CommentRepository.Delete(comments);
+
+                    var notifications = context.Notifications
+                        .Where(n => n.PersonId == user.Id)
+                        .ToList();
+                    NotificationRepository.Delete(notifications);
+
+                    var issues = context.Issues
+                        .Where(i => i.CreatorId == user.Id)
+                        .ToList();
+                    IssueRepository.Delete(issues);
+
+                    var employees = context.Employees
+                        .Where(e => e.Id == user.Id)
+                        .ToList();
+                    EmployeeRepository.Delete(employees);
+
+                    var customers = context.Customers
+                        .Where(c => c.Id == user.Id)
+                        .ToList();
+                    CustomerRepository.Delete(customers);
+
                     userManager.Delete(deleted);
+                    uow.Commit();
                 }
-                uow.Commit();
             }
         }
 
@@ -160,6 +179,9 @@ namespace BussinesLayer.Facades
 
         public ClaimsIdentity Login(string email, string password)
         {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                return null;
+
             using (UnitOfWorkProvider.Create())
             {
                 using (var userManager = UserManagerFactory.Invoke())
@@ -214,7 +236,7 @@ namespace BussinesLayer.Facades
                 {
                     var user = userManager.FindById(userId);
                     if (user == null)
-                        return;
+                        throw new ObjectNotFoundException("User hasn't been found");
 
                     if (!CheckUserAlreadyHasRole(userManager, user.Id, role))
                         userManager.AddToRole(user.Id, role);
@@ -232,7 +254,7 @@ namespace BussinesLayer.Facades
                 {
                     var user = userManager.FindById(userId);
                     if (user == null)
-                        return;
+                        throw new ObjectNotFoundException("User hasn't been found");
 
                     if (CheckUserAlreadyHasRole(userManager, user.Id, role))
                         userManager.RemoveFromRole(user.Id, role);
