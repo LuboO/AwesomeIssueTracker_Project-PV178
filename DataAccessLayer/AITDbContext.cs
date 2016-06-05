@@ -30,8 +30,6 @@ namespace DataAccessLayer
 
         public DbSet<Notification> Notifications { get; set; }
 
-        public DbSet<Person> People { get; set; }
-
         public DbSet<Project> Projects { get; set; }
     }
 }

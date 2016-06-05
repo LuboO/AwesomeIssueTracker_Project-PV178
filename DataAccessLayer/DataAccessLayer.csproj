@@ -82,26 +82,13 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\Issue.cs" />
     <Compile Include="Entities\Notification.cs" />
-    <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\Project.cs" />
     <Compile Include="Enums\CustomerType.cs" />
     <Compile Include="Enums\IssueStatus.cs" />
     <Compile Include="Enums\IssueType.cs" />
-    <Compile Include="Migrations\201605221343163_Initial.cs" />
-    <Compile Include="Migrations\201605221343163_Initial.Designer.cs">
-      <DependentUpon>201605221343163_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605251512554_UserExtended.cs" />
-    <Compile Include="Migrations\201605251512554_UserExtended.Designer.cs">
-      <DependentUpon>201605251512554_UserExtended.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605251524511_BugFix.cs" />
-    <Compile Include="Migrations\201605251524511_BugFix.Designer.cs">
-      <DependentUpon>201605251524511_BugFix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605252118521_name.cs" />
-    <Compile Include="Migrations\201605252118521_name.Designer.cs">
-      <DependentUpon>201605252118521_name.cs</DependentUpon>
+    <Compile Include="Migrations\201606051034285_Initial.cs" />
+    <Compile Include="Migrations\201606051034285_Initial.Designer.cs">
+      <DependentUpon>201606051034285_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,17 +98,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605221343163_Initial.resx">
-      <DependentUpon>201605221343163_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605251512554_UserExtended.resx">
-      <DependentUpon>201605251512554_UserExtended.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605251524511_BugFix.resx">
-      <DependentUpon>201605251524511_BugFix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605252118521_name.resx">
-      <DependentUpon>201605252118521_name.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606051034285_Initial.resx">
+      <DependentUpon>201606051034285_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

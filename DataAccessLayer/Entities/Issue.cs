@@ -83,7 +83,7 @@ namespace DataAccessLayer.Entities
         /// Navigation property to linked Person
         /// </summary>
         [Required,ForeignKey("CreatorId")]
-        public virtual Person Creator { get; set; }
+        public virtual AITUser Creator { get; set; }
 
         /// <summary>
         /// Navigation property to linked Notifications

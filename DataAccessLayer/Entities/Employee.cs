@@ -13,12 +13,12 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Key as well as foreign key to Person
         /// </summary>
-        [ForeignKey("Person")]
+        [ForeignKey("User")]
         public int Id { get; set; }
         /// <summary>
         /// Navigational property to Person
         /// </summary>
-        public virtual Person Person { get; set; }
+        public virtual AITUser User { get; set; }
 
         /// <summary>
         /// Navigational property to Issues that were assigned to this Employee
@@ -32,7 +32,7 @@ namespace DataAccessLayer.Entities
 
         public override string ToString()
         {
-            return $"Employee {Id}: {Person.Name}";
+            return $"Employee {Id}: {User.Name}";
         }
     }
 }

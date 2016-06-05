@@ -53,7 +53,7 @@ namespace DataAccessLayer.Entities
         /// Navigation property to comment author
         /// </summary>
         [Required,ForeignKey("AuthorId")]
-        public virtual Person Author { get; set; }
+        public virtual AITUser Author { get; set; }
 
         public override string ToString()
         {

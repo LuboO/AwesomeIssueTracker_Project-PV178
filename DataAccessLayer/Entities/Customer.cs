@@ -16,13 +16,13 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Key as well as foreign key to Person
         /// </summary>
-        [ForeignKey("Person")]
+        [ForeignKey("User")]
         public int Id { get; set; }
 
         /// <summary>
         /// Navigational property to linked Person
         /// </summary>
-        public virtual Person Person { get; set; }
+        public virtual AITUser User { get; set; }
 
         /// <summary>
         /// Mandatory Type of the Customer, can be either NaturalPerson or LegalEntity
@@ -42,7 +42,7 @@ namespace DataAccessLayer.Entities
 
         public override string ToString()
         {
-            return $"Customer {Id}: {Person.Name}";
+            return $"Customer {Id}: {User.Name}";
         }
     }
 }

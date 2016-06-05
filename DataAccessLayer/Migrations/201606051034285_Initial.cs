@@ -19,24 +19,47 @@ namespace DataAccessLayer.Migrations
                         AuthorId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.People", t => t.AuthorId)
+                .ForeignKey("dbo.AspNetUsers", t => t.AuthorId)
                 .ForeignKey("dbo.Issues", t => t.IssueId)
                 .Index(t => t.IssueId)
                 .Index(t => t.AuthorId);
             
             CreateTable(
-                "dbo.People",
+                "dbo.AspNetUsers",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 64),
-                        Email = c.String(nullable: false, maxLength: 64),
-                        Adress = c.String(maxLength: 256),
-                        Phone = c.String(maxLength: 64),
+                        Email = c.String(nullable: false, maxLength: 256),
+                        Address = c.String(maxLength: 256),
+                        PhoneNumber = c.String(maxLength: 64),
                         DateOfBirth = c.DateTime(),
+                        EmailConfirmed = c.Boolean(nullable: false),
+                        PasswordHash = c.String(),
+                        SecurityStamp = c.String(),
+                        PhoneNumberConfirmed = c.Boolean(nullable: false),
+                        TwoFactorEnabled = c.Boolean(nullable: false),
+                        LockoutEndDateUtc = c.DateTime(),
+                        LockoutEnabled = c.Boolean(nullable: false),
+                        AccessFailedCount = c.Int(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
-                .Index(t => t.Email, unique: true);
+                .Index(t => t.Email, unique: true)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
+            
+            CreateTable(
+                "dbo.AspNetUserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(nullable: false),
+                        ClaimType = c.String(),
+                        ClaimValue = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.Customers",
@@ -46,7 +69,7 @@ namespace DataAccessLayer.Migrations
                         Type = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.People", t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Id)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -79,7 +102,7 @@ namespace DataAccessLayer.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Employees", t => t.AssignedEmployeeId)
-                .ForeignKey("dbo.People", t => t.CreatorId)
+                .ForeignKey("dbo.AspNetUsers", t => t.CreatorId)
                 .ForeignKey("dbo.Projects", t => t.ProjectId)
                 .Index(t => t.ProjectId)
                 .Index(t => t.AssignedEmployeeId)
@@ -92,7 +115,7 @@ namespace DataAccessLayer.Migrations
                         Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.People", t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Id)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -106,66 +129,9 @@ namespace DataAccessLayer.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Issues", t => t.IssueId)
-                .ForeignKey("dbo.People", t => t.PersonId)
+                .ForeignKey("dbo.AspNetUsers", t => t.PersonId)
                 .Index(t => t.IssueId)
                 .Index(t => t.PersonId);
-            
-            CreateTable(
-                "dbo.AspNetRoles",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 256),
-                    })
-                .PrimaryKey(t => t.Id)
-                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
-            CreateTable(
-                "dbo.AspNetUserRoles",
-                c => new
-                    {
-                        UserId = c.Int(nullable: false),
-                        RoleId = c.Int(nullable: false),
-                        Code = c.String(),
-                    })
-                .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .Index(t => t.UserId)
-                .Index(t => t.RoleId);
-            
-            CreateTable(
-                "dbo.AspNetUsers",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Email = c.String(maxLength: 256),
-                        EmailConfirmed = c.Boolean(nullable: false),
-                        PasswordHash = c.String(),
-                        SecurityStamp = c.String(),
-                        PhoneNumber = c.String(),
-                        PhoneNumberConfirmed = c.Boolean(nullable: false),
-                        TwoFactorEnabled = c.Boolean(nullable: false),
-                        LockoutEndDateUtc = c.DateTime(),
-                        LockoutEnabled = c.Boolean(nullable: false),
-                        AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(nullable: false, maxLength: 256),
-                    })
-                .PrimaryKey(t => t.Id)
-                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
-            
-            CreateTable(
-                "dbo.AspNetUserClaims",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserId = c.Int(nullable: false),
-                        ClaimType = c.String(),
-                        ClaimValue = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -179,30 +145,51 @@ namespace DataAccessLayer.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.AspNetUserRoles",
+                c => new
+                    {
+                        UserId = c.Int(nullable: false),
+                        RoleId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Comments", "IssueId", "dbo.Issues");
-            DropForeignKey("dbo.Comments", "AuthorId", "dbo.People");
+            DropForeignKey("dbo.Comments", "AuthorId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Customers", "Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Issues", "ProjectId", "dbo.Projects");
-            DropForeignKey("dbo.Notifications", "PersonId", "dbo.People");
+            DropForeignKey("dbo.Notifications", "PersonId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Notifications", "IssueId", "dbo.Issues");
-            DropForeignKey("dbo.Issues", "CreatorId", "dbo.People");
+            DropForeignKey("dbo.Issues", "CreatorId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Issues", "AssignedEmployeeId", "dbo.Employees");
-            DropForeignKey("dbo.Employees", "Id", "dbo.People");
+            DropForeignKey("dbo.Employees", "Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Projects", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.Customers", "Id", "dbo.People");
-            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.Notifications", new[] { "PersonId" });
             DropIndex("dbo.Notifications", new[] { "IssueId" });
             DropIndex("dbo.Employees", new[] { "Id" });
@@ -211,20 +198,21 @@ namespace DataAccessLayer.Migrations
             DropIndex("dbo.Issues", new[] { "ProjectId" });
             DropIndex("dbo.Projects", new[] { "CustomerId" });
             DropIndex("dbo.Customers", new[] { "Id" });
-            DropIndex("dbo.People", new[] { "Email" });
+            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
+            DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.AspNetUsers", new[] { "Email" });
             DropIndex("dbo.Comments", new[] { "AuthorId" });
             DropIndex("dbo.Comments", new[] { "IssueId" });
-            DropTable("dbo.AspNetUserLogins");
-            DropTable("dbo.AspNetUserClaims");
-            DropTable("dbo.AspNetUsers");
-            DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.AspNetUserRoles");
+            DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.Notifications");
             DropTable("dbo.Employees");
             DropTable("dbo.Issues");
             DropTable("dbo.Projects");
             DropTable("dbo.Customers");
-            DropTable("dbo.People");
+            DropTable("dbo.AspNetUserClaims");
+            DropTable("dbo.AspNetUsers");
             DropTable("dbo.Comments");
         }
     }

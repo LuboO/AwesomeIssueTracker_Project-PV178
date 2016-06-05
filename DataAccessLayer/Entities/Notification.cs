@@ -41,7 +41,7 @@ namespace DataAccessLayer.Entities
         /// Navigation property to Person
         /// </summary>
         [Required,ForeignKey("PersonId")]
-        public virtual Person Person { get; set; }
+        public virtual AITUser Person { get; set; }
 
         public override string ToString()
         {
