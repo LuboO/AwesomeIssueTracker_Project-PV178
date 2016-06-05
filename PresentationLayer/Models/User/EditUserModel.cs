@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PresentationLayer.Models.User
 {
-    public class EditAccountModel
+    public class EditUserModel
     {
         [Required]
         [Display(Name = "Username")]

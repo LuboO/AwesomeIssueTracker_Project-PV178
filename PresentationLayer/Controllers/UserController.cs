@@ -197,7 +197,7 @@ namespace PresentationLayer.Controllers
         {
             int userId = User.Identity.GetUserId<int>();
             var user = userFacade.GetUserById(userId);
-            var model = new EditAccountModel()
+            var model = new EditUserModel()
             {
                 UserName = user.UserName,
                 Name = user.Name,
@@ -210,7 +210,7 @@ namespace PresentationLayer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAccount(EditAccountModel model)
+        public ActionResult EditAccount(EditUserModel model)
         {
             if (!ModelState.IsValid)
             {

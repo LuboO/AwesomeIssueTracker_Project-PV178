@@ -2,8 +2,6 @@
 using BussinesLayer.Facades;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Employee;
-using PresentationLayer.Models.Person;
-using System;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers

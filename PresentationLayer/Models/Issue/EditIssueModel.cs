@@ -17,7 +17,8 @@ namespace PresentationLayer.Models.Issue
 
         public List<ProjectDTO> ExistingProjects { get; set; }
 
-        public List<PersonDTO> ExistingPeople { get; set; }
+        //public List<PersonDTO> ExistingPeople { get; set; }
+        public List<UserDTO> ExistingUsers { get; set; }
 
         public List<EmployeeDTO> ExistingEmployees { get; set; }
 
@@ -39,7 +40,7 @@ namespace PresentationLayer.Models.Issue
         {
             get
             {
-                var rval = ExistingPeople
+                var rval = ExistingUsers
                     .Select(p => new SelectListItem
                     {
                         Value = p.Id.ToString(),

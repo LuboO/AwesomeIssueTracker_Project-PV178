@@ -173,7 +173,7 @@
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\User\ChangeEmailModel.cs" />
     <Compile Include="Models\User\ChangePasswordModel.cs" />
-    <Compile Include="Models\User\EditAccountModel.cs" />
+    <Compile Include="Models\User\EditUserModel.cs" />
     <Compile Include="Models\User\LoginModel.cs" />
     <Compile Include="Models\User\RegisterModel.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />

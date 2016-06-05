@@ -1,15 +1,15 @@
-﻿using BussinesLayer.DTOs;
-using System.Collections.Generic;
+﻿//using BussinesLayer.DTOs;
+//using System.Collections.Generic;
 
-namespace PresentationLayer.Models.Person
-{
-    public class ViewAllPeopleModel
-    {
-        public List<PersonDTO> People { get; set; }
+//namespace PresentationLayer.Models.Person
+//{
+//    public class ViewAllPeopleModel
+//    {
+//        public List<PersonDTO> People { get; set; }
 
-        public ViewAllPeopleModel()
-        {
-            People = new List<PersonDTO>();
-        }
-    }
-}
+//        public ViewAllPeopleModel()
+//        {
+//            People = new List<PersonDTO>();
+//        }
+//    }
+//}

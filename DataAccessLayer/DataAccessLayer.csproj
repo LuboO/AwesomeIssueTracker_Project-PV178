@@ -87,9 +87,9 @@
     <Compile Include="Enums\IssueStatus.cs" />
     <Compile Include="Enums\IssueType.cs" />
     <Compile Include="Enums\UserRole.cs" />
-    <Compile Include="Migrations\201606051034285_Initial.cs" />
-    <Compile Include="Migrations\201606051034285_Initial.Designer.cs">
-      <DependentUpon>201606051034285_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201606051631388_Initial.cs" />
+    <Compile Include="Migrations\201606051631388_Initial.Designer.cs">
+      <DependentUpon>201606051631388_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,8 +99,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606051034285_Initial.resx">
-      <DependentUpon>201606051034285_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606051631388_Initial.resx">
+      <DependentUpon>201606051631388_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

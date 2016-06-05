@@ -14,20 +14,20 @@ namespace PresentationLayer.Controllers
         private readonly IssueFacade issueFacade;
         private readonly CommentFacade commentFacade;
         private readonly ProjectFacade projectFacade;
-        private readonly PersonFacade personFacade;
+        private readonly UserFacade userFacade;
         private readonly EmployeeFacade employeeFacade;
 
         public IssueController(
             IssueFacade issueFacade, 
             CommentFacade commentFacade, 
             ProjectFacade projectFacade,
-            PersonFacade personFacade,
+            UserFacade userFacade,
             EmployeeFacade employeeFacade)
         {
             this.issueFacade = issueFacade;
             this.commentFacade = commentFacade;
             this.projectFacade = projectFacade;
-            this.personFacade = personFacade;
+            this.userFacade = userFacade;
             this.employeeFacade = employeeFacade;
         }
 
@@ -62,7 +62,7 @@ namespace PresentationLayer.Controllers
             {
                 Issue = new IssueDTO(),
                 ExistingProjects = projectFacade.GetAllProjects(),
-                ExistingPeople = personFacade.GetAllPeople(),
+                ExistingUsers = userFacade.GetAllUsers(),
                 ExistingEmployees = employeeFacade.GetAllEmployees()
             };
             return View("CreateIssue", model);
@@ -85,7 +85,7 @@ namespace PresentationLayer.Controllers
             {
                 Issue = issueFacade.GetIssueById(issueId),
                 ExistingProjects = projectFacade.GetAllProjects(),
-                ExistingPeople = personFacade.GetAllPeople(),
+                ExistingUsers = userFacade.GetAllUsers(),
                 ExistingEmployees = employeeFacade.GetAllEmployees()
             };
             model.SelectedProjectId = model.Issue.Project.Id;

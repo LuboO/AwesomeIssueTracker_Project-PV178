@@ -2,11 +2,6 @@
 using BussinesLayer.Facades;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Customer;
-using PresentationLayer.Models.Person;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
@@ -14,13 +9,11 @@ namespace PresentationLayer.Controllers
     [CustomAuthorize(Roles = "Administrator")]
     public class CustomerController : Controller
     {
-        private readonly PersonFacade personFacade;
         private readonly CustomerFacade customerFacade;
         private readonly ProjectFacade projectFacade;
 
-        public CustomerController(PersonFacade personFacade, CustomerFacade customerFacade, ProjectFacade projectFacade)
+        public CustomerController(CustomerFacade customerFacade, ProjectFacade projectFacade)
         {
-            this.personFacade = personFacade;
             this.customerFacade = customerFacade;
             this.projectFacade = projectFacade;
         }
