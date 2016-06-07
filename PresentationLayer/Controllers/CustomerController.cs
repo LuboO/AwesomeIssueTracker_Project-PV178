@@ -32,16 +32,19 @@ namespace PresentationLayer.Controllers
         }
         
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult GrantCustomerRights(int userId)
+        public ActionResult GrantCustomerRights(int? userId)
         {
-            if(userFacade.IsUserCustomer(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
+
+            if (userFacade.IsUserCustomer(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
 
             var model = new EditCustomerModel()
             {
                 Customer = new CustomerDTO()
             };
-            model.Customer.User = userFacade.GetUserById(userId);
+            model.Customer.User = userFacade.GetUserById(userId.Value);
             return View("GrantCustomerRights", model);
         }
 
@@ -59,25 +62,31 @@ namespace PresentationLayer.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult RemoveCustomerRights(int userId)
+        public ActionResult RemoveCustomerRights(int? userId)
         {
-            if(!userFacade.IsUserCustomer(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
 
-            var customer = customerFacade.GetCustomerById(userId);
+            if (!userFacade.IsUserCustomer(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
+
+            var customer = customerFacade.GetCustomerById(userId.Value);
             customerFacade.DeleteCustomer(customer);
-            userFacade.RemoveCustomerRightsFromUser(userId);
-            return RedirectToAction("UserDetail", "User", new { userId = userId });
+            userFacade.RemoveCustomerRightsFromUser(userId.Value);
+            return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
         }
 
-        public ActionResult EditCustomer(int userId)
+        public ActionResult EditCustomer(int? userId)
         {
-            if(!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
+            if (!userId.HasValue)
+                return View("BadInput");
+
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId.Value))
                 return View("AccessForbidden");
 
             var model = new EditCustomerModel()
             {
-                Customer = customerFacade.GetCustomerById(userId)
+                Customer = customerFacade.GetCustomerById(userId.Value)
             };
             return View("EditCustomer", model);
         }

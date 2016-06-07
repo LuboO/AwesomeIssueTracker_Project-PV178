@@ -45,15 +45,18 @@ namespace PresentationLayer.Controllers
             return View("ViewAllIssues", model);
         }
 
-        public ActionResult IssueDetail(int issueId)
+        public ActionResult IssueDetail(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
             var model = new IssueDetailModel()
             {
                 Issue = issue,
                 ListCommentsModel = new ListCommentsModel()
                 {
-                    Comments = commentFacade.GetCommentsByIssue(issueId)
+                    Comments = commentFacade.GetCommentsByIssue(issueId.Value)
                 }
             };
             model.CanChangeState = User.IsInRole(UserRole.Administrator.ToString()) || 
@@ -64,11 +67,14 @@ namespace PresentationLayer.Controllers
             return View("IssueDetail", model);
         }
 
-        public ActionResult AddIssueToProject(int projectId)
+        public ActionResult AddIssueToProject(int? projectId)
         {
+            if (!projectId.HasValue)
+                return View("BadInput");
+
             var model = new EditIssueModel()
             {
-                ProjectId = projectId,
+                ProjectId = projectId.Value,
                 ExistingEmployees = employeeFacade.GetAllEmployees()
             };
             return View("AddIssueToProject", model);
@@ -90,16 +96,19 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("IssueDetail", new { issueId = newId });
         }
 
-        public ActionResult EditIssue(int issueId)
+        public ActionResult EditIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != issue.Creator.Id))
                 return View("AccessForbidden");
 
             var model = new EditIssueModel()
             {
-                IssueId = issueId,
+                IssueId = issueId.Value,
                 CreatorId = issue.Creator.Id,
                 ProjectId = issue.Project.Id,
                 SelectedEmployeeId = issue.AssignedEmployee.Id,
@@ -126,9 +135,12 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("IssueDetail", new { issueId = model.IssueId });
         }
 
-        public ActionResult DeleteIssue(int issueId)
+        public ActionResult DeleteIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != issue.Creator.Id))
                 return View("AccessForbidden");
@@ -138,18 +150,24 @@ namespace PresentationLayer.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult AcceptIssue(int issueId)
+        public ActionResult AcceptIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
             issue.Status = IssueStatus.Accepted;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult RejectIssue(int issueId)
+        public ActionResult RejectIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
             issue.Status = IssueStatus.Rejected;
             issue.Finished = DateTime.Now;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
@@ -157,9 +175,12 @@ namespace PresentationLayer.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult CloseIssue(int issueId)
+        public ActionResult CloseIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
             issue.Status = IssueStatus.Closed;
             issue.Finished = DateTime.Now;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
@@ -167,9 +188,12 @@ namespace PresentationLayer.Controllers
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
-        public ActionResult ReopenIssue(int issueId)
+        public ActionResult ReopenIssue(int? issueId)
         {
-            var issue = issueFacade.GetIssueById(issueId);
+            if (!issueId.HasValue)
+                return View("BadInput");
+
+            var issue = issueFacade.GetIssueById(issueId.Value);
             issue.Status = IssueStatus.Accepted;
             issue.Finished = null;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);

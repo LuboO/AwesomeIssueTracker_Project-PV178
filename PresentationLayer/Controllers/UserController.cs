@@ -149,23 +149,26 @@ namespace PresentationLayer.Controllers
             return View("ViewAllUsers", model);
         }
 
-        public ActionResult UserDetail(int userId)
+        public ActionResult UserDetail(int? userId)
         {
+            if (!userId.HasValue)
+                return View("BadInput");
+
             /* Get personal data */
             var model = new UserDetailModel()
             {
-                User = userFacade.GetUserById(userId),
+                User = userFacade.GetUserById(userId.Value),
                 ListIssuesModel = new ListIssuesModel()
                 {
-                    Issues = issueFacade.GetIssuesByCreator(userId)
+                    Issues = issueFacade.GetIssuesByCreator(userId.Value)
                 },
                 ListCommentsModel = new ListCommentsModel()
                 {
-                    Comments = commentFacade.GetCommentsByAuthor(userId)
+                    Comments = commentFacade.GetCommentsByAuthor(userId.Value)
                 }
             };
             /* Get employee data if any */
-            var employee = employeeFacade.GetEmployeeById(userId);
+            var employee = employeeFacade.GetEmployeeById(userId.Value);
             if (employee != null)
             {
                 model.EmployeeDetailModel = new EmployeeDetailModel()
@@ -173,12 +176,12 @@ namespace PresentationLayer.Controllers
                     Employee = employee,
                     ListIssuesModel = new ListIssuesModel()
                     {
-                        Issues = issueFacade.GetIssuesByAssignedEmployee(userId)
+                        Issues = issueFacade.GetIssuesByAssignedEmployee(userId.Value)
                     }
                 };
             }
             /* Get customer data if any */
-            var customer = customerFacade.GetCustomerById(userId);
+            var customer = customerFacade.GetCustomerById(userId.Value);
             if (customer != null)
             {
                 model.CustomerDetailModel = new CustomerDetailModel()
@@ -186,11 +189,11 @@ namespace PresentationLayer.Controllers
                     Customer = customer,
                     ListProjectsModel = new ListProjectsModel()
                     {
-                        Projects = projectFacade.GetProjectsByCustomer(userId)
+                        Projects = projectFacade.GetProjectsByCustomer(userId.Value)
                     }
                 };
             }
-            model.IsDetailedUserAdmin = userFacade.IsUserAdmin(userId);
+            model.IsDetailedUserAdmin = userFacade.IsUserAdmin(userId.Value);
             model.IsAdmin = userFacade.IsUserAdmin(User.Identity.GetUserId<int>());
             model.IsEmployee = userFacade.IsUserEmployee(User.Identity.GetUserId<int>());
             model.CanModifyUser = model.IsAdmin || (userId == User.Identity.GetUserId<int>());
@@ -204,15 +207,18 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult EditUser(int userId)
+        public ActionResult EditUser(int? userId)
         {
+            if (!userId.HasValue)
+                return View("BadInput");
+
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
                 return View("AccessForbidden");
 
-            var user = userFacade.GetUserById(userId);
+            var user = userFacade.GetUserById(userId.Value);
             var model = new EditUserModel()
             {
-                UserId = userId,
+                UserId = userId.Value,
                 UserName = user.UserName,
                 Name = user.Name,
                 Address = user.Address,
@@ -245,37 +251,46 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("UserDetail", new { userId = model.UserId });
         }
 
-        public ActionResult DeleteUser(int userId)
+        public ActionResult DeleteUser(int? userId)
         {
-            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
+            if (!userId.HasValue)
+                return View("BadInput");
+
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId.Value))
                 return View("AccessForbidden");
 
-            if (userId == User.Identity.GetUserId<int>())
+            if (userId.Value == User.Identity.GetUserId<int>())
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-            var user = userFacade.GetUserById(userId);
+            var user = userFacade.GetUserById(userId.Value);
             userFacade.DeleteUser(user);
             return RedirectToAction("ViewAllUsers");
         }
         
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult GrantAdministratorRights(int userId)
+        public ActionResult GrantAdministratorRights(int? userId)
         {
-            if(userFacade.IsUserAdmin(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
 
-            userFacade.AddAdminRightsToUser(userId);
-            return RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (userFacade.IsUserAdmin(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
+
+            userFacade.AddAdminRightsToUser(userId.Value);
+            return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
         }
 
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult RemoveAdministratorRights(int userId)
+        public ActionResult RemoveAdministratorRights(int? userId)
         {
-            if(!userFacade.IsUserAdmin(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
 
-            userFacade.RemoveAdminRightsOfUser(userId);
-            return RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userFacade.IsUserAdmin(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
+
+            userFacade.RemoveAdminRightsOfUser(userId.Value);
+            return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
         }
     }
 }

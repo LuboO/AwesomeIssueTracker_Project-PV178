@@ -30,26 +30,32 @@ namespace PresentationLayer.Controllers
         }
         
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult GrantEmployeeRights(int userId)
+        public ActionResult GrantEmployeeRights(int? userId)
         {
-            if (userFacade.IsUserEmployee(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
 
-            employeeFacade.CreateEmployee(new EmployeeDTO(), userId);
-            userFacade.AddEmployeeRightsToUser(userId);
+            if (userFacade.IsUserEmployee(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
+
+            employeeFacade.CreateEmployee(new EmployeeDTO(), userId.Value);
+            userFacade.AddEmployeeRightsToUser(userId.Value);
             return RedirectToAction("UserDetail", "User", new { userId = userId });
         }
         
         [CustomAuthorize(Roles = "Administrator")]
-        public ActionResult RemoveEmployeeRights(int userId)
+        public ActionResult RemoveEmployeeRights(int? userId)
         {
-            if (!userFacade.IsUserEmployee(userId))
-                RedirectToAction("UserDetail", "User", new { userId = userId });
+            if (!userId.HasValue)
+                return View("BadInput");
 
-            var employee = employeeFacade.GetEmployeeById(userId);
-            userFacade.RemoveEmployeeRightFromUser(userId);
+            if (!userFacade.IsUserEmployee(userId.Value))
+                RedirectToAction("UserDetail", "User", new { userId = userId.Value });
+
+            var employee = employeeFacade.GetEmployeeById(userId.Value);
+            userFacade.RemoveEmployeeRightFromUser(userId.Value);
             employeeFacade.DeleteEmployee(employee);
-            return RedirectToAction("UserDetail", "User", new { userId = userId });
+            return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
         }
     }
 }

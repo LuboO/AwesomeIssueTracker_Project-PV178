@@ -35,15 +35,18 @@ namespace PresentationLayer.Controllers
             return View("ViewAllProjects", model);
         }
 
-        public ActionResult ProjectDetail(int projectId)
+        public ActionResult ProjectDetail(int? projectId)
         {
-            var project = projectFacade.GetProjectById(projectId);
+            if (!projectId.HasValue)
+                return View("BadInput");
+
+            var project = projectFacade.GetProjectById(projectId.Value);
             var model = new ProjectDetailModel()
             {
                 Project = project,
                 ListIssuesModel = new ListIssuesModel()
                 {
-                    Issues = issueFacade.GetIssuesByProject(projectId)
+                    Issues = issueFacade.GetIssuesByProject(projectId.Value)
                 }
             };
             model.CanModify = User.IsInRole(UserRole.Administrator.ToString()) ||
@@ -72,16 +75,19 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("ProjectDetail", new { projectId = newId });
         }
 
-        public ActionResult EditProject(int projectId)
+        public ActionResult EditProject(int? projectId)
         {
-            var project = projectFacade.GetProjectById(projectId);
+            if (!projectId.HasValue)
+                return View("BadInput");
+
+            var project = projectFacade.GetProjectById(projectId.Value);
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
                 return View("AccessForbidden");
 
             var model = new EditProjectModel()
             {
-                ProjectId = projectId,
+                ProjectId = project.Id,
                 CustomerId = project.Customer.Id,
                 Name = project.Name,
                 Description = project.Description
@@ -107,9 +113,12 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("ProjectDetail", new { projectId = model.ProjectId });
         }
 
-        public ActionResult DeleteProject(int projectId)
+        public ActionResult DeleteProject(int? projectId)
         {
-            var project = projectFacade.GetProjectById(projectId);
+            if (!projectId.HasValue)
+                return View("BadInput");
+
+            var project = projectFacade.GetProjectById(projectId.Value);
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
                 return View("AccessForbidden");

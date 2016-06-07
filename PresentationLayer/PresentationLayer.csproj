@@ -197,6 +197,8 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Customer\EditCustomer.cshtml" />
     <Content Include="Views\Comment\AddCommentToIssue.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\BadInput.cshtml" />
     <None Include="Views\User\Register.cshtml" />
     <Content Include="Views\Comment\DiscussionView.cshtml" />
     <None Include="Views\User\EditUser.cshtml" />
