@@ -5,15 +5,63 @@
 }
 
 <h2 style="text-align:left">
-    User
+    User @Model.User.UserName
     <span style="float:right">
-        @Html.ActionLink("Edit User", "EditAccount", "User", new {}, new { @class = "btn btn-primary"})
-        @Html.ActionLink("Delete User", "DeleteAccount", "User", new {}, new { @class = "btn btn-danger"})
+        <div class="btn-toolbar">
+            @if(Model.IsAdmin || Model.IsEmployee) {
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Manage privileges <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    @if(Model.IsAdmin) {
+                        if(!Model.IsDetailedUserAdmin) {
+                        <li>
+                            @Html.ActionLink("Grant admin rights", "GrantAdministratorRights", "User", new { userId = Model.User.Id }, new { @class = "btn btn-link"} )
+                        </li>
+                        } else {
+                        <li>
+                            @Html.ActionLink("Revoke admin rights", "RemoveAdministratorRights", "User", new { userId = Model.User.Id }, new { @class = "btn btn-link"} )
+                        </li>
+                        }
+                    }
+
+                    @if(Model.IsAdmin) {
+                        if(Model.EmployeeDetailModel == null) {
+                        <li>
+                            @Html.ActionLink("Grant employee rights", "GrantEmployeeRights", "Employee", new { userId = Model.User.Id }, new { @class = "btn btn-link"} )
+                        </li>
+                        } else {
+                        <li>
+                            @Html.ActionLink("Revoke employee rights", "RemoveEmployeeRights", "Employee", new { userId = Model.User.Id}, new { @class = "btn btn-link"})
+                        </li>
+                        }
+                    }
+
+                    @if(Model.IsAdmin || Model.IsEmployee) {
+                        if(Model.CustomerDetailModel == null) {
+                        <li>
+                            @Html.ActionLink("Grant customer rights", "GrantCustomerRights", "Customer", new { userId = Model.User.Id }, new { @class = "btn btn-link"} )
+                        </li>
+                        } else {
+                        <li>
+                            @Html.ActionLink("Revoke customer rights", "RemoveCustomerRights", "Customer", new { userId = Model.User.Id}, new { @class = "btn btn-link"})
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>
+            }
+
+            @if(Model.CanModifyUser) {
+                @Html.ActionLink("Edit user", "EditUser", "User", new { userId = Model.User.Id }, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Delete user", "DeleteUser", "User", new { userId = Model.User.Id }, new { @class = "btn btn-danger"})
+            }
+
+        </div>
     </span>
 </h2>
 <hr/>
 
-<h4>Personal information</h4>
+<h4>Account information</h4>
 <table class="table">
     <tr>
         <th>Id</th>
@@ -57,28 +105,31 @@
     </tr>
 </table>
 <hr/>
-<h4>Created issues</h4>
-<a class="btn btn-link" data-toggle="collapse" data-target="#created-issues">Click to toggle</a>
+
+<h4>
+    Created issues 
+    <a class="btn btn-default" data-toggle="collapse" data-target="#created-issues">Toggle</a>
+</h4>
 <div id="created-issues" class="collapse">
     @{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }
 </div>
 <hr/>
-<h4>Posted comments</h4>
-<a class="btn btn-link" data-toggle="collapse" data-target="#comments">Click to toggle</a>
+
+<h4>
+    Posted comments 
+    <a class="btn btn-default" data-toggle="collapse" data-target="#comments">Toggle</a>
+</h4>
 <div id="comments" class="collapse">
     @{ Html.RenderPartial("~/Views/Comment/ListComments.cshtml", Model.ListCommentsModel); }
 </div>
+
 @{
     if(Model.EmployeeDetailModel != null) {
     <hr />
     <h2 style="text-align:left">
         Employee
-        <span style="float:right">
-            @Html.ActionLink("Edit employee", "EditEmployee", "Employee", new { employeeId = Model.User.Id }, new { @class = "btn btn-primary"})
-            @Html.ActionLink("Delete employee", "DeleteEmployee", "Employee", new { employeeId = Model.User.Id}, new { @class = "btn btn-danger"})
-        </span>
     </h2>
-            Html.RenderPartial("~/Views/Employee/EmployeeDetail.cshtml", Model.EmployeeDetailModel);
+        Html.RenderPartial("~/Views/Employee/EmployeeDetail.cshtml", Model.EmployeeDetailModel);
     }
 }
 
@@ -87,11 +138,12 @@
     <hr/>
     <h2 style="text-align:left">
         Customer
-        <span style="float:right">
-            @Html.ActionLink("Edit customer", "EditCustomer", "Customer", new { customerId = Model.User.Id }, new { @class = "btn btn-primary"})
-            @Html.ActionLink("Delete customer", "DeleteCustomer", "Customer", new { customerId = Model.User.Id}, new { @class = "btn btn-danger"})
-        </span>
-    </h2>
-            Html.RenderPartial("~/Views/Customer/CustomerDetail.cshtml", Model.CustomerDetailModel);
+        @if(Model.CanModifyUser) {
+            <span style="float:right">
+                @Html.ActionLink("Edit customer", "EditCustomer", "Customer", new { customerId = Model.User.Id }, new { @class = "btn btn-primary"})
+            </span>
         }
+    </h2>
+        Html.RenderPartial("~/Views/Customer/CustomerDetail.cshtml", Model.CustomerDetailModel);
+    }
 }

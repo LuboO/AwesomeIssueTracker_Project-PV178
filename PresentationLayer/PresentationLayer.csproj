@@ -195,18 +195,18 @@
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="Views\Customer\EditCustomer.cshtml" />
+    <Content Include="Views\Comment\AddCommentToIssue.cshtml" />
     <None Include="Views\User\Register.cshtml" />
     <Content Include="Views\Comment\DiscussionView.cshtml" />
-    <None Include="Views\User\EditAccount.cshtml" />
+    <None Include="Views\User\EditUser.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <None Include="Views\Comment\ListComments.cshtml" />
     <Content Include="Views\Employee\EmployeeDetail.cshtml" />
     <Content Include="Views\Issue\IssueDetail.cshtml" />
-    <Content Include="Views\Customer\CreateCustomer.cshtml" />
-    <Content Include="Views\Customer\EditCustomer.cshtml" />
-    <Content Include="Views\Employee\CreateEmployee.cshtml" />
-    <Content Include="Views\Employee\EditEmployee.cshtml" />
-    <Content Include="Views\Issue\CreateIssue.cshtml" />
+    <Content Include="Views\Customer\GrantCustomerRights.cshtml" />
+    <Content Include="Views\Employee\GrantEmployeeRights.cshtml" />
+    <Content Include="Views\Issue\AddIssueToProject.cshtml" />
     <Content Include="Views\Issue\EditIssue.cshtml" />
     <None Include="Views\Issue\ListIssues.cshtml" />
     <None Include="Views\Issue\ViewAllIssues.cshtml" />
@@ -230,6 +230,7 @@
     <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
     <Content Include="Views\User\UserDetail.cshtml" />
+    <Content Include="Views\User\ViewAllUsers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -259,7 +260,6 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
-    <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -274,13 +274,11 @@
     <Compile Include="Models\Issue\IssueDetailModel.cs" />
     <Compile Include="Models\Issue\ListIssuesModel.cs" />
     <Compile Include="Models\Issue\ViewAllIssuesModel.cs" />
-    <Compile Include="Models\Person\EditPersonModel.cs" />
-    <Compile Include="Models\Person\ViewAllPeopleModel.cs" />
-    <Compile Include="Models\Person\PersonDetailModel.cs" />
     <Compile Include="Models\Project\ListProjectsModel.cs" />
     <Compile Include="Models\Project\ProjectDetailModel.cs" />
     <Compile Include="Models\Project\ViewAllProjectsModel.cs" />
     <Compile Include="Models\User\UserDetailModel.cs" />
+    <Compile Include="Models\User\ViewAllUsersModel.cs" />
     <Compile Include="MvcInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Views\Customer\CustomerDetail.cshtml" />

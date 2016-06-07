@@ -25,7 +25,7 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateNotification(NotificationDTO notification)
+        public int CreateNotification(NotificationDTO notification)
         {
             if (notification == null)
                 throw new ArgumentNullException("notification");
@@ -33,11 +33,10 @@ namespace BussinesLayer.Facades
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Notification>(notification);
-                if (created == null)
-                    return;
 
                 NotificationRepository.Insert(created);
                 uow.Commit();
+                return created.Id;
             }
         }
 

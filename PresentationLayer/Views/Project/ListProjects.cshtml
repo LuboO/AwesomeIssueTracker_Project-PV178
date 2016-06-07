@@ -11,7 +11,7 @@
     @foreach (var project in Model.Projects) {
     <tr>
         <td>@project.Name</td>
-        <td>@Html.ActionLink(project.Customer.Person.Name, "PersonDetail", "Person", new { personId = project.Customer.Person.Id }, new { @class = "btn-link"} )</td>
+        <td>@Html.ActionLink(project.Customer.User.Name, "UserDetail", "User", new { userId = project.Customer.User.Id }, new { @class = "btn-link"} )</td>
         <td>@Html.ActionLink("Detail", "ProjectDetail", "Project", new {projectId = project.Id}, new {@class = "btn btn-primary"})</td>
     </tr>
     }

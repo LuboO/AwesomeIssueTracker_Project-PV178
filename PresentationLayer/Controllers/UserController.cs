@@ -4,16 +4,16 @@ using Microsoft.AspNet.Identity.Owin;
 using BussinesLayer.Facades;
 using PresentationLayer.App_Start;
 using PresentationLayer.Models.User;
-using System.Net;
 using Microsoft.Owin.Security;
 using BussinesLayer.DTOs;
 using Microsoft.AspNet.Identity;
-using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Comment;
 using PresentationLayer.Models.Employee;
 using PresentationLayer.Models.Customer;
 using PresentationLayer.Models.Project;
+using PresentationLayer.Filters.Authorization;
+using DataAccessLayer.Enums;
 
 namespace PresentationLayer.Controllers
 {
@@ -114,10 +114,44 @@ namespace PresentationLayer.Controllers
             }
         }
 
-        public ActionResult UserDetail()
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            var model = new RegisterModel()
+            {
+                User = new UserDTO()
+            };
+            return View("Register", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.User.Password = model.Password;
+                userFacade.Create(model.User);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+
+        public ActionResult ViewAllUsers()
+        {
+            var model = new ViewAllUsersModel()
+            {
+                Users = userFacade.GetAllUsers()
+            };
+            return View("ViewAllUsers", model);
+        }
+
+        public ActionResult UserDetail(int userId)
         {
             /* Get personal data */
-            int userId = User.Identity.GetUserId<int>();
             var model = new UserDetailModel()
             {
                 User = userFacade.GetUserById(userId),
@@ -156,75 +190,92 @@ namespace PresentationLayer.Controllers
                     }
                 };
             }
+            model.IsDetailedUserAdmin = userFacade.IsUserAdmin(userId);
+            model.IsAdmin = userFacade.IsUserAdmin(User.Identity.GetUserId<int>());
+            model.IsEmployee = userFacade.IsUserEmployee(User.Identity.GetUserId<int>());
+            model.CanModifyUser = model.IsAdmin || (userId == User.Identity.GetUserId<int>());
+
             return View("UserDetail", model);
         }
-
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            var model = new RegisterModel()
-            {
-                User = new UserDTO()
-            };
-            return View("Register", model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                model.User.Password = model.Password;
-                userFacade.Create(model.User);
-
-                return RedirectToAction("Index", "Home");
-            }
-            
-            return View(model);
-        }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
+        
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult EditAccount()
+        public ActionResult EditUser(int userId)
         {
-            int userId = User.Identity.GetUserId<int>();
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
+                return View("AccessForbidden");
+
             var user = userFacade.GetUserById(userId);
             var model = new EditUserModel()
             {
+                UserId = userId,
                 UserName = user.UserName,
                 Name = user.Name,
                 Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
                 DateOfBirth = user.DateOfBirth
             };
-            return View("EditAccount", model);
+            return View("EditUser", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAccount(EditUserModel model)
+        public ActionResult EditUser(EditUserModel model)
         {
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.UserId))
+                return View("AccessForbidden");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            int userId = User.Identity.GetUserId<int>();
-            var user = userFacade.GetUserById(userId);
+            var user = userFacade.GetUserById(model.UserId);
+
             user.UserName = model.UserName;
             user.Name = model.Name;
             user.Address = model.Address;
             user.PhoneNumber = model.PhoneNumber;
             user.DateOfBirth = model.DateOfBirth;
             userFacade.UpdateUser(user);
-            return RedirectToAction("UserDetail");
+
+            return RedirectToAction("UserDetail", new { userId = model.UserId });
+        }
+
+        public ActionResult DeleteUser(int userId)
+        {
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
+                return View("AccessForbidden");
+
+            if (userId == User.Identity.GetUserId<int>())
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            var user = userFacade.GetUserById(userId);
+            userFacade.DeleteUser(user);
+            return RedirectToAction("ViewAllUsers");
+        }
+        
+        [CustomAuthorize(Roles = "Administrator")]
+        public ActionResult GrantAdministratorRights(int userId)
+        {
+            if(userFacade.IsUserAdmin(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
+
+            userFacade.AddAdminRightsToUser(userId);
+            return RedirectToAction("UserDetail", "User", new { userId = userId });
+        }
+
+        [CustomAuthorize(Roles = "Administrator")]
+        public ActionResult RemoveAdministratorRights(int userId)
+        {
+            if(!userFacade.IsUserAdmin(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
+
+            userFacade.RemoveAdminRightsOfUser(userId);
+            return RedirectToAction("UserDetail", "User", new { userId = userId });
         }
     }
 }

@@ -2,6 +2,7 @@
 using BussinesLayer.DTOs;
 using BussinesLayer.Filters;
 using DataAccessLayer.Entities;
+using Riganti.Utils.Infrastructure.Core;
 using System.Linq;
 
 namespace BussinesLayer.Queries
@@ -10,7 +11,7 @@ namespace BussinesLayer.Queries
     {
         public UserFilter Filter { get; set; }
 
-        public UserListQuery(IAITUnitOfWorkProvider provider) : base(provider)
+        public UserListQuery(IUnitOfWorkProvider provider) : base(provider)
         {
         }
 

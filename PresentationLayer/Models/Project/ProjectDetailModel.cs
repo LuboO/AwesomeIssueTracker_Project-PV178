@@ -8,5 +8,7 @@ namespace PresentationLayer.Models.Project
         public ListIssuesModel ListIssuesModel { get; set; }
 
         public ProjectDTO Project { get; set; }
+
+        public bool CanModify { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model PresentationLayer.Models.User.ViewAllUsersModel
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Registered users</h2>
+
+<table class="table">
+    <tr>
+        <th>User Name</th>
+        <th>Full Name</th>
+        <th>E-Mail</th>
+        <th></th>
+    </tr>
+
+    @foreach (var user in Model.Users) {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@Html.ActionLink("Details", "UserDetail", "User", new { userId = user.Id }, new { @class = "btn btn-primary" })</td>
+        </tr>
+    }
+</table>

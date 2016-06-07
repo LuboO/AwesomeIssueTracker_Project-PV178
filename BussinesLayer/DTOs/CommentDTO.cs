@@ -6,13 +6,14 @@ namespace BussinesLayer.DTOs
     public class CommentDTO
     {
         public int Id { get; set; }
-
+        
         public string Subject { get; set; }
 
         [Required]
         public string Message { get; set; }
 
         [Required]
+        [Display(Name = "Time of post")]
         public DateTime Created { get; set; }
 
         [Required]

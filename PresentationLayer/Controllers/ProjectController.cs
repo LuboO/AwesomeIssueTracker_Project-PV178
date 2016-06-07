@@ -1,5 +1,7 @@
 ﻿using BussinesLayer.DTOs;
 using BussinesLayer.Facades;
+using DataAccessLayer.Enums;
+using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Project;
@@ -35,55 +37,83 @@ namespace PresentationLayer.Controllers
 
         public ActionResult ProjectDetail(int projectId)
         {
+            var project = projectFacade.GetProjectById(projectId);
             var model = new ProjectDetailModel()
             {
-                Project = projectFacade.GetProjectById(projectId),
+                Project = project,
                 ListIssuesModel = new ListIssuesModel()
                 {
                     Issues = issueFacade.GetIssuesByProject(projectId)
                 }
             };
+            model.CanModify = User.IsInRole(UserRole.Administrator.ToString()) ||
+                User.Identity.GetUserId<int>() == project.Customer.Id;
             return View("ProjectDetail", model);
         }
 
+        [CustomAuthorize(Roles = "Customer")]
         public ActionResult CreateProject()
         {
-            var model = new EditProjectModel()
-            {
-                Project = new ProjectDTO(),
-                ExistingCustomers = customerFacade.GetAllCustomers()
-            };
+            var model = new EditProjectModel();
             return View("CreateProject", model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(Roles = "Customer")]
         public ActionResult CreateProject(EditProjectModel model)
         {
-            projectFacade.CreateProject(model.Project, model.SelectedCustomerId);
-            return RedirectToAction("ViewAllProjects");
+            var project = new ProjectDTO()
+            {
+                Name = model.Name,
+                Description = model.Description
+            };
+            var newId = projectFacade.CreateProject(project, User.Identity.GetUserId<int>());
+            return RedirectToAction("ProjectDetail", new { projectId = newId });
         }
 
         public ActionResult EditProject(int projectId)
         {
-            var model = new EditProjectModel
+            var project = projectFacade.GetProjectById(projectId);
+
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
+                return View("AccessForbidden");
+
+            var model = new EditProjectModel()
             {
-                Project = projectFacade.GetProjectById(projectId),
-                ExistingCustomers = customerFacade.GetAllCustomers()
+                ProjectId = projectId,
+                CustomerId = project.Customer.Id,
+                Name = project.Name,
+                Description = project.Description
             };
-            model.SelectedCustomerId = model.Project.Customer.Id;
+
             return View("EditProject", model);
         }
 
         [HttpPost]
-        public ActionResult EditProject(EditProjectModel editProjectModel)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProject(EditProjectModel model)
         {
-            projectFacade.UpdateProject(editProjectModel.Project , editProjectModel.SelectedCustomerId);
-            return RedirectToAction("ViewAllProjects");
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.CustomerId))
+                return View("AccessForbidden");
+
+            var project = new ProjectDTO()
+            {
+                Id = model.ProjectId,
+                Name = model.Name,
+                Description = model.Description
+            };
+            projectFacade.UpdateProject(project, model.CustomerId);
+            return RedirectToAction("ProjectDetail", new { projectId = model.ProjectId });
         }
 
         public ActionResult DeleteProject(int projectId)
         {
             var project = projectFacade.GetProjectById(projectId);
+
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
+                return View("AccessForbidden");
+
             projectFacade.DeleteProject(project);
             return RedirectToAction("ViewAllProjects");
         }

@@ -58,31 +58,34 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Mandatory Id of the Project this issue is created in
         /// </summary>
+        [Required]
         public int ProjectId { get; set; }
         /// <summary>
         /// Navigational property to linked project
         /// </summary>
-        [Required,ForeignKey("ProjectId")]
+        [ForeignKey("ProjectId")]
         public virtual Project Project { get; set; }
 
         /// <summary>
         /// Mandatory Id of Employee assigned to Issue
         /// </summary>
+        [Required]
         public int AssignedEmployeeId { get; set; }
         /// <summary>
         /// Navigational property to linked Employee
         /// </summary>
-        [Required,ForeignKey("AssignedEmployeeId")]
+        [ForeignKey("AssignedEmployeeId")]
         public virtual Employee AssignedEmployee { get; set; }
 
         /// <summary>
         /// Mandatory Id of creator of Issue
         /// </summary>
+        [Required]
         public int CreatorId { get; set; }
         /// <summary>
         /// Navigation property to linked Person
         /// </summary>
-        [Required,ForeignKey("CreatorId")]
+        [ForeignKey("CreatorId")]
         public virtual AITUser Creator { get; set; }
 
         /// <summary>

@@ -9,11 +9,14 @@ using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
 using System;
 using System.Data.Entity.Core;
+using Microsoft.AspNet.Identity;
 
 namespace BussinesLayer.Facades
 {
     public class CustomerFacade : AITBaseFacade
     {
+        public Func<AITUserManager> UserManagerFactory { get; set; }
+
         public CustomerRepository CustomerRepository { get; set; }
 
         public CustomerListQuery CustomerListQuery { get; set; }
@@ -25,19 +28,27 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateCustomer(CustomerDTO customer)
+        public int CreateCustomer(CustomerDTO customer, int userId)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
 
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Customer>(customer);
-                if (created == null)
-                    return;
+                using (var userManager = UserManagerFactory.Invoke())
+                {
+                    var created = Mapper.Map<Customer>(customer);
 
-                CustomerRepository.Insert(created);
-                uow.Commit();
+                    if (userManager.FindById(userId) == null)
+                        throw new ObjectNotFoundException("User hasn't been found.");
+
+                    created.Id = userId;
+                    created.User = null;
+
+                    CustomerRepository.Insert(created);
+                    uow.Commit();
+                    return created.Id;
+                }
             }
         }
 

@@ -9,12 +9,17 @@ using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
 using System;
 using System.Data.Entity.Core;
+using Microsoft.AspNet.Identity;
 
 namespace BussinesLayer.Facades
 {
     public class CommentFacade : AITBaseFacade
     {
         public CommentRepository CommentRepository { get; set; }
+
+        public IssueRepository IssueRepository { get; set; }
+
+        public Func<AITUserManager> UserManagerFactory { get; set; }
 
         public CommentListQuery CommentListQuery { get; set; }
 
@@ -25,16 +30,32 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateComment(CommentDTO comment)
+        public int CreateComment(CommentDTO comment, int issueId, int authorId)
         {
             if (comment == null)
                 throw new ArgumentNullException("comment");
 
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Comment>(comment);
-                CommentRepository.Insert(created);
-                uow.Commit();
+                using(var userManager = UserManagerFactory.Invoke())
+                {
+                    if (IssueRepository.GetById(issueId) == null)
+                        throw new ObjectNotFoundException("Issue hasn't been found");
+
+                    if (userManager.FindById(authorId) == null)
+                        throw new ObjectNotFoundException("Author hasn't been found");
+
+                    var created = Mapper.Map<Comment>(comment);
+
+                    created.IssueId = issueId;
+                    created.Issue = null;
+                    created.AuthorId = authorId;
+                    created.Author = null;
+
+                    CommentRepository.Insert(created);
+                    uow.Commit();
+                    return created.Id;
+                }
             }
         }
 

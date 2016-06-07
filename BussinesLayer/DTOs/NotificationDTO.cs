@@ -7,6 +7,7 @@ namespace BussinesLayer.DTOs
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Notify by E-Mail")]
         public bool NotifyByEmail { get; set; }
 
         [Required]

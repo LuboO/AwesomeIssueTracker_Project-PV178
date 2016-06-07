@@ -6,25 +6,24 @@
 
 <h2>Our customers</h2>
 
+@if(Model.Customers.Count != 0) {
 <table class="table">
     <tr>
+        <th>User Name</th>
         <th>Name</th>
-        <th>E-mail</th>
+        <th>E-Mail</th>
         <th></th>
     </tr>
 
     @foreach (var customer in Model.Customers) {
     <tr>
-        <td>
-            @customer.Person.Name
-        </td>
-        <td>
-            @customer.Person.Email
-        </td>
-        <td>
-            @Html.ActionLink("Details", "PersonDetail" , "Person" , new { personId = customer.Id }, new { @class = "btn btn-primary"})
-        </td>
+        <td>@customer.User.UserName</td>
+        <td>@customer.User.Name</td>
+        <td>@customer.User.Email</td>
+        <td>@Html.ActionLink("Details", "UserDetail" , "User" , new { userId = customer.Id }, new { @class = "btn btn-primary"})</td>
     </tr>
     }
-
 </table>
+} else {
+    <h5>No customers found.</h5>
+}

@@ -1,5 +1,7 @@
 ﻿using BussinesLayer.DTOs;
+using DataAccessLayer.Enums;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -7,48 +9,26 @@ namespace PresentationLayer.Models.Issue
 {
     public class EditIssueModel
     {
-        public IssueDTO Issue { get; set; }
+        public int IssueId { get; set; }
 
-        public int SelectedCreatorId { get; set; }
+        public int CreatorId { get; set; }
 
-        public int SelectedProjectId { get; set; }
+        public int ProjectId { get; set; }
+
+        [Required]
+        [MaxLength(256)]
+        public string Title { get; set; }
+
+        [MaxLength(4096)]
+        public string Description { get; set; }
+
+        [Required]
+        [Range(1, 2)]
+        public IssueType Type { get; set; }
 
         public int SelectedEmployeeId { get; set; }
 
-        public List<ProjectDTO> ExistingProjects { get; set; }
-
-        //public List<PersonDTO> ExistingPeople { get; set; }
-        public List<UserDTO> ExistingUsers { get; set; }
-
         public List<EmployeeDTO> ExistingEmployees { get; set; }
-
-        public IEnumerable<SelectListItem> ProjectItems
-        {
-            get
-            {
-                var rval = ExistingProjects
-                    .Select(p => new SelectListItem
-                    {
-                        Value = p.Id.ToString(),
-                        Text = p.Name
-                    });
-                return rval;
-            }
-        }
-
-        public IEnumerable<SelectListItem> PeopleItems
-        {
-            get
-            {
-                var rval = ExistingUsers
-                    .Select(p => new SelectListItem
-                    {
-                        Value = p.Id.ToString(),
-                        Text = p.Name
-                    });
-                return rval;
-            }
-        }
 
         public IEnumerable<SelectListItem> EmployeeItems
         {

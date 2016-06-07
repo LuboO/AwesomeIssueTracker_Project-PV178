@@ -6,25 +6,24 @@
 
 <h2>Our employees</h2>
 
+@if(Model.Employees.Count != 0) {
 <table class="table">
     <tr>
+        <th>User Name</th>
         <th>Name</th>
-        <th>E-mail</th>
+        <th>E-Mail</th>
         <th></th>
     </tr>
 
     @foreach (var employee in Model.Employees) {
     <tr>
-        <td>
-            @employee.Person.Name
-        </td>
-        <td>
-            @employee.Person.Email
-        </td>
-        <td>
-            @Html.ActionLink("Details", "PersonDetail" , "Person" , new { personId = employee.Id }, new { @class = "btn btn-primary"})
-        </td>
+        <td>@employee.User.UserName</td>
+        <td>@employee.User.Name</td>
+        <td>@employee.User.Email</td>
+        <td>@Html.ActionLink("Details", "UserDetail" , "User" , new { userId = employee.Id }, new { @class = "btn btn-primary"})</td>
     </tr>
     }
-
 </table>
+} else {
+    <h5>No employees found.</h5>
+}

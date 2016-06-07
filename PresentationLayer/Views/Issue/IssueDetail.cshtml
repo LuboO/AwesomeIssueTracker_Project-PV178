@@ -1,4 +1,5 @@
-﻿@model PresentationLayer.Models.Issue.IssueDetailModel
+﻿@using DataAccessLayer.Enums
+@model PresentationLayer.Models.Issue.IssueDetailModel
 
 @{
     ViewBag.Title = Model.Issue.Title;
@@ -7,8 +8,22 @@
 <h2 style="text-align:left">
     Issue
     <span style="float:right">
-        @Html.ActionLink("Edit issue", "EditIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-primary"})
-        @Html.ActionLink("Delete issue", "DeleteIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-danger"})
+        <div class="btn-toolbar">
+            @if(Model.CanChangeState) {
+                if(Model.Issue.Status == IssueStatus.New) {
+                    @Html.ActionLink("Accept", "AcceptIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Reject", "RejectIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                } else if(Model.Issue.Status == IssueStatus.Accepted) {
+                    @Html.ActionLink("Close", "CloseIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                } else {
+                    @Html.ActionLink("Reopen", "ReopenIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                }
+            }
+            @if(Model.CanModify) {
+                @Html.ActionLink("Edit issue", "EditIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-primary"})
+                @Html.ActionLink("Delete issue", "DeleteIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-danger"})
+            }
+        </div>
     </span>
 </h2>
 
@@ -57,13 +72,49 @@
     </tr>
     <tr>
         <th>Assigned to</th>
-        <td>@Html.ActionLink(Model.Issue.AssignedEmployee.Person.Name, "PersonDetail" , "Person", new {personId = Model.Issue.AssignedEmployee.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(Model.Issue.AssignedEmployee.User.Name, "UserDetail" , "User", new {userId = Model.Issue.AssignedEmployee.Id}, new {@class = "btn-link"})</td>
     </tr>
     <tr>
         <th>Created by</th>
-        <td>@Html.ActionLink(Model.Issue.Creator.Name, "PersonDetail" , "Person", new {personId = Model.Issue.Creator.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(Model.Issue.Creator.Name, "UserDetail" , "User", new { userId = Model.Issue.Creator.Id}, new {@class = "btn-link"})</td>
     </tr>
 </table>
 
 <h4>Discussion</h4>
 @{ Html.RenderPartial("~/Views/Comment/DiscussionView.cshtml", Model.ListCommentsModel); }
+
+<hr/>
+<h4>Post a comment...</h4>
+@using (Html.BeginForm("PostComment", "Comment")) {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Issue.Id)
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewCommentSubject, "Subject", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NewCommentSubject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NewCommentSubject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewCommentMessage, "Message", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.NewCommentMessage, htmlAttributes: new { @class = "form-control", @rows = "5" })
+                @Html.ValidationMessageFor(model => model.NewCommentMessage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Post" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

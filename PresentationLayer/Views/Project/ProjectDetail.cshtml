@@ -7,10 +7,17 @@
 <h2 style="text-align:left">
     Project
     <span style="float:right">
-        @Html.ActionLink("Edit project", "EditProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-primary"})
-        @Html.ActionLink("Delete project", "DeleteProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-danger"})
+        <div class="btn-toolbar">
+            @Html.ActionLink("Add Issue", "AddIssueToProject", "Issue", new {projectId = Model.Project.Id}, new {@class = "btn btn-default"})
+
+            @if(Model.CanModify) {
+                @Html.ActionLink("Edit project", "EditProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-primary"})
+                @Html.ActionLink("Delete project", "DeleteProject", "Project", new {projectId = Model.Project.Id}, new {@class = "btn btn-danger"})     
+            }
+        </div>
     </span>
 </h2>
+<hr />
 
 <h4>General</h4>
 <table class="table">
@@ -28,9 +35,10 @@
     </tr>
     <tr>
         <th>Created by</th>
-        <td>@Html.ActionLink(Model.Project.Customer.Person.Name, "PersonDetail", "Person", new {personId = Model.Project.Customer.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(Model.Project.Customer.User.Name, "UserDetail", "User", new {userId = Model.Project.Customer.Id}, new {@class = "btn-link"})</td>
     </tr>
 </table>
 
+<hr/>
 <h4>Related issues</h4>
 @{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }

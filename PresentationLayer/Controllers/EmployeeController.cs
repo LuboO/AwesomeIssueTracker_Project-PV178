@@ -6,14 +6,16 @@ using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
-    [CustomAuthorize(Roles = "Administrator")]
+    [CustomAuthorize]
     public class EmployeeController : Controller
     {
+        private readonly UserFacade userFacade;
         private readonly EmployeeFacade employeeFacade;
         private readonly IssueFacade issueFacade;
 
-        public EmployeeController(EmployeeFacade employeeFacade, IssueFacade issueFacade)
+        public EmployeeController(UserFacade userFacade, EmployeeFacade employeeFacade, IssueFacade issueFacade)
         {
+            this.userFacade = userFacade;
             this.employeeFacade = employeeFacade;
             this.issueFacade = issueFacade;
         }
@@ -26,44 +28,28 @@ namespace PresentationLayer.Controllers
             };
             return View("ViewAllEmployees", model);
         }
-
-        public ActionResult CreateEmployee()
+        
+        [CustomAuthorize(Roles = "Administrator")]
+        public ActionResult GrantEmployeeRights(int userId)
         {
-            var model = new EditEmployeeModel()
-            {
-                Employee = new EmployeeDTO()
-            };
-            return View("CreateEmployee", model);
+            if (userFacade.IsUserEmployee(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
+
+            employeeFacade.CreateEmployee(new EmployeeDTO(), userId);
+            userFacade.AddEmployeeRightsToUser(userId);
+            return RedirectToAction("UserDetail", "User", new { userId = userId });
         }
-
-        [HttpPost]
-        public ActionResult CreateEmployee(EditEmployeeModel model)
+        
+        [CustomAuthorize(Roles = "Administrator")]
+        public ActionResult RemoveEmployeeRights(int userId)
         {
-            employeeFacade.CreateEmployee(model.Employee);
-            return RedirectToAction("ViewAllEmployees");
-        }
+            if (!userFacade.IsUserEmployee(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
 
-        public ActionResult EditEmployee(int employeeId)
-        {
-            var model = new EditEmployeeModel
-            {
-                Employee = employeeFacade.GetEmployeeById(employeeId)
-            };
-            return View("EditEmployee", model);
-        }
-
-        [HttpPost]
-        public ActionResult EditEmployee(EditEmployeeModel model)
-        {
-            employeeFacade.UpdateEmployee(model.Employee);
-            return RedirectToAction("ViewAllEmployees");
-        }
-
-        public ActionResult DeleteEmployee(int employeeId)
-        {
-            var employee = employeeFacade.GetEmployeeById(employeeId);
+            var employee = employeeFacade.GetEmployeeById(userId);
+            userFacade.RemoveEmployeeRightFromUser(userId);
             employeeFacade.DeleteEmployee(employee);
-            return RedirectToAction("ViewAllEmployees");
+            return RedirectToAction("UserDetail", "User", new { userId = userId });
         }
     }
 }

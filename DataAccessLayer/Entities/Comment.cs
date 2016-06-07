@@ -38,21 +38,23 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Mandatory Id of issue linked to comment
         /// </summary>
+        [Required]       
         public int IssueId { get; set; }
         /// <summary>
         /// Navigation property to commented issue
         /// </summary>
-        [Required,ForeignKey("IssueId")]
+        [ForeignKey("IssueId")]
         public virtual Issue Issue { get; set; }
-       
+
         /// <summary>
         /// Mandatory Id of the author of the comment
         /// </summary>
+        [Required]
         public int AuthorId { get; set; }
         /// <summary>
         /// Navigation property to comment author
         /// </summary>
-        [Required,ForeignKey("AuthorId")]
+        [ForeignKey("AuthorId")]
         public virtual AITUser Author { get; set; }
 
         public override string ToString()

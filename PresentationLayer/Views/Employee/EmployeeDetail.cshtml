@@ -1,7 +1,9 @@
 ﻿@model  PresentationLayer.Models.Employee.EmployeeDetailModel
 
-<h4>Assigned issues</h4>
-<a class="btn btn-link" data-toggle="collapse" data-target="#assigned-issues">Click to toggle</a>
+<h4>
+    Assigned issues
+    <a class="btn btn-default" data-toggle="collapse" data-target="#assigned-issues">Toggle</a>
+</h4>
 <div id="assigned-issues" class="collapse">
     @{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }
 </div>

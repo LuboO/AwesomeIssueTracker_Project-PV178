@@ -86,8 +86,8 @@ namespace BussinesLayer.Facades
 
                     Mapper.Map(user, retrieved);
                     userManager.Update(retrieved);
+                    uow.Commit();
                 }
-                uow.Commit();
             }
         }
 
@@ -104,7 +104,7 @@ namespace BussinesLayer.Facades
                     if (deleted == null)
                         throw new ObjectNotFoundException("User hasn't been found");
 
-                    var context = ((IAITUnitOfWork)uow).AITDbContext;
+                    var context = (uow as AITUnitOfWork).Context;
 
                     var comments = context.Comments
                         .Where(c => c.AuthorId == user.Id)
@@ -130,6 +130,7 @@ namespace BussinesLayer.Facades
                         .Where(c => c.Id == user.Id)
                         .ToList();
                     CustomerRepository.Delete(customers);
+                    uow.Commit();
 
                     userManager.Delete(deleted);
                     uow.Commit();
@@ -198,6 +199,36 @@ namespace BussinesLayer.Facades
             }
         }
 
+        public bool IsUserAdmin(int userId)
+        {
+            return IsUserInRole(userId, UserRole.Administrator.ToString());
+        }
+
+        public bool IsUserEmployee(int userId)
+        {
+            return IsUserInRole(userId, UserRole.Employee.ToString());
+        }
+
+        public bool IsUserCustomer(int userId)
+        {
+            return IsUserInRole(userId, UserRole.Customer.ToString());
+        }
+
+        private bool IsUserInRole(int userId, string role)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                using (var userManager = UserManagerFactory.Invoke())
+                {
+                    var user = userManager.FindById(userId);
+                    if (user == null)
+                        throw new ObjectNotFoundException("User hasn't been found");
+
+                    return CheckUserAlreadyHasRole(userManager, userId, role);
+                }
+            }
+        }
+
         public void AddAdminRightsToUser(int userId)
         {
             AddRightsToUser(userId, UserRole.Administrator.ToString());
@@ -239,9 +270,11 @@ namespace BussinesLayer.Facades
                         throw new ObjectNotFoundException("User hasn't been found");
 
                     if (!CheckUserAlreadyHasRole(userManager, user.Id, role))
+                    {
                         userManager.AddToRole(user.Id, role);
+                        uow.Commit();
+                    }
 
-                    uow.Commit();
                 }
             }
         }
@@ -257,9 +290,10 @@ namespace BussinesLayer.Facades
                         throw new ObjectNotFoundException("User hasn't been found");
 
                     if (CheckUserAlreadyHasRole(userManager, user.Id, role))
+                    {
                         userManager.RemoveFromRole(user.Id, role);
-
-                    uow.Commit();
+                        uow.Commit();
+                    }
                 }
             }
         }

@@ -10,6 +10,9 @@ namespace BussinesLayer.DTOs
         [Required]
         public UserDTO User { get; set; }
 
+        [Required]
+        [Range(1,2)]
+        [Display(Name = "Type of customer")]
         public CustomerType Type { get; set; }
 
         public override string ToString()

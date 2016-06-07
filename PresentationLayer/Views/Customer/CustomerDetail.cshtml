@@ -9,8 +9,10 @@
     </tr>
 </table>
 
-<h4>Projects</h4>
-<a class="btn btn-link" data-toggle="collapse" data-target="#projects">Click to toggle</a>
+<h4>
+    Projects
+    <a class="btn btn-default" data-toggle="collapse" data-target="#projects">Toggle</a>
+</h4>
 <div id="projects" class="collapse">
     @{ Html.RenderPartial("~/Views/Project/ListProjects.cshtml", Model.ListProjectsModel); }
 </div>

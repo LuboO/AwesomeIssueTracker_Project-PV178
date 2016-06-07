@@ -6,7 +6,7 @@
         <th>Title</th>
         <th>Project</th>
         <th>Author</th>
-        <th>Assigned employee</th>
+        <th>Assigned to</th>
         <th>Type</th>
         <th>Status</th>
         <th></th>
@@ -16,8 +16,8 @@
     <tr>
         <td>@issue.Title</td>
         <td>@Html.ActionLink(issue.Project.Name, "ProjectDetail", "Project", new {projectId = issue.Project.Id}, new {@class = "btn-link"})</td>
-        <td>@Html.ActionLink(issue.Creator.Name, "PersonDetail", "Person", new {personId = issue.Creator.Id}, new {@class = "btn-link"})</td>
-        <td>@Html.ActionLink(issue.AssignedEmployee.Person.Name, "PersonDetail", "Person", new { personId = issue.AssignedEmployee.Id}, new { @class = "btn-link"} )</td>
+        <td>@Html.ActionLink(issue.Creator.Name, "UserDetail", "User", new {userId = issue.Creator.Id}, new {@class = "btn-link"})</td>
+        <td>@Html.ActionLink(issue.AssignedEmployee.User.Name, "UserDetail", "User", new { userId = issue.AssignedEmployee.Id}, new { @class = "btn-link"} )</td>
         <td>@issue.Type</td>
         <td>@issue.Status</td>
         <td>@Html.ActionLink("Detail", "IssueDetail", "Issue", new {issueId = issue.Id}, new {@class = "btn btn-primary"})</td>

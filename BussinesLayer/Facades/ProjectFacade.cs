@@ -27,7 +27,7 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateProject(ProjectDTO project, int customerId)
+        public int CreateProject(ProjectDTO project, int customerId)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
@@ -35,8 +35,6 @@ namespace BussinesLayer.Facades
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var created = Mapper.Map<Project>(project);
-                if (created == null)
-                    return;
 
                 created.Customer = CustomerRepository.GetById(customerId);
                 if (created.Customer == null)
@@ -44,6 +42,7 @@ namespace BussinesLayer.Facades
 
                 ProjectRepository.Insert(created);
                 uow.Commit();
+                return created.Id;
             }
         }
 

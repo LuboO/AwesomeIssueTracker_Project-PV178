@@ -5,6 +5,8 @@ namespace PresentationLayer.Models.User
 {
     public class EditUserModel
     {
+        public int UserId { get; set; }
+
         [Required]
         [Display(Name = "Username")]
         public string UserName { get; set; }

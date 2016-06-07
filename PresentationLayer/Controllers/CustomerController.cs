@@ -1,19 +1,23 @@
 ﻿using BussinesLayer.DTOs;
 using BussinesLayer.Facades;
+using DataAccessLayer.Enums;
+using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Customer;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
-    [CustomAuthorize(Roles = "Administrator")]
+    [CustomAuthorize]
     public class CustomerController : Controller
     {
+        private readonly UserFacade userFacade;
         private readonly CustomerFacade customerFacade;
         private readonly ProjectFacade projectFacade;
 
-        public CustomerController(CustomerFacade customerFacade, ProjectFacade projectFacade)
+        public CustomerController(UserFacade userFacade, CustomerFacade customerFacade, ProjectFacade projectFacade)
         {
+            this.userFacade = userFacade;
             this.customerFacade = customerFacade;
             this.projectFacade = projectFacade;
         }
@@ -26,44 +30,67 @@ namespace PresentationLayer.Controllers
             };
             return View("ViewAllCustomers", model);
         }
-
-        public ActionResult CreateCustomer()
+        
+        [CustomAuthorize(Roles = "Administrator,Employee")]
+        public ActionResult GrantCustomerRights(int userId)
         {
+            if(userFacade.IsUserCustomer(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
+
             var model = new EditCustomerModel()
             {
                 Customer = new CustomerDTO()
             };
-            return View("CreateCustomer", model);
+            model.Customer.User = userFacade.GetUserById(userId);
+            return View("GrantCustomerRights", model);
         }
 
         [HttpPost]
-        public ActionResult CreateCustomer(EditCustomerModel model)
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(Roles = "Administrator,Employee")]
+        public ActionResult GrantCustomerRights(EditCustomerModel model)
         {
-            customerFacade.CreateCustomer(model.Customer);
-            return RedirectToAction("ViewAllCustomers");
+            if (userFacade.IsUserCustomer(model.Customer.User.Id))
+                RedirectToAction("UserDetail", "User", new { userId = model.Customer.User.Id });
+
+            customerFacade.CreateCustomer(model.Customer, model.Customer.User.Id);
+            userFacade.AddCustomerRightsToUser(model.Customer.User.Id);
+            return RedirectToAction("UserDetail", "User", new { userId = model.Customer.User.Id });
         }
 
-        public ActionResult EditCustomer(int customerId)
+        [CustomAuthorize(Roles = "Administrator,Employee")]
+        public ActionResult RemoveCustomerRights(int userId)
         {
+            if(!userFacade.IsUserCustomer(userId))
+                RedirectToAction("UserDetail", "User", new { userId = userId });
+
+            var customer = customerFacade.GetCustomerById(userId);
+            customerFacade.DeleteCustomer(customer);
+            userFacade.RemoveCustomerRightsFromUser(userId);
+            return RedirectToAction("UserDetail", "User", new { userId = userId });
+        }
+
+        public ActionResult EditCustomer(int userId)
+        {
+            if(!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId))
+                return View("AccessForbidden");
+
             var model = new EditCustomerModel()
             {
-                Customer = customerFacade.GetCustomerById(customerId)
+                Customer = customerFacade.GetCustomerById(userId)
             };
             return View("EditCustomer", model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditCustomer(EditCustomerModel model)
         {
-            customerFacade.UpdateCustomer(model.Customer);
-            return RedirectToAction("ViewAllCustomers");
-        }
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.Customer.Id))
+                return View("AccessForbidden");
 
-        public ActionResult DeleteCustomer(int customerId)
-        {
-            var customer = customerFacade.GetCustomerById(customerId);
-            customerFacade.DeleteCustomer(customer);
-            return RedirectToAction("ViewAllCustomers");
+            customerFacade.UpdateCustomer(model.Customer);
+            return RedirectToAction("UserDetail", "User", new { userId = model.Customer.Id });
         }
     }
 }

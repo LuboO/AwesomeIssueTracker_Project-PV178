@@ -10,27 +10,39 @@ namespace BussinesLayer.DTOs
 
         [Required]
         public string Title { get; set; }
-
+        
         public string Description { get; set; }
 
         [Required]
+        [Range(1,2)]
+        [Display(Name = "Type of issue")]
         public IssueType Type { get; set; }
 
         [Required]
+        [Range(1,4)]
+        [Display(Name = "State of issue")]
         public IssueStatus Status { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy DD.mm.ss}")]
+        [Display(Name = "Created on")]
         public DateTime Created { get; set; }
 
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy DD.mm.ss}")]
+        [Display(Name = "Finished on")]
         public DateTime? Finished { get; set; }
 
         [Required]
         public ProjectDTO Project { get; set; }
 
         [Required]
+        [Display(Name = "Assigned employee")]
         public EmployeeDTO AssignedEmployee { get; set; }
 
         [Required]
+        [Display(Name = "Issued by")]
         public UserDTO Creator { get; set; }
 
         public override string ToString()

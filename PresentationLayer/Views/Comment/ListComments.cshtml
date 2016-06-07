@@ -5,7 +5,7 @@
     @foreach (var comment in Model.Comments) {
     <tr>
         <th>Author</th>
-        <td>@Html.ActionLink(comment.Author.Name, "PersonDetail", "Person", new { personId = comment.Author.Id}, new { @class = "btn-link"} )</td>
+        <td>@Html.ActionLink(comment.Author.Name, "UserDetail", "User", new { personId = comment.Author.Id}, new { @class = "btn-link" } )</td>
     </tr>
     <tr>
         <th>Posted on</th>

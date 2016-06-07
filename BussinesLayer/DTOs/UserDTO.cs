@@ -8,7 +8,7 @@ namespace BussinesLayer.DTOs
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required]

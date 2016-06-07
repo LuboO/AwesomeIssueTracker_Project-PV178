@@ -32,7 +32,7 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public void CreateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
+        public int CreateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
         {
             if (issue == null)
                 throw new ArgumentNullException("issue");
@@ -41,24 +41,27 @@ namespace BussinesLayer.Facades
             {
                 using (var userManager = UserManagerFactory.Invoke())
                 {
-                    var created = Mapper.Map<Issue>(issue);
-                    if (created == null)
-                        return;
-
-                    created.Project = ProjectRepository.GetById(projectId);
-                    if (created.Project == null)
+                    if (ProjectRepository.GetById(projectId) == null)
                         throw new ObjectNotFoundException("Project hasn't been found");
 
-                    created.Creator = userManager.FindById(creatorId);
-                    if (created.Creator == null)
+                    if (userManager.FindById(creatorId) == null)
                         throw new ObjectNotFoundException("Creator hasn't been found");
-
-                    created.AssignedEmployee = EmployeeRepository.GetById(employeeId);
-                    if (created.AssignedEmployee == null)
+                    
+                    if (EmployeeRepository.GetById(employeeId) == null)
                         throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
+
+                    var created = Mapper.Map<Issue>(issue);
+
+                    created.ProjectId = projectId;
+                    created.Project = null;
+                    created.CreatorId = creatorId;
+                    created.Creator = null;
+                    created.AssignedEmployeeId = employeeId;
+                    created.AssignedEmployee = null;
 
                     IssueRepository.Insert(created);
                     uow.Commit();
+                    return created.Id;
                 }
             }
         }
@@ -88,18 +91,16 @@ namespace BussinesLayer.Facades
                     if (retrieved == null)
                         throw new ObjectNotFoundException("Issue not found");
 
-                    Mapper.Map(issue, retrieved);
-                    retrieved.Project = ProjectRepository.GetById(projectId);
-                    if (retrieved.Project == null)
+                    if (ProjectRepository.GetById(projectId) == null)
                         throw new ObjectNotFoundException("Project hasn't been found");
 
-                    retrieved.Creator = userManager.FindById(creatorId);
-                    if (retrieved.Creator == null)
+                    if (userManager.FindById(creatorId) == null)
                         throw new ObjectNotFoundException("Creator hasn't been found");
-
-                    retrieved.AssignedEmployee = EmployeeRepository.GetById(employeeId);
-                    if (retrieved.AssignedEmployee == null)
+                    
+                    if (EmployeeRepository.GetById(employeeId) == null)
                         throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
+
+                    Mapper.Map(issue, retrieved);
 
                     IssueRepository.Update(retrieved);
                     uow.Commit();
