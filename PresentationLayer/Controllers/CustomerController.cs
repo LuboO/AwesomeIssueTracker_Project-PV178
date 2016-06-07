@@ -42,9 +42,12 @@ namespace PresentationLayer.Controllers
 
             var model = new EditCustomerModel()
             {
-                Customer = new CustomerDTO()
+                Customer = new CustomerDTO(),
             };
             model.Customer.User = userFacade.GetUserById(userId.Value);
+            if (model.Customer.User == null)
+                return View("BadInput");
+
             return View("GrantCustomerRights", model);
         }
 
@@ -71,6 +74,9 @@ namespace PresentationLayer.Controllers
                 RedirectToAction("UserDetail", "User", new { userId = userId.Value });
 
             var customer = customerFacade.GetCustomerById(userId.Value);
+            if (customer == null)
+                return View("BadInput");
+
             customerFacade.DeleteCustomer(customer);
             userFacade.RemoveCustomerRightsFromUser(userId.Value);
             return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
@@ -84,9 +90,13 @@ namespace PresentationLayer.Controllers
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != userId.Value))
                 return View("AccessForbidden");
 
+            var customer = customerFacade.GetCustomerById(userId.Value);
+            if(customer == null)
+                return View("BadInput");
+
             var model = new EditCustomerModel()
             {
-                Customer = customerFacade.GetCustomerById(userId.Value)
+                Customer = customer,
             };
             return View("EditCustomer", model);
         }

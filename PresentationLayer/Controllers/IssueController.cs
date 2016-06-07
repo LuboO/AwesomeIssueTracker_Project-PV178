@@ -51,12 +51,15 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
+
             var model = new IssueDetailModel()
             {
                 Issue = issue,
                 ListCommentsModel = new ListCommentsModel()
                 {
-                    Comments = commentFacade.GetCommentsByIssue(issueId.Value)
+                    Comments = commentFacade.GetCommentsByIssue(issue.Id)
                 }
             };
             model.CanChangeState = User.IsInRole(UserRole.Administrator.ToString()) || 
@@ -102,13 +105,15 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != issue.Creator.Id))
                 return View("AccessForbidden");
 
             var model = new EditIssueModel()
             {
-                IssueId = issueId.Value,
+                IssueId = issue.Id,
                 CreatorId = issue.Creator.Id,
                 ProjectId = issue.Project.Id,
                 SelectedEmployeeId = issue.AssignedEmployee.Id,
@@ -128,6 +133,9 @@ namespace PresentationLayer.Controllers
                 return View("AccessForbidden");
 
             var issue = issueFacade.GetIssueById(model.IssueId);
+            if(issue == null)
+                return View("BadInput");
+
             issue.Title = model.Title;
             issue.Description = model.Description;
             issue.Type = model.Type;
@@ -141,6 +149,8 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != issue.Creator.Id))
                 return View("AccessForbidden");
@@ -156,6 +166,9 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
+
             issue.Status = IssueStatus.Accepted;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
@@ -168,6 +181,9 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
+
             issue.Status = IssueStatus.Rejected;
             issue.Finished = DateTime.Now;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
@@ -181,6 +197,9 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
+
             issue.Status = IssueStatus.Closed;
             issue.Finished = DateTime.Now;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
@@ -194,6 +213,9 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var issue = issueFacade.GetIssueById(issueId.Value);
+            if(issue == null)
+                return View("BadInput");
+
             issue.Status = IssueStatus.Accepted;
             issue.Finished = null;
             issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);

@@ -155,20 +155,24 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             /* Get personal data */
+            var user = userFacade.GetUserById(userId.Value);
+            if(user == null)
+                return View("BadInput");
+
             var model = new UserDetailModel()
             {
-                User = userFacade.GetUserById(userId.Value),
+                User = user,
                 ListIssuesModel = new ListIssuesModel()
                 {
-                    Issues = issueFacade.GetIssuesByCreator(userId.Value)
+                    Issues = issueFacade.GetIssuesByCreator(user.Id)
                 },
                 ListCommentsModel = new ListCommentsModel()
                 {
-                    Comments = commentFacade.GetCommentsByAuthor(userId.Value)
+                    Comments = commentFacade.GetCommentsByAuthor(user.Id)
                 }
             };
             /* Get employee data if any */
-            var employee = employeeFacade.GetEmployeeById(userId.Value);
+            var employee = employeeFacade.GetEmployeeById(user.Id);
             if (employee != null)
             {
                 model.EmployeeDetailModel = new EmployeeDetailModel()
@@ -176,12 +180,12 @@ namespace PresentationLayer.Controllers
                     Employee = employee,
                     ListIssuesModel = new ListIssuesModel()
                     {
-                        Issues = issueFacade.GetIssuesByAssignedEmployee(userId.Value)
+                        Issues = issueFacade.GetIssuesByAssignedEmployee(user.Id)
                     }
                 };
             }
             /* Get customer data if any */
-            var customer = customerFacade.GetCustomerById(userId.Value);
+            var customer = customerFacade.GetCustomerById(user.Id);
             if (customer != null)
             {
                 model.CustomerDetailModel = new CustomerDetailModel()
@@ -189,14 +193,14 @@ namespace PresentationLayer.Controllers
                     Customer = customer,
                     ListProjectsModel = new ListProjectsModel()
                     {
-                        Projects = projectFacade.GetProjectsByCustomer(userId.Value)
+                        Projects = projectFacade.GetProjectsByCustomer(user.Id)
                     }
                 };
             }
-            model.IsDetailedUserAdmin = userFacade.IsUserAdmin(userId.Value);
+            model.IsDetailedUserAdmin = userFacade.IsUserAdmin(user.Id);
             model.IsAdmin = userFacade.IsUserAdmin(User.Identity.GetUserId<int>());
             model.IsEmployee = userFacade.IsUserEmployee(User.Identity.GetUserId<int>());
-            model.CanModifyUser = model.IsAdmin || (userId == User.Identity.GetUserId<int>());
+            model.CanModifyUser = model.IsAdmin || (user.Id == User.Identity.GetUserId<int>());
 
             return View("UserDetail", model);
         }
@@ -216,6 +220,9 @@ namespace PresentationLayer.Controllers
                 return View("AccessForbidden");
 
             var user = userFacade.GetUserById(userId.Value);
+            if (user == null)
+                return View("BadInput");
+
             var model = new EditUserModel()
             {
                 UserId = userId.Value,
@@ -240,6 +247,8 @@ namespace PresentationLayer.Controllers
                 return View(model);
             }
             var user = userFacade.GetUserById(model.UserId);
+            if(user == null)
+                return View("BadInput");
 
             user.UserName = model.UserName;
             user.Name = model.Name;
@@ -263,6 +272,9 @@ namespace PresentationLayer.Controllers
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
             var user = userFacade.GetUserById(userId.Value);
+            if(user == null)
+                return View("BadInput");
+
             userFacade.DeleteUser(user);
             return RedirectToAction("ViewAllUsers");
         }
@@ -271,6 +283,9 @@ namespace PresentationLayer.Controllers
         public ActionResult GrantAdministratorRights(int? userId)
         {
             if (!userId.HasValue)
+                return View("BadInput");
+
+            if(userFacade.GetUserById(userId.Value) == null)
                 return View("BadInput");
 
             if (userFacade.IsUserAdmin(userId.Value))
@@ -284,6 +299,9 @@ namespace PresentationLayer.Controllers
         public ActionResult RemoveAdministratorRights(int? userId)
         {
             if (!userId.HasValue)
+                return View("BadInput");
+
+            if (userFacade.GetUserById(userId.Value) == null)
                 return View("BadInput");
 
             if (!userFacade.IsUserAdmin(userId.Value))

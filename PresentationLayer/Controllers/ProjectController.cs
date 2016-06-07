@@ -41,6 +41,9 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var project = projectFacade.GetProjectById(projectId.Value);
+            if(project == null)
+                return View("BadInput");
+
             var model = new ProjectDetailModel()
             {
                 Project = project,
@@ -81,6 +84,8 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var project = projectFacade.GetProjectById(projectId.Value);
+            if(project == null)
+                return View("BadInput");
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
                 return View("AccessForbidden");
@@ -103,12 +108,14 @@ namespace PresentationLayer.Controllers
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.CustomerId))
                 return View("AccessForbidden");
 
-            var project = new ProjectDTO()
-            {
-                Id = model.ProjectId,
-                Name = model.Name,
-                Description = model.Description
-            };
+            var project = projectFacade.GetProjectById(model.ProjectId);
+            if(project == null)
+                return View("BadInput");
+
+            project.Id = model.ProjectId;
+            project.Name = model.Name;
+            project.Description = model.Description;
+
             projectFacade.UpdateProject(project, model.CustomerId);
             return RedirectToAction("ProjectDetail", new { projectId = model.ProjectId });
         }
@@ -119,6 +126,8 @@ namespace PresentationLayer.Controllers
                 return View("BadInput");
 
             var project = projectFacade.GetProjectById(projectId.Value);
+            if(project == null)
+                return View("BadInput");
 
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != project.Customer.Id))
                 return View("AccessForbidden");

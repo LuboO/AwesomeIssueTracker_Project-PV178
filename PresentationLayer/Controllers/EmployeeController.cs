@@ -35,6 +35,9 @@ namespace PresentationLayer.Controllers
             if (!userId.HasValue)
                 return View("BadInput");
 
+            if(userFacade.GetUserById(userId.Value) == null)
+                return View("BadInput");
+
             if (userFacade.IsUserEmployee(userId.Value))
                 RedirectToAction("UserDetail", "User", new { userId = userId.Value });
 
@@ -53,6 +56,9 @@ namespace PresentationLayer.Controllers
                 RedirectToAction("UserDetail", "User", new { userId = userId.Value });
 
             var employee = employeeFacade.GetEmployeeById(userId.Value);
+            if(employee == null)
+                return View("BadInput");
+
             userFacade.RemoveEmployeeRightFromUser(userId.Value);
             employeeFacade.DeleteEmployee(employee);
             return RedirectToAction("UserDetail", "User", new { userId = userId.Value });
