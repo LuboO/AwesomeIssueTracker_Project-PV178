@@ -82,39 +82,5 @@
 
 <h4>Discussion</h4>
 @{ Html.RenderPartial("~/Views/Comment/DiscussionView.cshtml", Model.ListCommentsModel); }
-
-<hr/>
-<h4>Post a comment...</h4>
-@using (Html.BeginForm("PostComment", "Comment")) {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Issue.Id)
-
-    <div class="form-horizontal">
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewCommentSubject, "Subject", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NewCommentSubject, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NewCommentSubject, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.NewCommentMessage, "Message", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.NewCommentMessage, htmlAttributes: new { @class = "form-control", @rows = "5" })
-                @Html.ValidationMessageFor(model => model.NewCommentMessage, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Post" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-}
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<br/>
+@Html.ActionLink("Comment!", "PostComment", "Comment", new { issueId = Model.Issue.Id }, new { @class = "btn btn-primary" })

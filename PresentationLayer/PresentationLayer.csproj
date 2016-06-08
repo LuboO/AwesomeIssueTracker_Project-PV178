@@ -171,6 +171,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\Comment\PostCommentModel.cs" />
     <Compile Include="Models\User\ChangeEmailModel.cs" />
     <Compile Include="Models\User\ChangePasswordModel.cs" />
     <Compile Include="Models\User\EditUserModel.cs" />
@@ -196,7 +197,7 @@
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Customer\EditCustomer.cshtml" />
-    <Content Include="Views\Comment\AddCommentToIssue.cshtml" />
+    <Content Include="Views\Comment\PostComment.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\BadInput.cshtml" />
     <None Include="Views\User\Register.cshtml" />
