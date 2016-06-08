@@ -87,6 +87,15 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddIssueToProject(EditIssueModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+            {
+                model.ExistingEmployees = employeeFacade.GetAllEmployees();
+                return View(model);
+            }
+
             var issue = new IssueDTO()
             {
                 Title = model.Title,
@@ -129,6 +138,15 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditIssue(EditIssueModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+            {
+                model.ExistingEmployees = employeeFacade.GetAllEmployees();
+                return View(model);
+            }
+
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.CreatorId))
                 return View("AccessForbidden");
 

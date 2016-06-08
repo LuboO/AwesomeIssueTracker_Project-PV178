@@ -8,7 +8,7 @@ namespace PresentationLayer.Models.User
         public int UserId { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required]
@@ -17,6 +17,7 @@ namespace PresentationLayer.Models.User
 
         public string Address { get; set; }
 
+        [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 

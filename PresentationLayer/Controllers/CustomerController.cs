@@ -40,14 +40,14 @@ namespace PresentationLayer.Controllers
             if (userFacade.IsUserCustomer(userId.Value))
                 RedirectToAction("UserDetail", "User", new { userId = userId.Value });
 
-            var model = new EditCustomerModel()
-            {
-                Customer = new CustomerDTO(),
-            };
-            model.Customer.User = userFacade.GetUserById(userId.Value);
-            if (model.Customer.User == null)
+            var user = userFacade.GetUserById(userId.Value);
+            if (user == null)
                 return View("BadInput");
 
+            var model = new EditCustomerModel()
+            {
+                UserId = user.Id,
+            };
             return View("GrantCustomerRights", model);
         }
 
@@ -56,12 +56,18 @@ namespace PresentationLayer.Controllers
         [CustomAuthorize(Roles = "Administrator,Employee")]
         public ActionResult GrantCustomerRights(EditCustomerModel model)
         {
-            if (userFacade.IsUserCustomer(model.Customer.User.Id))
-                RedirectToAction("UserDetail", "User", new { userId = model.Customer.User.Id });
+            if (model == null)
+                return View("BadInput");
 
-            customerFacade.CreateCustomer(model.Customer, model.Customer.User.Id);
-            userFacade.AddCustomerRightsToUser(model.Customer.User.Id);
-            return RedirectToAction("UserDetail", "User", new { userId = model.Customer.User.Id });
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (userFacade.IsUserCustomer(model.UserId))
+                RedirectToAction("UserDetail", "User", new { userId = model.UserId });
+
+            customerFacade.CreateCustomer(new CustomerDTO() { Type = model.Type }, model.UserId);
+            userFacade.AddCustomerRightsToUser(model.UserId);
+            return RedirectToAction("UserDetail", "User", new { userId = model.UserId });
         }
 
         [CustomAuthorize(Roles = "Administrator,Employee")]
@@ -96,7 +102,8 @@ namespace PresentationLayer.Controllers
 
             var model = new EditCustomerModel()
             {
-                Customer = customer,
+                UserId = customer.Id,
+                Type = customer.Type
             };
             return View("EditCustomer", model);
         }
@@ -105,11 +112,23 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditCustomer(EditCustomerModel model)
         {
-            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.Customer.Id))
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.UserId))
                 return View("AccessForbidden");
 
-            customerFacade.UpdateCustomer(model.Customer);
-            return RedirectToAction("UserDetail", "User", new { userId = model.Customer.Id });
+            var customer = customerFacade.GetCustomerById(model.UserId);
+            if (customer == null)
+                return View("BadInput");
+
+            customer.Type = model.Type;
+
+            customerFacade.UpdateCustomer(customer);
+            return RedirectToAction("UserDetail", "User", new { userId = model.UserId });
         }
     }
 }

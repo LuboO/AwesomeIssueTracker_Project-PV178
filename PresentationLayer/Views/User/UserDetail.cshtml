@@ -140,7 +140,7 @@
         Customer
         @if(Model.CanModifyUser) {
             <span style="float:right">
-                @Html.ActionLink("Edit customer", "EditCustomer", "Customer", new { customerId = Model.User.Id }, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Edit customer", "EditCustomer", "Customer", new { userId = Model.User.Id }, new { @class = "btn btn-primary"})
             </span>
         }
     </h2>

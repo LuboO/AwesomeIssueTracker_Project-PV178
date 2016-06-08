@@ -10,9 +10,9 @@ namespace PresentationLayer.Models.Issue
     public class EditIssueModel
     {
         public int IssueId { get; set; }
-
+        
         public int CreatorId { get; set; }
-
+        
         public int ProjectId { get; set; }
 
         [Required]

@@ -1,9 +1,9 @@
 ﻿@model PresentationLayer.Models.Project.EditProjectModel
 @{
-    ViewBag.Title = "Edit " + Model.Name;
+    ViewBag.Title = "Edit project";
 }
 
-<h2>Edit @Model.Name</h2>
+<h2>Edit project</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

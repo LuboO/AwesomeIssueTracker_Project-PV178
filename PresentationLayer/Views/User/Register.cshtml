@@ -13,45 +13,45 @@
 
     
     <div class="form-group">
-        @Html.LabelFor(m => m.User.UserName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.User.UserName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.User.UserName, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.User.Name, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.User.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.User.Name, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.User.Email, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.User.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.User.Email, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.User.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Address, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(m => m.User.Address, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.User.Address, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.User.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(m => m.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.User.PhoneNumber, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.User.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(m => m.User.DateOfBirth, new { htmlAttributes = new { @class = "datefield", @type = "date" }})
-            @Html.ValidationMessageFor(m => m.User.DateOfBirth, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.DateOfBirth, new { htmlAttributes = new { @class = "datefield", @type = "date" }})
+            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

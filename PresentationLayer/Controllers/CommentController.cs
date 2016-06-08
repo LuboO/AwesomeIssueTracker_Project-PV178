@@ -22,6 +22,9 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PostComment(IssueDetailModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
             var comment = new CommentDTO()
             {
                 Subject = model.NewCommentSubject,

@@ -69,6 +69,12 @@ namespace PresentationLayer.Controllers
         [CustomAuthorize(Roles = "Customer")]
         public ActionResult CreateProject(EditProjectModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             var project = new ProjectDTO()
             {
                 Name = model.Name,
@@ -78,6 +84,7 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("ProjectDetail", new { projectId = newId });
         }
 
+        [CustomAuthorize(Roles = "Administrator,Customer")]
         public ActionResult EditProject(int? projectId)
         {
             if (!projectId.HasValue)
@@ -103,8 +110,15 @@ namespace PresentationLayer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(Roles = "Administrator,Customer")]
         public ActionResult EditProject(EditProjectModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.CustomerId))
                 return View("AccessForbidden");
 
@@ -120,6 +134,7 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("ProjectDetail", new { projectId = model.ProjectId });
         }
 
+        [CustomAuthorize(Roles = "Administrator,Customer")]
         public ActionResult DeleteProject(int? projectId)
         {
             if (!projectId.HasValue)

@@ -212,8 +212,6 @@
     <Content Include="Views\Issue\EditIssue.cshtml" />
     <None Include="Views\Issue\ListIssues.cshtml" />
     <None Include="Views\Issue\ViewAllIssues.cshtml" />
-    <None Include="Views\Person\CreatePerson.cshtml" />
-    <Content Include="Views\Person\ViewAllPeople.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Views\Shared\AccessForbidden.cshtml" />
     <Content Include="Views\Web.config">
@@ -225,10 +223,8 @@
     <Content Include="Views\Customer\ViewAllCustomers.cshtml" />
     <Content Include="Views\Employee\ViewAllEmployees.cshtml" />
     <Content Include="Views\Project\ListProjects.cshtml" />
-    <Content Include="Views\Person\PersonDetail.cshtml" />
     <Content Include="Views\Project\ViewAllProjects.cshtml" />
     <Content Include="Views\Project\ProjectDetail.cshtml" />
-    <Content Include="Views\Person\EditPerson.cshtml" />
     <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
     <Content Include="Views\User\UserDetail.cshtml" />

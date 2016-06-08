@@ -14,6 +14,7 @@ using PresentationLayer.Models.Customer;
 using PresentationLayer.Models.Project;
 using PresentationLayer.Filters.Authorization;
 using DataAccessLayer.Enums;
+using System.Linq;
 
 namespace PresentationLayer.Controllers
 {
@@ -96,31 +97,27 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            if (model == null)
+                return View("BadInput");
+
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var identity = userFacade.Login(model.Email, model.Password);
-            if (identity != null)
-            {
-                AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
-                return RedirectToAction("Index", "Home");
-            }
-            else
+            if (identity == null)
             {
                 ModelState.AddModelError("", "Bad E-Mail or Password");
                 return View(model);
             }
+
+            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel()
-            {
-                User = new UserDTO()
-            };
+            var model = new RegisterModel();
             return View("Register", model);
         }
 
@@ -129,15 +126,36 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = new UserDTO()
             {
-                model.User.Password = model.Password;
-                userFacade.Create(model.User);
+                UserName = model.UserName,
+                Name = model.Name,
+                Email =  model.Email,
+                Password = model.Password,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                DateOfBirth = model.DateOfBirth
+            };
 
-                return RedirectToAction("Index", "Home");
+            /* Yes, this would also fail in facade. But it is harder to get nice message from there :) */
+            if(!user.UserName.All(c => char.IsLetterOrDigit(c) && c < 128))
+            {
+                ModelState.AddModelError("UserName", "User Name can contain only alphanumeric symbols.");
+                return View(model);
             }
-
-            return View(model);
+            if(userFacade.GetUsersByUserName(user.UserName).Count > 0)
+            {
+                ModelState.AddModelError("UserName", "User Name is already taken.");
+                return View(model);
+            }
+            userFacade.Create(user);
+            return RedirectToAction("Login");
         }
 
         public ActionResult ViewAllUsers()
@@ -239,24 +257,37 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(EditUserModel model)
         {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             if (!User.IsInRole(UserRole.Administrator.ToString()) && (User.Identity.GetUserId<int>() != model.UserId))
                 return View("AccessForbidden");
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
             var user = userFacade.GetUserById(model.UserId);
             if(user == null)
                 return View("BadInput");
+
+            if (!model.UserName.All(c => char.IsLetterOrDigit(c) && c < 128))
+            {
+                ModelState.AddModelError("UserName", "User Name can contain only alphanumeric symbols.");
+                return View(model);
+            }
+            if ((user.UserName != model.UserName) && userFacade.GetUsersByUserName(model.UserName).Count > 0)
+            {
+                ModelState.AddModelError("UserName", "User Name is already taken.");
+                return View(model);
+            }
 
             user.UserName = model.UserName;
             user.Name = model.Name;
             user.Address = model.Address;
             user.PhoneNumber = model.PhoneNumber;
             user.DateOfBirth = model.DateOfBirth;
-            userFacade.UpdateUser(user);
 
+            userFacade.UpdateUser(user);
             return RedirectToAction("UserDetail", new { userId = model.UserId });
         }
 

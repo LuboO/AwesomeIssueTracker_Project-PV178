@@ -51,7 +51,9 @@ namespace BussinesLayer.Facades
                     if (created == null)
                         return;
 
-                    userManager.Create(created, user.Password);
+                    var result = userManager.Create(created, user.Password);
+                    if (!result.Succeeded)
+                        throw new UpdateException(result.Errors.First());
                 }
             }
         }
@@ -85,7 +87,10 @@ namespace BussinesLayer.Facades
                         throw new ObjectNotFoundException("User hasn't been found");
 
                     Mapper.Map(user, retrieved);
-                    userManager.Update(retrieved);
+                    var result = userManager.Update(retrieved);
+                    if (!result.Succeeded)
+                        throw new UpdateException(result.Errors.First());
+
                     uow.Commit();
                 }
             }
