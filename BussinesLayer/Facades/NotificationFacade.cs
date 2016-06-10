@@ -9,12 +9,17 @@ using DataAccessLayer.Entities;
 using BussinesLayer.Filters;
 using System;
 using System.Data.Entity.Core;
+using Microsoft.AspNet.Identity;
 
 namespace BussinesLayer.Facades
 {
     public class NotificationFacade : AITBaseFacade
     {
         public NotificationRepository NotificationRepository { get; set; }
+
+        public IssueRepository IssueRepository { get; set; }
+
+        public Func<AITUserManager> UserManagerFactory { get; set; }
 
         public NotificationListQuery NotificationListQuery { get; set; }
 
@@ -25,18 +30,35 @@ namespace BussinesLayer.Facades
             return query;
         }
 
-        public int CreateNotification(NotificationDTO notification)
+        public int CreateNotification(NotificationDTO notification, int issueId, int userId)
         {
             if (notification == null)
                 throw new ArgumentNullException("notification");
 
             using (var uow = UnitOfWorkProvider.Create())
             {
-                var created = Mapper.Map<Notification>(notification);
+                using (var userManager = UserManagerFactory.Invoke())
+                {
+                    var issue = IssueRepository.GetById(issueId);
+                    if (issue == null)
+                        throw new ObjectNotFoundException("Issue wasn't found");
 
-                NotificationRepository.Insert(created);
-                uow.Commit();
-                return created.Id;
+                    var user = userManager.FindById(userId);
+                    if (user == null)
+                        throw new ObjectNotFoundException("Author wasn't found");
+
+                    var created = Mapper.Map<Notification>(notification);
+
+                    created.IssueId = issue.Id;
+                    created.Issue = null;
+                    created.UserId = user.Id;
+                    created.User = null;
+
+                    NotificationRepository.Insert(created);
+                    uow.Commit();
+                    return created.Id;
+
+                }
             }
         }
 
@@ -105,13 +127,45 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public List<NotificationDTO> GetNotificationsByPerson(int personId)
+        public List<NotificationDTO> GetNotificationsByUser(int userId)
         {
             using (UnitOfWorkProvider.Create())
             {
-                return CreateQuery(new NotificationFilter() { PersonId = personId })
+                return CreateQuery(new NotificationFilter() { UserId = userId })
                     .Execute()
                     .ToList();
+            }
+        }
+
+        public NotificationDTO GetNotificationByIssueUser(int issueId, int userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var filter = new NotificationFilter()
+                {
+                    UserId = userId,
+                    IssueId = issueId
+                };
+                return CreateQuery(filter)
+                    .Execute()
+                    .ToList()
+                    .FirstOrDefault();
+            }
+        }
+
+        public bool IsUserSubbedToIssue(int userId, int issueId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var filter = new NotificationFilter()
+                {
+                    UserId = userId,
+                    IssueId = issueId
+                };
+                if (CreateQuery(filter).Execute().ToList().Count > 0)
+                    return true;
+
+                return false;
             }
         }
     }

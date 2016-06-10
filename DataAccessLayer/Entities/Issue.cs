@@ -56,6 +56,22 @@ namespace DataAccessLayer.Entities
         public DateTime? Finished { get; set; }
 
         /// <summary>
+        /// Time of last change of Issue. Will be null for new Issue.
+        /// </summary>
+        public DateTime? ChangeTime { get; set; }
+
+        /// <summary>
+        /// Type of last Issue change. E.g. Updated, Comment, Reject, etc...
+        /// </summary>
+        [Range(1,6)]
+        public IssueChangeType? ChangeType { get; set; }
+
+        /// <summary>
+        /// Name of User who last changed this Issue.
+        /// </summary>
+        public string NameOfChanger { get; set; }
+
+        /// <summary>
         /// Mandatory Id of the Project this issue is created in
         /// </summary>
         [Required]

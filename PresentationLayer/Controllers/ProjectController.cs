@@ -130,7 +130,7 @@ namespace PresentationLayer.Controllers
             project.Name = model.Name;
             project.Description = model.Description;
 
-            projectFacade.UpdateProject(project, model.CustomerId);
+            projectFacade.UpdateProject(project);
             return RedirectToAction("ProjectDetail", new { projectId = model.ProjectId });
         }
 

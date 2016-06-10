@@ -96,6 +96,9 @@ namespace DataAccessLayer.Migrations
                         Status = c.Int(nullable: false),
                         Created = c.DateTime(nullable: false),
                         Finished = c.DateTime(),
+                        ChangeTime = c.DateTime(),
+                        ChangeType = c.Int(),
+                        NameOfChanger = c.String(),
                         ProjectId = c.Int(nullable: false),
                         AssignedEmployeeId = c.Int(nullable: false),
                         CreatorId = c.Int(nullable: false),
@@ -125,13 +128,13 @@ namespace DataAccessLayer.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         NotifyByEmail = c.Boolean(nullable: false),
                         IssueId = c.Int(nullable: false),
-                        PersonId = c.Int(nullable: false),
+                        UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Issues", t => t.IssueId)
-                .ForeignKey("dbo.AspNetUsers", t => t.PersonId)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
                 .Index(t => t.IssueId)
-                .Index(t => t.PersonId);
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -173,24 +176,24 @@ namespace DataAccessLayer.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Comments", "IssueId", "dbo.Issues");
-            DropForeignKey("dbo.Comments", "AuthorId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Customers", "Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Issues", "ProjectId", "dbo.Projects");
-            DropForeignKey("dbo.Notifications", "PersonId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Notifications", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Notifications", "IssueId", "dbo.Issues");
             DropForeignKey("dbo.Issues", "CreatorId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Issues", "AssignedEmployeeId", "dbo.Employees");
+            DropForeignKey("dbo.Comments", "IssueId", "dbo.Issues");
             DropForeignKey("dbo.Employees", "Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Issues", "AssignedEmployeeId", "dbo.Employees");
             DropForeignKey("dbo.Projects", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.Comments", "AuthorId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.Notifications", new[] { "PersonId" });
+            DropIndex("dbo.Notifications", new[] { "UserId" });
             DropIndex("dbo.Notifications", new[] { "IssueId" });
             DropIndex("dbo.Employees", new[] { "Id" });
             DropIndex("dbo.Issues", new[] { "CreatorId" });

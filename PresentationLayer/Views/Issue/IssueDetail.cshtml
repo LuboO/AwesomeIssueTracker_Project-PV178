@@ -7,14 +7,19 @@
 
 <h2 style="text-align:left">
     Issue
+    @if(Model.IsUserSubscribed) {
+        @Html.ActionLink("Unsubscribe", "UnsubscribeFromIssue", "Notification", new {issueId = Model.Issue.Id}, new {@class = "btn btn-info"})
+    } else {
+        @Html.ActionLink("Subscribe", "SubscribeToIssue", "Notification", new {issueId = Model.Issue.Id}, new {@class = "btn btn-info"})
+    }
     <span style="float:right">
         <div class="btn-toolbar">
             @if(Model.CanChangeState) {
                 if(Model.Issue.Status == IssueStatus.New) {
-                    @Html.ActionLink("Accept", "AcceptIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
-                    @Html.ActionLink("Reject", "RejectIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Accept", "AcceptIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-success"})
+                    @Html.ActionLink("Reject", "RejectIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-warning"})
                 } else if(Model.Issue.Status == IssueStatus.Accepted) {
-                    @Html.ActionLink("Close", "CloseIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Close", "CloseIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-info"})
                 } else {
                     @Html.ActionLink("Reopen", "ReopenIssue", "Issue", new {issueId = Model.Issue.Id}, new {@class = "btn btn-default"})
                 }

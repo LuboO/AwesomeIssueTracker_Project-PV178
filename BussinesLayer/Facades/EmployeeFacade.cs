@@ -40,7 +40,7 @@ namespace BussinesLayer.Facades
                     var created = Mapper.Map<Employee>(employee);
                     
                     if (userManager.FindById(userId) == null)
-                        throw new ObjectNotFoundException("User hasn't been found.");
+                        throw new ObjectNotFoundException("User wasn't found");
 
                     created.Id = userId;
                     created.User = null;
@@ -73,7 +73,7 @@ namespace BussinesLayer.Facades
             {
                 var retrieved = EmployeeRepository.GetById(employee.Id);
                 if (retrieved == null)
-                    throw new ObjectNotFoundException("Employee hasn't been found");
+                    throw new ObjectNotFoundException("Employee wasn't found");
 
                 Mapper.Map(employee, retrieved);
                 EmployeeRepository.Update(retrieved);
@@ -90,7 +90,7 @@ namespace BussinesLayer.Facades
             {
                 var deleted = EmployeeRepository.GetById(employee.Id);
                 if (deleted == null)
-                    throw new ObjectNotFoundException("Employee hasn't been found");
+                    throw new ObjectNotFoundException("Employee wasn't found");
 
                 EmployeeRepository.Delete(deleted);
                 uow.Commit();

@@ -17,7 +17,7 @@ namespace DataAccessLayer.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// Required information, when set to true email will be sent to Person
+        /// Required information, when set to true email will be sent to User
         /// on Issue change
         /// </summary>
         [Required]
@@ -26,26 +26,30 @@ namespace DataAccessLayer.Entities
         /// <summary>
         /// Required Id of linked Issue
         /// </summary>
+        [Required]
         public int IssueId { get; set; }
+
         /// <summary>
         /// Navigation property to Issue
         /// </summary>
-        [Required,ForeignKey("IssueId")]
+        [ForeignKey("IssueId")]
         public virtual Issue Issue { get; set; }
 
         /// <summary>
         /// Required Id of linked Person
         /// </summary>
-        public int PersonId { get; set; }
+        [Required]
+        public int UserId { get; set; }
+
         /// <summary>
         /// Navigation property to Person
         /// </summary>
-        [Required,ForeignKey("PersonId")]
-        public virtual AITUser Person { get; set; }
+        [ForeignKey("UserId")]
+        public virtual AITUser User { get; set; }
 
         public override string ToString()
         {
-            return $"Notification {Id}: {Person.Name}, {Issue.Title}: {NotifyByEmail}";
+            return $"Notification {Id}: {User.Name}, {Issue.Title}: {NotifyByEmail}";
         }
     }
 }

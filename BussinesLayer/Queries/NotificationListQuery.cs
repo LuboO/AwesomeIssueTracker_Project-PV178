@@ -25,9 +25,9 @@ namespace BussinesLayer.Queries
             if (Filter.IssueId != null)
                 query = query
                     .Where(n => n.IssueId == Filter.IssueId);
-            if (Filter.PersonId != null)
+            if (Filter.UserId != null)
                 query = query
-                    .Where(n => n.PersonId == Filter.PersonId);
+                    .Where(n => n.UserId == Filter.UserId);
 
             return query.Project().To<NotificationDTO>();
         }

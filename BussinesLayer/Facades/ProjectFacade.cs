@@ -58,7 +58,7 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public void UpdateProject(ProjectDTO project, int customerId)
+        public void UpdateProject(ProjectDTO project)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
@@ -70,9 +70,6 @@ namespace BussinesLayer.Facades
                     throw new ObjectNotFoundException("Project not found");
 
                 Mapper.Map(project, retrieved);
-                retrieved.Customer = CustomerRepository.GetById(customerId);
-                if (retrieved.Customer == null)
-                    throw new ObjectNotFoundException("Customer not found");
 
                 ProjectRepository.Update(retrieved);
                 uow.Commit();

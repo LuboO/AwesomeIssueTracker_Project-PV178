@@ -10,6 +10,8 @@ namespace PresentationLayer.Models.Issue
 
         public ListCommentsModel ListCommentsModel { get; set; }
 
+        public bool IsUserSubscribed { get; set; }
+
         public bool CanChangeState { get; set; }
 
         public bool CanModify { get; set; }

@@ -84,7 +84,7 @@ namespace BussinesLayer.Facades
                 {
                     var retrieved = userManager.FindById(user.Id);
                     if (retrieved == null)
-                        throw new ObjectNotFoundException("User hasn't been found");
+                        throw new ObjectNotFoundException("User haven't been found");
 
                     Mapper.Map(user, retrieved);
                     var result = userManager.Update(retrieved);
@@ -107,7 +107,7 @@ namespace BussinesLayer.Facades
                 {
                     var deleted = userManager.FindById(user.Id);
                     if (deleted == null)
-                        throw new ObjectNotFoundException("User hasn't been found");
+                        throw new ObjectNotFoundException("User wasn't found");
 
                     var context = (uow as AITUnitOfWork).Context;
 
@@ -117,7 +117,7 @@ namespace BussinesLayer.Facades
                     CommentRepository.Delete(comments);
 
                     var notifications = context.Notifications
-                        .Where(n => n.PersonId == user.Id)
+                        .Where(n => n.UserId == user.Id)
                         .ToList();
                     NotificationRepository.Delete(notifications);
 
@@ -227,7 +227,7 @@ namespace BussinesLayer.Facades
                 {
                     var user = userManager.FindById(userId);
                     if (user == null)
-                        throw new ObjectNotFoundException("User hasn't been found");
+                        throw new ObjectNotFoundException("User wasn't found");
 
                     return CheckUserAlreadyHasRole(userManager, userId, role);
                 }
@@ -272,7 +272,7 @@ namespace BussinesLayer.Facades
                 {
                     var user = userManager.FindById(userId);
                     if (user == null)
-                        throw new ObjectNotFoundException("User hasn't been found");
+                        throw new ObjectNotFoundException("User wasn't found");
 
                     if (!CheckUserAlreadyHasRole(userManager, user.Id, role))
                     {
@@ -292,7 +292,7 @@ namespace BussinesLayer.Facades
                 {
                     var user = userManager.FindById(userId);
                     if (user == null)
-                        throw new ObjectNotFoundException("User hasn't been found");
+                        throw new ObjectNotFoundException("User wasn't found");
 
                     if (CheckUserAlreadyHasRole(userManager, user.Id, role))
                     {

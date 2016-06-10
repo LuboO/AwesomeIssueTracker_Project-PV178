@@ -10,6 +10,7 @@ using BussinesLayer.Filters;
 using System;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity.Core;
+using DataAccessLayer.Enums;
 
 namespace BussinesLayer.Facades
 {
@@ -42,13 +43,13 @@ namespace BussinesLayer.Facades
                 using (var userManager = UserManagerFactory.Invoke())
                 {
                     if (ProjectRepository.GetById(projectId) == null)
-                        throw new ObjectNotFoundException("Project hasn't been found");
+                        throw new ObjectNotFoundException("Project wasn't found");
 
                     if (userManager.FindById(creatorId) == null)
-                        throw new ObjectNotFoundException("Creator hasn't been found");
+                        throw new ObjectNotFoundException("Creator wasn't found");
                     
                     if (EmployeeRepository.GetById(employeeId) == null)
-                        throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
+                        throw new ObjectNotFoundException("AssignedEmployee wasn't found");
 
                     var created = Mapper.Map<Issue>(issue);
 
@@ -78,7 +79,7 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public void UpdateIssue(IssueDTO issue, int projectId, int creatorId, int employeeId)
+        public void UpdateIssue(IssueDTO issue, string userName)
         {
             if (issue == null)
                 throw new ArgumentNullException("issue");
@@ -91,20 +92,107 @@ namespace BussinesLayer.Facades
                     if (retrieved == null)
                         throw new ObjectNotFoundException("Issue not found");
 
-                    if (ProjectRepository.GetById(projectId) == null)
-                        throw new ObjectNotFoundException("Project hasn't been found");
-
-                    if (userManager.FindById(creatorId) == null)
-                        throw new ObjectNotFoundException("Creator hasn't been found");
-                    
-                    if (EmployeeRepository.GetById(employeeId) == null)
-                        throw new ObjectNotFoundException("AssignedEmployee hasn't been found");
-
                     Mapper.Map(issue, retrieved);
+
+                    retrieved.ChangeTime = DateTime.Now;
+                    retrieved.ChangeType = IssueChangeType.Updated;
+                    retrieved.NameOfChanger = userName;
 
                     IssueRepository.Update(retrieved);
                     uow.Commit();
                 }
+            }
+        }
+
+        public void AcceptIssue(int issueId, string userName)
+        {
+            using(var uow = UnitOfWorkProvider.Create())
+            {
+                var issue = IssueRepository.GetById(issueId);
+                if (issue == null)
+                    throw new ObjectNotFoundException("Issue was not found.");
+
+                if (issue.Status != IssueStatus.New)
+                    return;
+
+                issue.Status = IssueStatus.Accepted;
+
+                issue.ChangeTime = DateTime.Now;
+                issue.ChangeType = IssueChangeType.Accepted;
+                issue.NameOfChanger = userName;
+
+                IssueRepository.Update(issue);
+                uow.Commit();
+            }
+
+        }
+
+        public void RejectIssue(int issueId, string userName)
+        {
+            using(var uow = UnitOfWorkProvider.Create())
+            {
+                var issue = IssueRepository.GetById(issueId);
+                if (issue == null)
+                    throw new ObjectNotFoundException("Issue was not found.");
+
+                if (issue.Status != IssueStatus.New)
+                    return;
+
+                issue.Status = IssueStatus.Rejected;
+                issue.Finished = DateTime.Now;
+
+                issue.ChangeTime = DateTime.Now;
+                issue.ChangeType = IssueChangeType.Rejected;
+                issue.NameOfChanger = userName;
+
+                IssueRepository.Update(issue);
+                uow.Commit();
+            }
+        }
+
+        public void CloseIssue(int issueId, string userName)
+        {
+            using(var uow = UnitOfWorkProvider.Create())
+            {
+                var issue = IssueRepository.GetById(issueId);
+                if (issue == null)
+                    throw new ObjectNotFoundException("Issue was not found.");
+
+                if (issue.Status != IssueStatus.Accepted)
+                    return;
+
+                issue.Status = IssueStatus.Closed;
+                issue.Finished = DateTime.Now;
+
+                issue.ChangeTime = DateTime.Now;
+                issue.ChangeType = IssueChangeType.Closed;
+                issue.NameOfChanger = userName;
+
+                IssueRepository.Update(issue);
+                uow.Commit();
+            }
+        }
+
+        public void ReopenIssue(int issueId, string userName)
+        {
+            using(var uow = UnitOfWorkProvider.Create())
+            {
+                var issue = IssueRepository.GetById(issueId);
+                if (issue == null)
+                    throw new ObjectNotFoundException("Issue was not found.");
+
+                if (issue.Status != IssueStatus.Closed && issue.Status != IssueStatus.Rejected)
+                    return;
+
+                issue.Status = IssueStatus.Accepted;
+                issue.Finished = null;
+
+                issue.ChangeTime = DateTime.Now;
+                issue.ChangeType = IssueChangeType.Reopened;
+                issue.NameOfChanger = userName;
+
+                IssueRepository.Update(issue);
+                uow.Commit();
             }
         }
 
@@ -117,7 +205,7 @@ namespace BussinesLayer.Facades
             {
                 var deleted = IssueRepository.GetById(issue.Id);
                 if (deleted == null)
-                    throw new ObjectNotFoundException("Issue hasn't been found");
+                    throw new ObjectNotFoundException("Issue wasn't found");
 
                 IssueRepository.Delete(deleted);
                 uow.Commit();

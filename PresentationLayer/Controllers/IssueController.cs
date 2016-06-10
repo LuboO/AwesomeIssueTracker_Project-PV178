@@ -18,19 +18,22 @@ namespace PresentationLayer.Controllers
         private readonly ProjectFacade projectFacade;
         private readonly UserFacade userFacade;
         private readonly EmployeeFacade employeeFacade;
+        private readonly NotificationFacade notificationFacade;
 
         public IssueController(
             IssueFacade issueFacade, 
             CommentFacade commentFacade, 
             ProjectFacade projectFacade,
             UserFacade userFacade,
-            EmployeeFacade employeeFacade)
+            EmployeeFacade employeeFacade,
+            NotificationFacade notificationFacade)
         {
             this.issueFacade = issueFacade;
             this.commentFacade = commentFacade;
             this.projectFacade = projectFacade;
             this.userFacade = userFacade;
             this.employeeFacade = employeeFacade;
+            this.notificationFacade = notificationFacade;
         }
 
         public ActionResult ViewAllIssues()
@@ -62,10 +65,13 @@ namespace PresentationLayer.Controllers
                     Comments = commentFacade.GetCommentsByIssue(issue.Id)
                 }
             };
+            int userId = User.Identity.GetUserId<int>();
+
+            model.IsUserSubscribed = notificationFacade.IsUserSubbedToIssue(userId, issueId.Value);
             model.CanChangeState = User.IsInRole(UserRole.Administrator.ToString()) || 
                 User.IsInRole(UserRole.Employee.ToString());
             model.CanModify = User.IsInRole(UserRole.Administrator.ToString()) || 
-                (User.Identity.GetUserId<int>() == issue.Creator.Id);
+                (userId == issue.Creator.Id);
 
             return View("IssueDetail", model);
         }
@@ -157,7 +163,7 @@ namespace PresentationLayer.Controllers
             issue.Title = model.Title;
             issue.Description = model.Description;
             issue.Type = model.Type;
-            issueFacade.UpdateIssue(issue, model.ProjectId, model.CreatorId, model.SelectedEmployeeId);
+            issueFacade.UpdateIssue(issue, User.Identity.Name/*model.ProjectId, model.CreatorId, model.SelectedEmployeeId*/);
             return RedirectToAction("IssueDetail", new { issueId = model.IssueId });
         }
 
@@ -183,12 +189,13 @@ namespace PresentationLayer.Controllers
             if (!issueId.HasValue)
                 return View("BadInput");
 
-            var issue = issueFacade.GetIssueById(issueId.Value);
+            /*var issue = issueFacade.GetIssueById(issueId.Value);
             if(issue == null)
                 return View("BadInput");
 
             issue.Status = IssueStatus.Accepted;
-            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
+            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);*/
+            issueFacade.AcceptIssue(issueId.Value, User.Identity.Name);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
         }
 
@@ -198,13 +205,14 @@ namespace PresentationLayer.Controllers
             if (!issueId.HasValue)
                 return View("BadInput");
 
-            var issue = issueFacade.GetIssueById(issueId.Value);
+            /*var issue = issueFacade.GetIssueById(issueId.Value);
             if(issue == null)
                 return View("BadInput");
 
             issue.Status = IssueStatus.Rejected;
             issue.Finished = DateTime.Now;
-            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
+            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);*/
+            issueFacade.RejectIssue(issueId.Value, User.Identity.Name);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
         }
 
@@ -214,13 +222,14 @@ namespace PresentationLayer.Controllers
             if (!issueId.HasValue)
                 return View("BadInput");
 
-            var issue = issueFacade.GetIssueById(issueId.Value);
+            /*var issue = issueFacade.GetIssueById(issueId.Value);
             if(issue == null)
                 return View("BadInput");
 
             issue.Status = IssueStatus.Closed;
             issue.Finished = DateTime.Now;
-            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
+            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);*/
+            issueFacade.CloseIssue(issueId.Value, User.Identity.Name);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
         }
 
@@ -230,13 +239,14 @@ namespace PresentationLayer.Controllers
             if (!issueId.HasValue)
                 return View("BadInput");
 
-            var issue = issueFacade.GetIssueById(issueId.Value);
+            /*var issue = issueFacade.GetIssueById(issueId.Value);
             if(issue == null)
                 return View("BadInput");
 
             issue.Status = IssueStatus.Accepted;
             issue.Finished = null;
-            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);
+            issueFacade.UpdateIssue(issue, issue.Project.Id, issue.Creator.Id, issue.AssignedEmployee.Id);*/
+            issueFacade.ReopenIssue(issueId.Value, User.Identity.Name);
             return RedirectToAction("IssueDetail", new { issueId = issueId });
         }
     }

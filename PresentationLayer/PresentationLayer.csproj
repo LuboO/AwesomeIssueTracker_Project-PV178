@@ -169,6 +169,7 @@
     <Content Include="Global.asax" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\Comment\PostCommentModel.cs" />

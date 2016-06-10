@@ -10,6 +10,7 @@ using BussinesLayer.Filters;
 using System;
 using System.Data.Entity.Core;
 using Microsoft.AspNet.Identity;
+using DataAccessLayer.Enums;
 
 namespace BussinesLayer.Facades
 {
@@ -39,20 +40,27 @@ namespace BussinesLayer.Facades
             {
                 using(var userManager = UserManagerFactory.Invoke())
                 {
-                    if (IssueRepository.GetById(issueId) == null)
-                        throw new ObjectNotFoundException("Issue hasn't been found");
+                    var issue = IssueRepository.GetById(issueId);
+                    if (issue == null)
+                        throw new ObjectNotFoundException("Issue wasn't found");
 
-                    if (userManager.FindById(authorId) == null)
-                        throw new ObjectNotFoundException("Author hasn't been found");
+                    var user = userManager.FindById(authorId);
+                    if (user == null)
+                        throw new ObjectNotFoundException("Author wasn't found");
 
                     var created = Mapper.Map<Comment>(comment);
 
-                    created.IssueId = issueId;
+                    created.IssueId = issue.Id;
                     created.Issue = null;
-                    created.AuthorId = authorId;
+                    created.AuthorId = user.Id;
                     created.Author = null;
 
+                    issue.ChangeTime = DateTime.Now;
+                    issue.ChangeType = IssueChangeType.Comment;
+                    issue.NameOfChanger = user.UserName;
+
                     CommentRepository.Insert(created);
+                    IssueRepository.Update(issue);
                     uow.Commit();
                     return created.Id;
                 }
@@ -80,7 +88,7 @@ namespace BussinesLayer.Facades
             {
                 var retrieved = CommentRepository.GetById(comment.Id);
                 if (retrieved == null)
-                    throw new ObjectNotFoundException("Comment hasn't been found");
+                    throw new ObjectNotFoundException("Comment wasn't found");
 
                 Mapper.Map(comment, retrieved);
                 CommentRepository.Update(retrieved);
@@ -97,7 +105,7 @@ namespace BussinesLayer.Facades
             {
                 var deleted = CommentRepository.GetById(comment.Id);
                 if (deleted == null)
-                    throw new ObjectNotFoundException("Comment hasn't been found");
+                    throw new ObjectNotFoundException("Comment wasn't found");
 
                 CommentRepository.Delete(deleted);
                 uow.Commit();
