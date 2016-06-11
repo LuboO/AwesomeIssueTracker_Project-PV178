@@ -168,5 +168,25 @@ namespace BussinesLayer.Facades
                 return false;
             }
         }
+
+        public List<IssueDTO> GetChangedIssuesByUser(int userId)
+        {
+            using(UnitOfWorkProvider.Create())
+            {
+                var filter = new NotificationFilter()
+                {
+                    UserId = userId,
+                };
+
+                var userNotifications = CreateQuery(filter).Execute().ToList();
+                var changedIssues = userNotifications
+                    .Select(n => n.Issue)
+                    .Where(i => i.ChangeTime != null)
+                    .OrderByDescending(i => i.ChangeTime)
+                    .ToList();
+
+                return changedIssues;
+            }
+        }
     }
 }

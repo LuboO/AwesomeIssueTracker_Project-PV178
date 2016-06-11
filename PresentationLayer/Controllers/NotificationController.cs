@@ -2,6 +2,7 @@
 using BussinesLayer.Facades;
 using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
+using PresentationLayer.Models.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,16 @@ namespace PresentationLayer.Controllers
                 notificationFacade.DeleteNotification(notification);
 
             return RedirectToAction("IssueDetail", "Issue", new { issueId = issueId.Value });
+        }
+
+        public ActionResult ViewNotificationHistory()
+        {
+            int userId = User.Identity.GetUserId<int>();
+            var model = new ViewNotificationHistoryModel()
+            {
+                ChangedIssues = notificationFacade.GetChangedIssuesByUser(userId),
+            };
+            return View("ViewNotificationHistory", model);
         }
     }
 }

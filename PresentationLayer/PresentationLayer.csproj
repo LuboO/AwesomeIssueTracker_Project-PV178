@@ -173,6 +173,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\Comment\PostCommentModel.cs" />
+    <Compile Include="Models\Notification\ViewNotificationHistoryModel.cs" />
     <Compile Include="Models\User\ChangeEmailModel.cs" />
     <Compile Include="Models\User\ChangePasswordModel.cs" />
     <Compile Include="Models\User\EditUserModel.cs" />
@@ -201,6 +202,7 @@
     <Content Include="Views\Comment\PostComment.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\BadInput.cshtml" />
+    <Content Include="Views\Notification\ViewNotificationHistory.cshtml" />
     <None Include="Views\User\Register.cshtml" />
     <Content Include="Views\Comment\DiscussionView.cshtml" />
     <None Include="Views\User\EditUser.cshtml" />

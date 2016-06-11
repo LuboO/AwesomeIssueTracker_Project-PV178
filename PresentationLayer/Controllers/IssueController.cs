@@ -163,7 +163,7 @@ namespace PresentationLayer.Controllers
             issue.Title = model.Title;
             issue.Description = model.Description;
             issue.Type = model.Type;
-            issueFacade.UpdateIssue(issue, User.Identity.Name/*model.ProjectId, model.CreatorId, model.SelectedEmployeeId*/);
+            issueFacade.UpdateIssue(issue, model.SelectedEmployeeId, User.Identity.Name/*model.ProjectId, model.CreatorId, model.SelectedEmployeeId*/);
             return RedirectToAction("IssueDetail", new { issueId = model.IssueId });
         }
 

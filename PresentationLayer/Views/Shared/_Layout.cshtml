@@ -86,8 +86,8 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Register", "Register", "User")</li>
                                 <li>@Html.ActionLink("Log in", "Login", "User")</li>
+                                <li>@Html.ActionLink("Register", "Register", "User")</li>
                             </ul>
                         } 
                         else 
@@ -97,7 +97,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Notifications", "ViewUserNotifications", "Notification", new { userId = @User.Identity.GetUserId<int>()}, new {})</li>
+                                <li>@Html.ActionLink("Notifications", "ViewNotificationHistory", "Notification", new { userId = @User.Identity.GetUserId<int>()}, new {})</li>
                                 <li>@Html.ActionLink("Account management", "UserDetail", "User", new { userId = @User.Identity.GetUserId<int>() }, new {} )</li>
                                 <li>@Html.ActionLink("Sign out", "Logout", "User")</li>
                             </ul>

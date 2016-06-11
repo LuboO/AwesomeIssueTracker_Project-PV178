@@ -1,0 +1,60 @@
+﻿@model PresentationLayer.Models.Notification.ViewNotificationHistoryModel
+@using DataAccessLayer.Enums
+
+@{
+    ViewBag.Title = "Notifications";
+}
+
+<h2>History of subscribed issues changes</h2>
+<hr />
+
+@if(Model.ChangedIssues.Count > 0) {
+    <table class="table">
+        <tr>
+            <th>Time of change</th>
+            <th>Message</th>
+            <th></th>
+        </tr>
+
+        @foreach(var issue in Model.ChangedIssues) {
+            var changeMessage = "";
+            changeMessage += issue.NameOfChanger;
+            changeMessage += " ";
+
+            switch (issue.ChangeType) {
+                case IssueChangeType.Updated:
+                    changeMessage += "updated";
+                    break;
+                case IssueChangeType.Accepted:
+                    changeMessage += "accepted";
+                    break;
+                case IssueChangeType.Rejected:
+                    changeMessage +=  "rejected";
+                    break;
+                case IssueChangeType.Closed:
+                    changeMessage += "closed";
+                    break;
+                case IssueChangeType.Reopened:
+                    changeMessage +=  "reopened";
+                    break;
+                case IssueChangeType.Comment:
+                    changeMessage += "commented on";
+                    break;
+                default:
+                    changeMessage += "changed";
+                    break;
+            }
+            changeMessage += " issue \"";
+            changeMessage += issue.Title;
+            changeMessage += "\"";
+            <tr>
+                <td>@String.Format("{0:dd.MM.yyyy HH:mm}", issue.ChangeTime)</td>
+                <td>@changeMessage</td>
+                <td>@Html.ActionLink("Issue detail", "IssueDetail", "Issue", new {issueId = issue.Id}, new {@class = "btn btn-primary"})</td>
+            </tr>
+        }
+    </table>
+} else {
+    <h5>You aren't subscribed to any issues.</h5>
+}
+

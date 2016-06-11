@@ -79,7 +79,7 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public void UpdateIssue(IssueDTO issue, string userName)
+        public void UpdateIssue(IssueDTO issue, int employeeId, string userName)
         {
             if (issue == null)
                 throw new ArgumentNullException("issue");
@@ -92,7 +92,13 @@ namespace BussinesLayer.Facades
                     if (retrieved == null)
                         throw new ObjectNotFoundException("Issue not found");
 
+                    if (EmployeeRepository.GetById(employeeId) == null)
+                        throw new ObjectNotFoundException("AssignedEmployee wasn't found");
+
                     Mapper.Map(issue, retrieved);
+
+                    retrieved.AssignedEmployeeId = employeeId;
+                    retrieved.AssignedEmployee = null;
 
                     retrieved.ChangeTime = DateTime.Now;
                     retrieved.ChangeType = IssueChangeType.Updated;
