@@ -25,5 +25,7 @@ namespace PresentationLayer.Models.User
         public bool IsEmployee { get; set; }
 
         public bool CanModifyUser { get; set; }
+
+        public bool CanChangePassword { get; set; }
     }
 }

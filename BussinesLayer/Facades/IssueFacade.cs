@@ -97,8 +97,11 @@ namespace BussinesLayer.Facades
 
                     Mapper.Map(issue, retrieved);
 
-                    retrieved.AssignedEmployeeId = employeeId;
-                    retrieved.AssignedEmployee = null;
+                    if(retrieved.AssignedEmployeeId != employeeId)
+                    {
+                        retrieved.AssignedEmployeeId = employeeId;
+                        retrieved.AssignedEmployee = null;
+                    }
 
                     retrieved.ChangeTime = DateTime.Now;
                     retrieved.ChangeType = IssueChangeType.Updated;
@@ -263,6 +266,26 @@ namespace BussinesLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 return CreateQuery(new IssueFilter() { Title = title })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByTypeProject(int projectId, IssueType type)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { Type = type, ProjectId = projectId })
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByStatusProject(int projectId, IssueStatus status)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return CreateQuery(new IssueFilter() { Status = status, ProjectId = projectId })
                     .Execute()
                     .ToList();
             }

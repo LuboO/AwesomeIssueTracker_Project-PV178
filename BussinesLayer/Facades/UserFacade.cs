@@ -53,7 +53,7 @@ namespace BussinesLayer.Facades
 
                     var result = userManager.Create(created, user.Password);
                     if (!result.Succeeded)
-                        throw new UpdateException(result.Errors.First());
+                        throw new UpdateException(result.Errors.FirstOrDefault());
                 }
             }
         }
@@ -201,6 +201,16 @@ namespace BussinesLayer.Facades
 
                     return userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 }
+            }
+        }
+
+        public void ChangePassword(int userId, string current, string newPass)
+        {
+            using (var userManager = UserManagerFactory.Invoke())
+            {
+                var result = userManager.ChangePassword(userId, current, newPass);
+                if (!result.Succeeded)
+                    throw new UpdateException(result.Errors.FirstOrDefault());
             }
         }
 

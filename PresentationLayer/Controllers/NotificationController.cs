@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     [CustomAuthorize]
     public class NotificationController : Controller
     {

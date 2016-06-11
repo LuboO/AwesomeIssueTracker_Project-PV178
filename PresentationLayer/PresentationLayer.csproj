@@ -174,7 +174,7 @@
     <Compile Include="Filters\Authorization\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\Comment\PostCommentModel.cs" />
     <Compile Include="Models\Notification\ViewNotificationHistoryModel.cs" />
-    <Compile Include="Models\User\ChangeEmailModel.cs" />
+    <Compile Include="Models\Project\ProjectOverviewModel.cs" />
     <Compile Include="Models\User\ChangePasswordModel.cs" />
     <Compile Include="Models\User\EditUserModel.cs" />
     <Compile Include="Models\User\LoginModel.cs" />
@@ -203,6 +203,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\BadInput.cshtml" />
     <Content Include="Views\Notification\ViewNotificationHistory.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
     <None Include="Views\User\Register.cshtml" />
     <Content Include="Views\Comment\DiscussionView.cshtml" />
     <None Include="Views\User\EditUser.cshtml" />

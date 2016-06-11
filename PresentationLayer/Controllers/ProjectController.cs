@@ -5,10 +5,12 @@ using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Project;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     [CustomAuthorize]
     public class ProjectController : Controller
     {
@@ -27,11 +29,19 @@ namespace PresentationLayer.Controllers
         {
             var model = new ViewAllProjectsModel()
             {
-                ListProjectsModel = new ListProjectsModel()
-                {
-                    Projects = projectFacade.GetAllProjects()
-                }
+                Projects = projectFacade.GetAllProjects()
+                    .Select(p => new ProjectOverviewModel
+                    {
+                        ProjectId = p.Id,
+                        ProjectName = p.Name,
+                        CustomerId = p.Customer.Id,
+                        CustomerName = p.Customer.User.Name,
+                        ErrorCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Error).Count,
+                        RequirementCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Requirement).Count
+                    })
+                    .ToList()
             };
+
             return View("ViewAllProjects", model);
         }
 

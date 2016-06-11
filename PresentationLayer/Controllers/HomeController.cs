@@ -2,6 +2,7 @@
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     public class HomeController : Controller
     {
         public HomeController()

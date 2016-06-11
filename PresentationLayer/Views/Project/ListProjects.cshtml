@@ -1,18 +1,23 @@
-﻿@model PresentationLayer.Models.Project.ListProjectsModel
+﻿@using System.Collections.Generic;
+@model List<PresentationLayer.Models.Project.ProjectOverviewModel>
 
-@if(Model.Projects.Count != 0) {
+@if(Model.Count != 0) {
 <table class="table">
     <tr>
         <th>Name</th>
         <th>Customer</th>
+        <th>Errors</th>
+        <th>Requirements</th>
         <th></th>
     </tr>
 
-    @foreach (var project in Model.Projects) {
+    @foreach (var project in Model) {
     <tr>
-        <td>@project.Name</td>
-        <td>@Html.ActionLink(project.Customer.User.Name, "UserDetail", "User", new { userId = project.Customer.User.Id }, new { @class = "btn-link"} )</td>
-        <td>@Html.ActionLink("Detail", "ProjectDetail", "Project", new {projectId = project.Id}, new {@class = "btn btn-primary"})</td>
+        <td>@project.ProjectName</td>
+        <td>@Html.ActionLink(project.CustomerName, "UserDetail", "User", new { userId = project.CustomerId }, new { @class = "btn-link"} )</td>
+        <td>@project.ErrorCount</td>
+        <td>@project.RequirementCount</td>
+        <td>@Html.ActionLink("Detail", "ProjectDetail", "Project", new {projectId = project.ProjectId}, new {@class = "btn btn-primary"})</td>
     </tr>
     }
 

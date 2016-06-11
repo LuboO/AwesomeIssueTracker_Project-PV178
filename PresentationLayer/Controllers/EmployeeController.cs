@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     [CustomAuthorize]
     public class EmployeeController : Controller
     {

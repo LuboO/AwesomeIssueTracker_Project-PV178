@@ -34,6 +34,12 @@ namespace BussinesLayer.Queries
             if (!string.IsNullOrEmpty(Filter.Title))
                 query = query
                     .Where(i => i.Title.Equals(Filter.Title));
+            if (Filter.Type != null)
+                query = query
+                    .Where(i => i.Type == Filter.Type);
+            if (Filter.Status != null)
+                query = query
+                    .Where(i => i.Status == Filter.Status);
 
             return query.Project().To<IssueDTO>();
         }

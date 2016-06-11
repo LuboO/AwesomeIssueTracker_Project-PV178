@@ -18,6 +18,7 @@ using System.Linq;
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     [CustomAuthorize]
     public class UserController : Controller
     {
@@ -114,6 +115,33 @@ namespace PresentationLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult ChangePassword()
+        {
+            var model = new ChangePasswordModel();
+            return View("ChangePassword", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = userFacade.GetUserById(User.Identity.GetUserId<int>());
+            var identity = userFacade.Login(user.Email, model.CurrentPassword);
+            if(identity == null)
+            {
+                ModelState.AddModelError("CurrentPassword", "Wrong password");
+                return View(model);
+            }
+            userFacade.ChangePassword(user.Id, model.CurrentPassword, model.NewPassword);
+            return RedirectToAction("UserDetail", new { userId = user.Id });
+        }
+
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -144,7 +172,7 @@ namespace PresentationLayer.Controllers
             };
 
             /* Yes, this would also fail in facade. But it is harder to get nice message from there :) */
-            if(!user.UserName.All(c => char.IsLetterOrDigit(c) && c < 128))
+            if (!user.UserName.All(c => char.IsLetterOrDigit(c) && c < 128))
             {
                 ModelState.AddModelError("UserName", "User Name can contain only alphanumeric symbols.");
                 return View(model);
@@ -152,6 +180,11 @@ namespace PresentationLayer.Controllers
             if(userFacade.GetUsersByUserName(user.UserName).Count > 0)
             {
                 ModelState.AddModelError("UserName", "User Name is already taken.");
+                return View(model);
+            }
+            if(userFacade.GetUsersByEmail(user.Email).Count > 0)
+            {
+                ModelState.AddModelError("Email", "E-Mail is already in use.");
                 return View(model);
             }
             userFacade.Create(user);
@@ -209,16 +242,24 @@ namespace PresentationLayer.Controllers
                 model.CustomerDetailModel = new CustomerDetailModel()
                 {
                     Customer = customer,
-                    ListProjectsModel = new ListProjectsModel()
-                    {
-                        Projects = projectFacade.GetProjectsByCustomer(user.Id)
-                    }
+                    Projects = projectFacade.GetAllProjects()
+                        .Select(p => new ProjectOverviewModel()
+                        {
+                            ProjectId = p.Id,
+                            ProjectName = p.Name,
+                            CustomerId = p.Customer.Id,
+                            CustomerName = p.Customer.User.Name,
+                            ErrorCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Error).Count,
+                            RequirementCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Requirement).Count
+                        })
+                        .ToList()
                 };
             }
             model.IsDetailedUserAdmin = userFacade.IsUserAdmin(user.Id);
             model.IsAdmin = userFacade.IsUserAdmin(User.Identity.GetUserId<int>());
             model.IsEmployee = userFacade.IsUserEmployee(User.Identity.GetUserId<int>());
             model.CanModifyUser = model.IsAdmin || (user.Id == User.Identity.GetUserId<int>());
+            model.CanChangePassword = user.Id == User.Identity.GetUserId<int>();
 
             return View("UserDetail", model);
         }
@@ -243,7 +284,8 @@ namespace PresentationLayer.Controllers
 
             var model = new EditUserModel()
             {
-                UserId = userId.Value,
+                UserId = user.Id,
+                Email = user.Email,
                 UserName = user.UserName,
                 Name = user.Name,
                 Address = user.Address,
@@ -275,12 +317,18 @@ namespace PresentationLayer.Controllers
                 ModelState.AddModelError("UserName", "User Name can contain only alphanumeric symbols.");
                 return View(model);
             }
-            if ((user.UserName != model.UserName) && userFacade.GetUsersByUserName(model.UserName).Count > 0)
+            if ((user.UserName != model.UserName) && (userFacade.GetUsersByUserName(model.UserName).Count > 0))
             {
                 ModelState.AddModelError("UserName", "User Name is already taken.");
                 return View(model);
             }
+            if ((user.Email != model.Email) && (userFacade.GetUsersByEmail(model.Email).Count > 0))
+            {
+                ModelState.AddModelError("Email", "E-Mail is already in use.");
+                return View(model);
+            }
 
+            user.Email = model.Email;
             user.UserName = model.UserName;
             user.Name = model.Name;
             user.Address = model.Address;
@@ -305,7 +353,7 @@ namespace PresentationLayer.Controllers
             var user = userFacade.GetUserById(userId.Value);
             if(user == null)
                 return View("BadInput");
-
+            
             userFacade.DeleteUser(user);
             return RedirectToAction("ViewAllUsers");
         }

@@ -51,6 +51,10 @@
             </div>
             }
 
+            @if(Model.CanChangePassword) {
+                @Html.ActionLink("Change password", "ChangePassword", "User", new {}, new { @class = "btn btn-primary"})
+            }
+
             @if(Model.CanModifyUser) {
                 @Html.ActionLink("Edit user", "EditUser", "User", new { userId = Model.User.Id }, new { @class = "btn btn-primary"})
                 @Html.ActionLink("Delete user", "DeleteUser", "User", new { userId = Model.User.Id }, new { @class = "btn btn-danger"})

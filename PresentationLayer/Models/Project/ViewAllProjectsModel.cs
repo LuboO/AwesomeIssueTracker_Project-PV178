@@ -1,7 +1,9 @@
-﻿namespace PresentationLayer.Models.Project
+﻿using System.Collections.Generic;
+
+namespace PresentationLayer.Models.Project
 {
     public class ViewAllProjectsModel
     {
-        public ListProjectsModel ListProjectsModel { get; set; }
+        public List<ProjectOverviewModel> Projects;
     }
 }

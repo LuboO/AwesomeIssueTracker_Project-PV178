@@ -6,10 +6,12 @@ using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Comment;
 using PresentationLayer.Models.Issue;
 using System;
+using System.Data.Entity.Core;
 using System.Web.Mvc;
 
 namespace PresentationLayer.Controllers
 {
+    [HandleError]
     [CustomAuthorize]
     public class IssueController : Controller
     {
