@@ -112,7 +112,15 @@ namespace PresentationLayer.Controllers
                 Status = IssueStatus.New,
                 Created = DateTime.Now
             };
+            var notification = new NotificationDTO();
+
             var newId = issueFacade.CreateIssue(issue, model.ProjectId, User.Identity.GetUserId<int>(), model.SelectedEmployeeId);
+            /* Subscribing creator and assigned employee */
+            notificationFacade.CreateNotification(notification, newId, User.Identity.GetUserId<int>());
+            /* To prevent double notification for single user and issue */
+            if(User.Identity.GetUserId<int>() != model.SelectedEmployeeId)
+                notificationFacade.CreateNotification(notification, newId, model.SelectedEmployeeId);
+
             return RedirectToAction("IssueDetail", new { issueId = newId });
         }
 

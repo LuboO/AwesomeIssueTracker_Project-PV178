@@ -17,14 +17,13 @@ namespace PresentationLayer.App_Start
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Placeholder for email service
+            /* But I don't have my e-mail service :( */
             return Task.FromResult(0);
         }
     }
     
     /* I don't want two factor authentification or any other awesome "features" */
     /* Also my sms service is little rusty at the moment. */
-
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)

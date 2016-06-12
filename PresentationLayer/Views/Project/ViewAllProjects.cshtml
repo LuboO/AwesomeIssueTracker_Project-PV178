@@ -21,7 +21,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Apply filter" class="btn btn-primary" />
+                <input type="submit" value="Apply filter" class="btn btn-primary" />                
+                @Html.ActionLink("Reset", "ViewAllProjects", "Project", new {}, new {@class = "btn btn-default"})
             </div>
         </div>
     </div>

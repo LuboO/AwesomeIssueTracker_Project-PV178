@@ -32,10 +32,8 @@ namespace PresentationLayer.Controllers
             if (notificationFacade.IsUserSubbedToIssue(userId, issueId.Value))
                 return RedirectToAction("IssueDetail", "Issue", new { issueId = issueId.Value });
 
-            var notification = new NotificationDTO()
-            {
-                NotifyByEmail = false
-            };
+            var notification = new NotificationDTO();
+
             notificationFacade.CreateNotification(notification, issueId.Value, userId);
             return RedirectToAction("IssueDetail", "Issue", new { issueId = issueId.Value });
         }
