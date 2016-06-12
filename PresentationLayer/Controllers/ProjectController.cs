@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using PresentationLayer.Filters.Authorization;
 using PresentationLayer.Models.Issue;
 using PresentationLayer.Models.Project;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -29,6 +30,7 @@ namespace PresentationLayer.Controllers
         {
             var model = new ViewAllProjectsModel()
             {
+                ExistingCustomers = customerFacade.GetAllCustomers(),
                 Projects = projectFacade.GetAllProjects()
                     .Select(p => new ProjectOverviewModel
                     {
@@ -36,11 +38,37 @@ namespace PresentationLayer.Controllers
                         ProjectName = p.Name,
                         CustomerId = p.Customer.Id,
                         CustomerName = p.Customer.User.Name,
-                        ErrorCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Error).Count,
-                        RequirementCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Requirement).Count
+                        ErrorCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Error).Count,
+                        RequirementCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Requirement).Count
                     })
                     .ToList()
             };
+
+            return View("ViewAllProjects", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewAllProjects(ViewAllProjectsModel model)
+        {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View("ViewAllProjects");
+
+            model.ExistingCustomers = customerFacade.GetAllCustomers();
+            model.Projects = projectFacade.GetProjectsByCustomer(model.FilterByCustomerId)
+                .Select(p => new ProjectOverviewModel()
+                {
+                    ProjectId = p.Id,
+                    ProjectName = p.Name,
+                    CustomerId = p.Customer.Id,
+                    CustomerName = p.Customer.User.Name,
+                    ErrorCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Error).Count,
+                    RequirementCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Requirement).Count
+                })
+                .ToList();
 
             return View("ViewAllProjects", model);
         }
@@ -60,10 +88,51 @@ namespace PresentationLayer.Controllers
                 ListIssuesModel = new ListIssuesModel()
                 {
                     Issues = issueFacade.GetIssuesByProject(projectId.Value)
-                }
+                },
+                CanModify = User.IsInRole(UserRole.Administrator.ToString()) ||
+                            User.Identity.GetUserId<int>() == project.Customer.Id,
+
+        };
+            return View("ProjectDetail", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProjectDetail(ProjectDetailModel model)
+        {
+            if (model == null)
+                return View("BadInput");
+
+            if (!ModelState.IsValid)
+                return View("BadView");
+
+            var project = projectFacade.GetProjectById(model.Project.Id);
+            if (project == null)
+                return View("BadInput");
+
+            var types = new List<IssueType>();
+            var statuses = new List<IssueStatus>();
+
+            if (model.ShowErrors)
+                types.Add(IssueType.Error);
+            if (model.ShowRequirements)
+                types.Add(IssueType.Requirement);
+
+            if (model.ShowNew)
+                statuses.Add(IssueStatus.New);
+            if (model.ShowAccepted)
+                statuses.Add(IssueStatus.Accepted);
+            if (model.ShowRejected)
+                statuses.Add(IssueStatus.Rejected);
+            if (model.ShowClosed)
+                statuses.Add(IssueStatus.Closed);
+
+            model.Project = project;
+            model.ListIssuesModel = new ListIssuesModel()
+            {
+                Issues = issueFacade.GetIssuesByProjectTypeStatus(project.Id, types, statuses)
             };
-            model.CanModify = User.IsInRole(UserRole.Administrator.ToString()) ||
-                User.Identity.GetUserId<int>() == project.Customer.Id;
+
             return View("ProjectDetail", model);
         }
 

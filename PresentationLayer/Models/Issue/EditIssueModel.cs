@@ -26,6 +26,7 @@ namespace PresentationLayer.Models.Issue
         [Range(1, 2)]
         public IssueType Type { get; set; }
 
+        [Required]
         public int SelectedEmployeeId { get; set; }
 
         public List<EmployeeDTO> ExistingEmployees { get; set; }
@@ -38,7 +39,7 @@ namespace PresentationLayer.Models.Issue
                     .Select(e => new SelectListItem
                     {
                         Value = e.Id.ToString(),
-                        Text = e.User.Name
+                        Text = e.User.Name + " (" + e.User.UserName + ")"
                     });
                 return rval;
             }

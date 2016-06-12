@@ -34,12 +34,12 @@ namespace BussinesLayer.Queries
             if (!string.IsNullOrEmpty(Filter.Title))
                 query = query
                     .Where(i => i.Title.Equals(Filter.Title));
-            if (Filter.Type != null)
+            if (Filter.Types.Count > 0)
                 query = query
-                    .Where(i => i.Type == Filter.Type);
-            if (Filter.Status != null)
+                    .Where(i => Filter.Types.Contains(i.Type));
+            if (Filter.Statuses.Count > 0)
                 query = query
-                    .Where(i => i.Status == Filter.Status);
+                    .Where(i => Filter.Statuses.Contains(i.Status));
 
             return query.Project().To<IssueDTO>();
         }

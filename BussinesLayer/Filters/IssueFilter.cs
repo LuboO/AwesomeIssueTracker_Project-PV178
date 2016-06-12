@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Enums;
+using System.Collections.Generic;
 
 namespace BussinesLayer.Filters
 {
@@ -14,8 +15,14 @@ namespace BussinesLayer.Filters
 
         public string Title { get; set; }
 
-        public IssueType? Type { get; set; }
+        public List<IssueType> Types { get; set; }
 
-        public IssueStatus? Status { get; set; }
+        public List<IssueStatus> Statuses { get; set; }
+
+        public IssueFilter()
+        {
+            Types = new List<IssueType>();
+            Statuses = new List<IssueStatus>();
+        }
     }
 }

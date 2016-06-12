@@ -5,5 +5,26 @@
 }
 
 <h2>Projects</h2>
+<hr/>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.FilterByCustomerId, "Filter by customers", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.FilterByCustomerId, Model.CustomerItems, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FilterByCustomerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Apply filter" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
 
 @{ Html.RenderPartial("~/Views/Project/ListProjects.cshtml", Model.Projects); }

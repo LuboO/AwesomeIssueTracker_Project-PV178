@@ -249,8 +249,8 @@ namespace PresentationLayer.Controllers
                             ProjectName = p.Name,
                             CustomerId = p.Customer.Id,
                             CustomerName = p.Customer.User.Name,
-                            ErrorCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Error).Count,
-                            RequirementCount = issueFacade.GetIssuesByTypeProject(p.Id, IssueType.Requirement).Count
+                            ErrorCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Error).Count,
+                            RequirementCount = issueFacade.GetIssuesByProjectType(p.Id, IssueType.Requirement).Count
                         })
                         .ToList()
                 };

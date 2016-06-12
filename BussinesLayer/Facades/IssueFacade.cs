@@ -271,21 +271,47 @@ namespace BussinesLayer.Facades
             }
         }
 
-        public List<IssueDTO> GetIssuesByTypeProject(int projectId, IssueType type)
+        public List<IssueDTO> GetIssuesByProjectType(int projectId, IssueType type)
         {
             using (UnitOfWorkProvider.Create())
             {
-                return CreateQuery(new IssueFilter() { Type = type, ProjectId = projectId })
+                var filter = new IssueFilter()
+                {
+                    Types = new List<IssueType>() { type },
+                    ProjectId = projectId
+                };
+                return CreateQuery(filter)
                     .Execute()
                     .ToList();
             }
         }
 
-        public List<IssueDTO> GetIssuesByStatusProject(int projectId, IssueStatus status)
+        public List<IssueDTO> GetIssuesByProjectStatus(int projectId, IssueStatus status)
         {
             using (UnitOfWorkProvider.Create())
             {
-                return CreateQuery(new IssueFilter() { Status = status, ProjectId = projectId })
+                var filter = new IssueFilter()
+                {
+                    Statuses = new List<IssueStatus>() { status },
+                    ProjectId = projectId
+                };
+                return CreateQuery(filter)
+                    .Execute()
+                    .ToList();
+            }
+        }
+
+        public List<IssueDTO> GetIssuesByProjectTypeStatus(int projectId, List<IssueType> types, List<IssueStatus> statuses)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var filter = new IssueFilter()
+                {
+                    Types = types,
+                    Statuses = statuses,
+                    ProjectId = projectId
+                };
+                return CreateQuery(filter)
                     .Execute()
                     .ToList();
             }
