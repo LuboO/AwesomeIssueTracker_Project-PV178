@@ -41,6 +41,40 @@
 
 <hr/>
 <h4>Related issues</h4>
-<hr/>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Project.Id)
 
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <i>Issue type filter:&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                @Html.LabelFor(m => m.ShowErrors, "Errors", htmlAttributes: new { @class = "control-label" })
+                @Html.CheckBoxFor(m => m.ShowErrors, new { htmlAttributes = new { @class = "checkbox-inline" } })
+                &nbsp;&nbsp;
+                @Html.LabelFor(m => m.ShowRequirements, "Requirements", htmlAttributes: new { @class = "control-label" })
+                @Html.CheckBoxFor(m => m.ShowRequirements, new { htmlAttributes = new { @class = "checkbox-inline" } })
+            </div>
+            <div class="col-md-10">
+                <i>Issue status filter:&nbsp;</i>
+                @Html.LabelFor(m => m.ShowNew, "New", htmlAttributes: new { @class = "control-label" })                
+                @Html.CheckBoxFor(m => m.ShowNew, new { htmlAttributes = new { @class = "checkbox-inline" } })
+                &nbsp;&nbsp;
+                @Html.LabelFor(m => m.ShowAccepted, "Accepted", htmlAttributes: new { @class = "control-label" })
+                @Html.CheckBoxFor(m => m.ShowAccepted, new { htmlAttributes = new { @class = "checkbox-inline" } })
+                &nbsp;&nbsp;
+                @Html.LabelFor(m => m.ShowRejected, "Rejected", htmlAttributes: new { @class = "control-label" })
+                @Html.CheckBoxFor(m => m.ShowRejected, new { htmlAttributes = new { @class = "checkbox-inline" } })
+                &nbsp;&nbsp;
+                @Html.LabelFor(m => m.ShowClosed, "Closed", htmlAttributes: new { @class = "control-label" })
+                @Html.CheckBoxFor(m => m.ShowClosed, new { htmlAttributes = new { @class = "checkbox-inline" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Apply filter" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
 @{ Html.RenderPartial("~/Views/Issue/ListIssues.cshtml", Model.ListIssuesModel); }

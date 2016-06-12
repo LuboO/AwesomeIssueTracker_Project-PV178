@@ -7,8 +7,7 @@ namespace PresentationLayer.Models.Project
     public class ProjectDetailModel
     {
         public ListIssuesModel ListIssuesModel { get; set; }
-
-        [Required]
+        
         public ProjectDTO Project { get; set; }
 
         public bool CanModify { get; set; }

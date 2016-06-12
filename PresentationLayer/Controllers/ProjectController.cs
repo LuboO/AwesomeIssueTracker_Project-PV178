@@ -103,9 +103,6 @@ namespace PresentationLayer.Controllers
             if (model == null)
                 return View("BadInput");
 
-            if (!ModelState.IsValid)
-                return View("BadView");
-
             var project = projectFacade.GetProjectById(model.Project.Id);
             if (project == null)
                 return View("BadInput");
