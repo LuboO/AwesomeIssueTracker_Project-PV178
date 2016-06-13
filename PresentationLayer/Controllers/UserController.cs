@@ -242,7 +242,7 @@ namespace PresentationLayer.Controllers
                 model.CustomerDetailModel = new CustomerDetailModel()
                 {
                     Customer = customer,
-                    Projects = projectFacade.GetAllProjects()
+                    Projects = projectFacade.GetProjectsByCustomer(user.Id)
                         .Select(p => new ProjectOverviewModel()
                         {
                             ProjectId = p.Id,

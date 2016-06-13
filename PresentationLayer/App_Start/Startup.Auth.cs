@@ -28,8 +28,11 @@ namespace PresentationLayer
                     // This is a security feature which is used when you change a password or add an external login to your account.  
                     OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
                         validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
-                }
+                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager)),
+                },
+                /* So User can be inactive 2 minutes before logout. Pretty generous. */
+                SlidingExpiration = true,
+                ExpireTimeSpan = TimeSpan.FromMinutes(2)
             });
 
             /* No, I don't want to use Google authentification. */

@@ -2,29 +2,17 @@
 
 @if(Model.Comments.Count != 0) {
 <table class="table">
-    @foreach (var comment in Model.Comments) {
-    <tr>
-        <th>Author</th>
-        <td>@Html.ActionLink(comment.Author.Name, "UserDetail", "User", new { personId = comment.Author.Id}, new { @class = "btn-link" } )</td>
-    </tr>
-    <tr>
-        <th>Posted on</th>
-        <td>@comment.Created</td>
-    </tr>
     <tr>
         <th>Issue</th>
-        <td>@Html.ActionLink(comment.Issue.Title, "IssueDetail", "Issue", new { issueId = comment.Issue.Id}, new { @class = "btn-link"} )</td>
-    </tr>
-    <tr>
+        <th>Posted</th>
         <th>Subject</th>
+    </tr>
+
+    @foreach (var comment in Model.Comments) {
+    <tr>
+        <td>@Html.ActionLink(comment.Issue.Title, "IssueDetail", "Issue", new { issueId = comment.Issue.Id}, new { @class = "btn-link"} )</td>
+        <td>@comment.Created</td>
         <td>@comment.Subject</td>
-    </tr>
-    <tr>
-        <th>Message</th>
-        <td>@comment.Message</td>
-    </tr>
-    <tr>
-        <th colspan="2"><hr /></th>
     </tr>
     }
 </table>

@@ -3,4 +3,64 @@
 }
 
 <h2>Awesome Issue Tracker</h2>
-Work in progress!!! Deadline 13.06... Although possibly sooner.
+<h3>Functionality overview</h3>
+<h4>Test data</h4>
+Application is filled with some data for testing and demonstrating 
+functionality. You can log in with following emails: 
+<ul>
+    <li>admin@mail.com</li>
+    <li>customer1@mail.com</li>
+    <li>customer2@mail.com</li>
+    <li>customer3@mail.com</li>
+    <li>employee1@mail.com</li>
+    <li>employee2@mail.com</li>
+    <li>employee3@mail.com</li>
+    <li>user1@mail.com</li>
+    <li>user2@mail.com</li>
+    <li>user3@mail.com</li>
+</ul> 
+Accounts belong to roles Administrator, Customer,
+Employee and no group respectively. Password to each account is <b>password</b>.
+
+<h4>Roles</h4>
+<ul>
+    <li><b>Administrator</b> - can almost anything. Editing users, managing 
+    their access rights, promoting other users to administwators, modifying
+    projects and issues.</li>
+    <li><b>Employee</b> - Solves issues. Can promote users to customers. Can
+    change status of all issues. Cannot edit anything besides things he creates.</li>
+    <li><b>Customer</b> - Author of projects. Can only edit his own projects 
+    and his own account</li>
+    <li><b>General user</b> - All registered users can view all data and also
+    create issues, comment on issues and receive notifications.</li>
+</ul>
+
+<h4>Projects</h4>
+Can be created only by customers, then edited either by Administrator or
+customer who created it. Holds it's issues.
+
+<h4>Issues</h4>
+Can be created by anyone. Status of Issue can be changed only by Employee.
+Anyone can comment on Issue and subscribe to Issue.
+
+<h4>Comments</h4>
+Can be created by anyone on any Issue.
+
+<h4>Notifications</h4>
+Anyone can subscribe to any Issue. He will then receive notifications about
+new comments on the issue, updated information and changed status of the issue.
+Notifications of the user can be found after clicking on username->Notifications.
+
+<h3>Limitations and possible enhancements</h3>
+Unfortunately, email service is not implemented, so Users won't receive emails
+with Notifications and can't reset their passwords after they forgotten them.
+Also emails are not confirmed, so at registration anything with email adress
+format can be entered.
+<br/>
+<br/>
+Paging for listing Users/Projects/Issues/whatever would be nice addition.
+Not implemented though. 
+<br/>
+<br/>
+Other than that, it would be nice for Employees to be able to edit and delete 
+comments under Issues but it is not implemented at the moment.

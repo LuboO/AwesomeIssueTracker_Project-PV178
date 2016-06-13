@@ -12,60 +12,27 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>                    
                 </button>
                 @Html.ActionLink("Awesome Issue Tracker", "Index", "Home" ,  new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Users", "ViewAllUsers" , "User")</li>
-                    @*<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                            Users <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all users", "ViewAllUsers" , "User")</li>
-                        </ul>
-                    </li>*@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Customers", "ViewAllCustomers" , "Customer")</li>
-                    @*<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                            Customers <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all customers", "ViewAllCustomers" , "Customer")</li>
-                        </ul>
-                    </li>*@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Employees", "ViewAllEmployees" , "Employee")</li>
-                    @*<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                            Employees <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all employees", "ViewAllEmployees" , "Employee")</li>
-                        </ul>
-                    </li>*@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Issues", "ViewAllIssues" , "Issue")</li>
-                    @*
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
-                            Issues <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("View all issues", "ViewAllIssues" , "Issue")</li>
-                        </ul>
-                    </li>*@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
